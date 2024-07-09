@@ -28,7 +28,7 @@ magephp:
       on-release:
         - fs/copy: { from: '/home3/avbapt/releases/production/.env.local.php', to: '/home3/avbapt/releases/production/releases/%release%/.env.local.php' }
         - fs/link:
-            from: '../../../production/releases/%release%/public/bundles'
+            from: '/home3/avbapt/releases/production/production/releases/%release%/public/bundles'
             to: '/home3/avbapt/public_html/bundles'
             flags: '-snf'
         - exec: { cmd: '/home3/avbapt/releases/production/releases/%release%/bin/console doctrine:migrations:migrate --env=prod --no-interaction', desc: 'Run Doctrine Migrations if needed.'}
