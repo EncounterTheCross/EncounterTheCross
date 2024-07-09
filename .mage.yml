@@ -26,12 +26,12 @@ magephp:
       pre-deploy:
       on-deploy:
       on-release:
-        - fs/copy: { from: '/home3/avbapt/releases/production/.env.local.php', to: '/home3/avbapt/releases/production/%release%/.env.local.php' }
+        - fs/copy: { from: '/home3/avbapt/releases/production/.env.local.php', to: '/home3/avbapt/releases/production/releases/%release%/.env.local.php' }
         - fs/link:
-            from: '../../../production/%release%/public/bundles'
+            from: '../../../production/releases/%release%/public/bundles'
             to: '/home3/avbapt/public_html/bundles'
             flags: '-snf'
-        - exec: { cmd: '/home3/avbapt/releases/production/current/bin/console doctrine:migrations:migrate --env=prod --no-interaction', desc: 'Run Doctrine Migrations if needed.'}
+        - exec: { cmd: '/home3/avbapt/releases/production/releases/%release%/bin/console doctrine:migrations:migrate --env=prod --no-interaction', desc: 'Run Doctrine Migrations if needed.'}
       post-deploy:
     production:
 #      user: app
