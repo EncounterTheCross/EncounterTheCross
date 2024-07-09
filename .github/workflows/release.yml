@@ -11,7 +11,7 @@ jobs:
             extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
         steps:
             - name: Start SSH agent
-              uses: webfactory/ssh-agent@v0.4.1
+              uses: webfactory/ssh-agent@v0.9.0
               with:
                   ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
             - uses: actions/checkout@v4
