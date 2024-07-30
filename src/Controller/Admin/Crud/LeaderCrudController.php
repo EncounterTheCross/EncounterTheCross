@@ -118,7 +118,10 @@ class LeaderCrudController extends AbstractCrudController
                     return $entity->getEmail() && $entity->getEmail() !== $loggedInLeader->getEmail() && $this->isGranted(Role::FULL);
                 })
             )
-//            ->setPermission(Action::NEW,Role::FULL)
+            ->setPermissions([
+                Action::EDIT => 'EDIT',
+            ])
+            ->setPermission(Action::NEW, 'ROLE_DATA_EDITOR_OVERWRITE')
 //            ->setPermission(Action::EDIT,Role::FULL)
         ;
         // TODO: Add invitation Action for new Leaders

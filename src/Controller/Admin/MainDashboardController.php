@@ -52,19 +52,20 @@ class MainDashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToUrl('Site Settings', null, '/admin/settings/edit')
+        yield MenuItem::linkToUrl('Site Settings', 'fas fa-cogs', '/admin/settings/edit')
             ->setPermission('ROLE_SUPER_ADMIN')
         ;
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
 
         yield MenuItem::section('Encounter Events');
         yield MenuItem::linkToCrud('Events', 'fas fa-list', Event::class);
-        //                yield MenuItem::linkToCrud('Events Participants', 'fas fa-list', EventParticipant::class);
+        // yield MenuItem::linkToCrud('Events Participants', 'fas fa-list', EventParticipant::class);
         yield MenuItem::linkToCrud(
             'Event Locations',
             'fas fa-list',
             Location::class)
             ->setController(EventLocationCrudController::class)
+            ->setPermission('ROLE_DATA_EDITOR_OVERWRITE')
         ;
 
         yield MenuItem::section('Launch Points');
@@ -73,10 +74,12 @@ class MainDashboardController extends AbstractDashboardController
             'fas fa-list',
             Location::class)
             ->setController(LaunchPointCrudController::class)
+            ->setPermission('ROLE_DATA_EDITOR_OVERWRITE')
         ;
 
         yield MenuItem::section('Testimonies');
-        yield MenuItem::linkToCrud('Testimonial', 'fas fa-list', Testimonial::class);
+        yield MenuItem::linkToCrud('Testimonial', 'fas fa-list', Testimonial::class)
+            ->setPermission('ROLE_TESTIMONIAL_REVIEWER');
 
         yield MenuItem::section('Leadership');
         yield MenuItem::linkToCrud('Leaders', 'fas fa-list', Leader::class);

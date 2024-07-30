@@ -122,6 +122,10 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
             ->add(Crud::PAGE_INDEX, $registrations)
             ->add(Crud::PAGE_DETAIL, $registrations)
             ->disable(Action::DELETE, Action::BATCH_DELETE)
+            ->setPermissions([
+                Action::EDIT => 'ROLE_DATA_EDITOR_OVERWRITE',
+                Action::NEW => 'ROLE_DATA_EDITOR_OVERWRITE',
+            ])
         ;
     }
 

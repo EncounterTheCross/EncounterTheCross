@@ -276,6 +276,16 @@ class EventParticipantCrudController extends AbstractCrudController implements S
             ->add(Action::DETAIL, $participantStatusDropped)
         ;
 
+        // setup permission to global actions
+        $configuredActions
+            ->setPermissions([
+                'mark_attending' => 'ROLE_DATA_EDITOR_OVERWRITE',
+                'mark_dup' => 'ROLE_DATA_EDITOR_OVERWRITE',
+                'mark_drop' => 'ROLE_DATA_EDITOR_OVERWRITE',
+                Action::EDIT => 'ROLE_DATA_EDITOR_OVERWRITE',
+            ])
+        ;
+
         return $configuredActions;
     }
 

@@ -11,17 +11,23 @@ security:
                 property: email
     role_hierarchy:
         ROLE_SUPER_ADMIN:
+            - ROLE_DATA_EDITOR_OVERWRITE
             - ROLE_LEADER
             - ROLE_ALLOWED_TO_SWITCH
             - ROLE_NGLAYOUTS_ADMIN
+            - ROLE_TESTIMONIAL_REVIEWER
+            - ROLE_DATA_EDITOR_OVERWRITE
 
         ROLE_EVENT_LEADER:
             - ROLE_LEADER
+            - ROLE_TESTIMONIAL_REVIEWER
+            - ROLE_DATA_EDITOR_OVERWRITE
         ROLE_LAUNCH_LEADER:
             - ROLE_LEADER
         ROLE_LEADER:
             - ROLE_ADMIN
         ROLE_ADMIN: ~
+        ROLE_DATA_EDITOR_OVERWRITE:
 
     firewalls:
         dev:

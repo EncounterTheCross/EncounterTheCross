@@ -42,6 +42,9 @@ class EventLocationCrudController extends LocationCrudController
     {
         return parent::configureActions($actions)
             ->disable(Action::DELETE, Action::BATCH_DELETE)
+            ->setPermissions([
+                Action::EDIT => 'ROLE_DATA_EDITOR_OVERWRITE',
+            ])
         ;
     }
 

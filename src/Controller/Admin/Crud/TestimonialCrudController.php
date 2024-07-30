@@ -22,6 +22,9 @@ class TestimonialCrudController extends AbstractCrudController
     {
         return parent::configureActions($actions)
             ->disable(Action::DELETE, Action::BATCH_DELETE)
+            ->setPermissions([
+                Action::EDIT => 'ROLE_TESTIMONIAL_REVIEWER',
+            ])
         ;
     }
 
