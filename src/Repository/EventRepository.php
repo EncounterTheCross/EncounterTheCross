@@ -56,6 +56,9 @@ class EventRepository extends ServiceEntityRepository
             ->andWhere(
                 $qb->expr()->gte('e.start', ':today')
             )
+            ->orWhere(
+                $qb->expr()->gte('e.end', ':today')
+            )
             ->setParameter('today', date('Y-m-d H:i:s', strtotime('tomorrow') - 1))
             ->orderBy('e.start', 'ASC')
             ->setMaxResults(1)

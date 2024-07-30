@@ -6,6 +6,7 @@ use App\Entity\Traits\CoreEntityTrait;
 use App\Enum\EventParticipantStatusEnum;
 use App\Exception\InvalidLocationType;
 use App\Repository\EventRepository;
+use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -42,6 +43,9 @@ class Event
 
     #[ORM\Column(type: 'decimal', precision: 20, scale: 8)]
     private ?string $price = null;
+
+    #[ORM\Column]
+    private ?bool $active = null;
 
     public function __construct()
     {
@@ -225,5 +229,22 @@ class Event
         $this->price = $price;
 
         return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): static
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    public function canServerRegister(): bool
+    {
+        return $this->registrationDeadLineServers > new DateTime();
     }
 }

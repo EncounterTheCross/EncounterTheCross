@@ -12,18 +12,26 @@
                 <div class="text-center">
                     <h1 class="mx-auto my-0 text-uppercase">Galatians 5:1</h1>
                     <h2 class="text-white-50 mx-auto mt-2 mb-5 ">It is for freedom that christ has set us free.</h2>
-                    {% if event is not null %}
-                    <h2 class="text-white-50 mx-auto mt-2 mb-4 ">{{ event.start|date("F d") }}-{{ event.end|date("d") }}, {{ event.start|date("Y") }}</h2>
+                    {% if event is not null and event.start > date('now') %}
+                        <h2 class="text-white-50 mx-auto mt-2 mb-4 ">{{ event.start|date("F d") }}-{{ event.end|date("d") }}, {{ event.start|date("Y") }}</h2>
+                        <div id="flip" class="mb-4 text-white d-flex justify-content-evenly" data-next-encounter="{{ event.start|date('c', "America/Chicago") }}">
+                        </div>
+                    {% else %}
+                        <h2 class="text-white-50 mx-auto mt-2 mb-4 ">{{ event.start|date("F d") }}-{{ event.end|date("d") }}, {{ event.start|date("Y") }}</h2>
+                        <h3 class="text-uppercase text-white-50">Happening Now</h3>
 
-                    <div id="flip" class="mb-4 text-white d-flex justify-content-evenly" data-next-encounter="{{ event.start|date('c', "America/Chicago") }}">
-                    </div>
+                        <div class="mb-4 text-white d-flex justify-content-evenly">
+                            <a class="btn btn-primary m-2" href="{{ path('app_registration_list') }}">Look at Upcoming Encounters</a>
+                        </div>
                     {% endif %}
                 </div>
             </div>
-            {% if event is not null %}
+            {% if event is not null and event.start > date('now') %}
             <div class="d-flex flex-column flex-md-row justify-content-md-around">
                 <a class="btn btn-primary m-2" href="{{ path('app_registration_attendee_formentry',{'event': event.id}) }}">Attendee Register</a>
-                <a class="btn btn-outline-light m-2" href="{{ path('app_registration_server_formentry',{'event': event.id}) }}">Server Register</a>
+                {% if event.canServerRegister %}
+                    <a class="btn btn-outline-light m-2" href="{{ path('app_registration_server_formentry',{'event': event.id}) }}">Server Register</a>
+                {% endif %}
             </div>
             {% endif %}
         </div>

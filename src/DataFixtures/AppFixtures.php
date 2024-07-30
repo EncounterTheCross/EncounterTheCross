@@ -8,6 +8,7 @@ use App\Factory\LeaderFactory;
 use App\Factory\LocationFactory;
 use App\Factory\TestimonialFactory;
 use App\Service\RoleManager\Role;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -26,7 +27,13 @@ class AppFixtures extends Fixture
         LocationFactory::new('launchPoint')->many(8)->create();
 
         // Make the Events
-        EventFactory::createMany(2);
+        EventFactory::createOne([
+            'start' => (new DateTime())->setTimestamp(strtotime('-1 day')),
+            'end' => (new DateTime())->setTimestamp(strtotime('+1 day')),
+            //            'end' => new DateTime(),
+        ]);
+
+        EventFactory::createMany(20);
 
         // Create people that will go to the events
         // Servers

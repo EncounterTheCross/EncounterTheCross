@@ -11,8 +11,6 @@ class SettingsEnumConverter implements SettingConverterInterface
 {
     public function supports(Type $type): bool
     {
-        dump($type);
-
         //        return true;
         return is_a($type->getClassName(), SystemModeEnum::class, true);
     }

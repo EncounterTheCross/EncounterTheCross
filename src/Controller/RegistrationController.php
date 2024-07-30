@@ -15,10 +15,10 @@ use App\Form\AttendeeEventParticipantType;
 use App\Form\ServerEventParticipantType;
 use App\Repository\EventParticipantRepository;
 use App\Repository\EventRepository;
+use App\Security\Voter\EventRegistrationVoter;
 use App\Service\Mailer\RegistrationLeaderNotificationContextAwareMailer;
 use App\Service\Mailer\RegistrationThankYouContextAwareMailer;
 use App\Service\PersonManager;
-use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
@@ -55,6 +55,10 @@ class RegistrationController extends AbstractController
     #[Route('/register/{event}/attendee', name: 'app_registration_attendee_formentry')]
     public function attendeeRegistration(Event $event, Request $request)
     {
+        if (!$this->isGranted(EventRegistrationVoter::ATTENDEE, $event)) {
+            return $this->redirectToRoute('app_registration_list');
+        }
+
         $eventRegistration = new EventParticipant();
         $eventRegistration->setEvent($event);
         $form = $this->createForm(AttendeeEventParticipantType::class, $eventRegistration);
@@ -90,9 +94,7 @@ class RegistrationController extends AbstractController
     #[Route('/register/{event}/server', name: 'app_registration_server_formentry')]
     public function serverRegistration(Event $event, Request $request)
     {
-        if (new DateTime() > $event->getRegistrationDeadLineServers() && $this->getGlobalSettings()->isRegistrationDeadlineInforced()) {
-            $this->addFlash('error', 'The deadline for server registration has passed.');
-
+        if (!$this->isGranted(EventRegistrationVoter::SERVER, $event)) {
             return $this->redirectToRoute('app_registration_list');
         }
 

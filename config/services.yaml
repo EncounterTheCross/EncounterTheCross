@@ -49,6 +49,10 @@ services:
         arguments:
             $environment: '%kernel.environment%'
 
+    App\Security\Voter\EventRegistrationVoter:
+        arguments:
+            $settingsService: '@tzunghaor_settings.settings_service.global'
+
 #    App\Settings\SettingsEnumConverter:
 #        tags:
 #            - 'tzunghaor_settings.setting_converter'
