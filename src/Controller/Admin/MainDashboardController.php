@@ -8,6 +8,7 @@ use App\Entity\Event;
 use App\Entity\EventParticipant;
 use App\Entity\Leader;
 use App\Entity\Location;
+use App\Entity\PrayerTeam;
 use App\Entity\Testimonial;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -66,6 +67,11 @@ class MainDashboardController extends AbstractDashboardController
             Location::class)
             ->setController(EventLocationCrudController::class)
             ->setPermission('ROLE_DATA_EDITOR_OVERWRITE')
+        ;
+
+        yield MenuItem::section('Prayer Teams');
+        yield MenuItem::linkToCrud('Prayer Teams', 'fas fa-list', PrayerTeam::class)
+            ->setPermission('ROLE_SUPER_ADMIN')
         ;
 
         yield MenuItem::section('Launch Points');

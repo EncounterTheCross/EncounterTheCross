@@ -8,6 +8,8 @@ use App\Entity\Traits\QuestionsAndConcernsTrait;
 use App\Enum\EventParticipantStatusEnum;
 use App\Repository\EventParticipantRepository;
 use App\Service\Exporter\EntityExportableInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -80,6 +82,17 @@ class EventParticipant implements EntityExportableInterface
 
     #[ORM\Column(type: 'string', enumType: EventParticipantStatusEnum::class)]
     private EventParticipantStatusEnum $status = EventParticipantStatusEnum::ATTENDING;
+
+    /**
+     * @var Collection<int, EventPrayerTeamServer>
+     */
+    #[ORM\OneToMany(mappedBy: 'EventParticapent', targetEntity: EventPrayerTeamServer::class)]
+    private Collection $eventPrayerTeamServers;
+
+    public function __construct()
+    {
+        $this->eventPrayerTeamServers = new ArrayCollection();
+    }
 
     public static function TYPES(): array
     {
@@ -300,5 +313,35 @@ class EventParticipant implements EntityExportableInterface
     public function setForceNewPerson(bool $forceNewPerson): void
     {
         $this->forceNewPerson = $forceNewPerson;
+    }
+
+    /**
+     * @return Collection<int, EventPrayerTeamServer>
+     */
+    public function getEventPrayerTeamServers(): Collection
+    {
+        return $this->eventPrayerTeamServers;
+    }
+
+    public function addEventPrayerTeamServer(EventPrayerTeamServer $eventPrayerTeamServer): static
+    {
+        if (!$this->eventPrayerTeamServers->contains($eventPrayerTeamServer)) {
+            $this->eventPrayerTeamServers->add($eventPrayerTeamServer);
+            $eventPrayerTeamServer->setEventParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEventPrayerTeamServer(EventPrayerTeamServer $eventPrayerTeamServer): static
+    {
+        if ($this->eventPrayerTeamServers->removeElement($eventPrayerTeamServer)) {
+            // set the owning side to null (unless already changed)
+            if ($eventPrayerTeamServer->getEventParticipant() === $this) {
+                $eventPrayerTeamServer->setEventParticipant(null);
+            }
+        }
+
+        return $this;
     }
 }

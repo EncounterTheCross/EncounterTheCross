@@ -47,10 +47,20 @@ class Event
     #[ORM\Column]
     private ?bool $active = null;
 
+    /**
+     * @var Collection<int, EventPrayerTeamServer>
+     */
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: EventPrayerTeamServer::class)]
+    private Collection $prayerTeamServers;
+
+    #[ORM\Column]
+    private ?bool $registrationOpen = null;
+
     public function __construct()
     {
         $this->launchPoints = new ArrayCollection();
         $this->eventParticipants = new ArrayCollection();
+        $this->prayerTeamServers = new ArrayCollection();
     }
 
     public function getStart(): ?DateTimeInterface
@@ -219,6 +229,13 @@ class Event
         return $this;
     }
 
+    public function clearEventParticipants(): self
+    {
+        $this->eventParticipants->clear();
+
+        return $this;
+    }
+
     public function getPrice(): ?string
     {
         return $this->price;
@@ -246,5 +263,47 @@ class Event
     public function canServerRegister(): bool
     {
         return $this->registrationDeadLineServers > new DateTime();
+    }
+
+    /**
+     * @return Collection<int, EventPrayerTeamServer>
+     */
+    public function getPrayerTeamServers(): Collection
+    {
+        return $this->prayerTeamServers;
+    }
+
+    public function addPrayerTeamServer(EventPrayerTeamServer $prayerTeamServer): static
+    {
+        if (!$this->prayerTeamServers->contains($prayerTeamServer)) {
+            $this->prayerTeamServers->add($prayerTeamServer);
+            $prayerTeamServer->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrayerTeamServer(EventPrayerTeamServer $prayerTeamServer): static
+    {
+        if ($this->prayerTeamServers->removeElement($prayerTeamServer)) {
+            // set the owning side to null (unless already changed)
+            if ($prayerTeamServer->getEvent() === $this) {
+                $prayerTeamServer->setEvent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isRegistrationOpen(): ?bool
+    {
+        return $this->registrationOpen;
+    }
+
+    public function setRegistrationOpen(bool $registrationOpen): static
+    {
+        $this->registrationOpen = $registrationOpen;
+
+        return $this;
     }
 }

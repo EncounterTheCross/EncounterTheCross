@@ -116,11 +116,15 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
             ->linkToCrudAction('redirectToShowSubCrud')
         ;
 
+        $prayerTeamAssignments = Action::new('show_prayer_team_assignments')
+            ->linkToCrudAction('assignPrayerTeams');
+
         return parent::configureActions($actions)
             ->add(Crud::PAGE_INDEX, $exportByLaunchAction)
             ->add(Crud::PAGE_INDEX, $exportAllAction)
             ->add(Crud::PAGE_INDEX, $registrations)
             ->add(Crud::PAGE_DETAIL, $registrations)
+            ->add(Crud::PAGE_DETAIL, $prayerTeamAssignments)
             ->disable(Action::DELETE, Action::BATCH_DELETE)
             ->setPermissions([
                 Action::EDIT => 'ROLE_DATA_EDITOR_OVERWRITE',
@@ -159,6 +163,20 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
         );
 
         return $exporter->streamResponse($spreadsheet);
+    }
+
+    public function assignPrayerTeams(AdminContext $adminContext)
+    {
+        $event = $adminContext->getEntity()->getInstance();
+        if (!$event instanceof Event) {
+            throw new LogicException('Entity is missing or not an Event');
+        }
+
+        return $this->redirect(
+            $this->getAdminUrlGenerator()->setRoute('event_prayer_team_assignments', [
+                'event' => $event->getId(),
+            ])->generateUrl()
+        );
     }
 
     protected function getSubCrudControllerClass(): string
