@@ -13,7 +13,7 @@ class EventParticapentToEventPrayerTeamServerTransformer implements DataTransfor
     public function transform(mixed $value)
     {
         if (null === $value) {
-            return '';
+            return null;
         }
 
         if (!$value instanceof EventParticipant) {
@@ -21,14 +21,35 @@ class EventParticapentToEventPrayerTeamServerTransformer implements DataTransfor
         }
 
         $prayerAssignment = new EventPrayerTeamServer();
-        $prayerAssignment->setEvent($value->getEvent());
+        //        $event = $value->getEvent();
+
+        //        $prayerAssignment->setEvent($event);
         $prayerAssignment->setEventParticipant($value);
+
+        $value->addEventPrayerTeamServer($prayerAssignment);
 
         return $prayerAssignment;
     }
 
     public function reverseTransform(mixed $value)
     {
-        dd('reverse transform', $value);
+        if (null === $value) {
+            return null;
+        }
+
+        if (!$value instanceof EventPrayerTeamServer) {
+            throw new LogicException('Expected EventPrayerTeamServer object');
+        }
+
+        $participant = $value->getEventParticipant();
+        if (!$participant) {
+            throw new LogicException('EventParticipant cannot be null');
+        }
+
+        // Maintain bidirectional relationship
+        $participant->addEventPrayerTeamServer($value);
+        //        $value->setEventParticipant($participant);
+
+        return $participant;
     }
 }

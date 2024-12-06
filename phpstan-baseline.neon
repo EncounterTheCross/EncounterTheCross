@@ -6,6 +6,21 @@ parameters:
 			path: src/Controller/Admin/Crud/Field/Field.php
 
 		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/Controller/Admin/PrayerTeamAssignmentsController.php
+
+		-
+			message: "#^Result of && is always false\\.$#"
+			count: 1
+			path: src/Controller/Admin/PrayerTeamAssignmentsController.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: src/Controller/Admin/PrayerTeamAssignmentsController.php
+
+		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: src/Controller/DevelopmentController.php
@@ -61,7 +76,17 @@ parameters:
 			path: src/Repository/EventParticipantRepository.php
 
 		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: src/Repository/EventParticipantRepository.php
+
+		-
 			message: "#^Call to static method getRowPointerFromBase32\\(\\) on an unknown class UuidFactory\\.$#"
+			count: 1
+			path: src/Repository/EventRepository.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: src/Repository/EventRepository.php
 

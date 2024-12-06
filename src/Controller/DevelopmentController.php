@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Event;
 use App\Entity\EventParticipant;
 use App\Form\EventServersType;
 use App\Repository\EventParticipantRepository;
@@ -21,22 +22,29 @@ class DevelopmentController extends AbstractController
         $currentEvent = $eventRepository->findUpcomingEvent();
         $launchPoints = $currentEvent->getLaunchPoints();
         $launchPointServers = $launchPoints->map(function ($launchPoint) use ($currentEvent) {
-            $event = clone $currentEvent;
+            $servers = $currentEvent->getEventParticipants()->map(function (EventParticipant $eventParticipant) {
+                if ($eventParticipant->isAttendee()) {
+                    return null;
+                }
 
-            $servers = $currentEvent->getEventParticipants()->filter(function (EventParticipant $eventParticipant) use ($launchPoint) {
-                return $eventParticipant->getLaunchPoint() === $launchPoint;
+                return $eventParticipant;
             });
-            dd($servers);
-            $event->clearEventParticipants();
-            foreach ($servers as $server) {
-                $event->addEventParticipant($server);
-            }
 
-            return $event;
+            return array_values($servers->toArray());
         });
 
-        $test = $launchPointServers[0];
-        $form = $this->createForm(EventServersType::class, $test);
+        $currentEvent->clearEventParticipants();
+        $serverTrainting = new Event();
+        foreach ($launchPointServers as $launchPoint) {
+            foreach ($launchPoint as $server) {
+                if (null === $server) {
+                    continue;
+                }
+                $currentEvent->addEventParticipant($server);
+            }
+        }
+
+        $form = $this->createForm(EventServersType::class, $currentEvent);
 
         $form->handleRequest($request);
 

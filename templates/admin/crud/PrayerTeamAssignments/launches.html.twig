@@ -1,0 +1,12 @@
+{% extends 'admin/page/content.html.twig' %}
+{% block main %}
+    <div class="row g-4 p-3">
+        {% for launch in launchPoints %}
+            <div class="col-md-6">
+                <a href="{{ ea_url().setRoute('event_launch_prayer_team_assignments',{event: eventId, location: launch.id}) }}" class="btn btn-light w-100 p-4 fs-5 shadow-sm border h-100">
+                    {{ launch.name }}
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

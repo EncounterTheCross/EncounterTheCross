@@ -73,6 +73,7 @@ class MainDashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Prayer Teams', 'fas fa-list', PrayerTeam::class)
             ->setPermission('ROLE_SUPER_ADMIN')
         ;
+        yield MenuItem::linkToRoute('Event PT Assignments', null, 'event_prayer_team_assignments');
 
         yield MenuItem::section('Launch Points');
         yield MenuItem::linkToCrud(

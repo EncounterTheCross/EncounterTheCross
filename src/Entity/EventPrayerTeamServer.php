@@ -10,6 +10,17 @@ use Doctrine\ORM\Mapping as ORM;
 class EventPrayerTeamServer
 {
     use CoreEntityTrait;
+
+    public function __toString(): string
+    {
+        $name = $this->EventParticipant->getPerson()->getFullName();
+
+        if (null !== $this->getPrayerTeam()) {
+            $name .= ' on '.$this->getPrayerTeam()->getName();
+        }
+
+        return $name;
+    }
     #[ORM\ManyToOne(inversedBy: 'prayerTeamServers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Event $event = null;

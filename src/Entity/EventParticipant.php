@@ -86,7 +86,7 @@ class EventParticipant implements EntityExportableInterface
     /**
      * @var Collection<int, EventPrayerTeamServer>
      */
-    #[ORM\OneToMany(mappedBy: 'EventParticapent', targetEntity: EventPrayerTeamServer::class)]
+    #[ORM\OneToMany(mappedBy: 'EventParticipant', targetEntity: EventPrayerTeamServer::class, cascade: ['persist'])]
     private Collection $eventPrayerTeamServers;
 
     public function __construct()
@@ -325,10 +325,16 @@ class EventParticipant implements EntityExportableInterface
 
     public function addEventPrayerTeamServer(EventPrayerTeamServer $eventPrayerTeamServer): static
     {
-        if (!$this->eventPrayerTeamServers->contains($eventPrayerTeamServer)) {
-            $this->eventPrayerTeamServers->add($eventPrayerTeamServer);
-            $eventPrayerTeamServer->setEventParticipant($this);
+        if ($this->eventPrayerTeamServers->contains($eventPrayerTeamServer)) {
+            return $this;
         }
+
+        if (null === $eventPrayerTeamServer->getEvent() && null !== $this->getEvent()) {
+            $eventPrayerTeamServer->setEvent($this->getEvent());
+        }
+
+        $this->eventPrayerTeamServers->add($eventPrayerTeamServer);
+        $eventPrayerTeamServer->setEventParticipant($this);
 
         return $this;
     }
