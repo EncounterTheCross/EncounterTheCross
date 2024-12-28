@@ -8,10 +8,10 @@ use App\Entity\EventParticipant;
 use App\Entity\EventPrayerTeamServer;
 use App\Entity\Leader;
 use App\Entity\Location;
-use App\Form\EventServersType;
 use App\Form\LaunchPointServerPrayerTeamAssignmentsType;
 use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -25,16 +25,40 @@ class PrayerTeamAssignmentsController extends AbstractController
         path: '/launches',
         name: 'event_prayer_team_assignments',
     )]
-    public function index(EventRepository $eventRepository)
+    public function index(EventRepository $eventRepository, Request $request, AdminUrlGenerator $adminUrlGenerator)
     {
-        if (!$this->isGranted('ROLE_SUPER_ADMIN') || !$this->isGranted('ROLE_LAUNCH_LEADER')) {
+        if (!$this->isGranted('ROLE_LEADER')) {
             throw new AccessDeniedException('You do not have permission to assign prayer teams for launch points.');
         }
 
-        $event = $eventRepository->findUpcomingEvent();
+        $eventId = $request->query->all('routeParams')['event'] ?? null;
+        $event = match (true) {
+            null !== $eventId => $eventRepository->find($eventId),
+            default => $eventRepository->findUpcomingEvent(),
+        };
+
+        $launchPoints = $event->getLaunchPoints();
+        if (!$this->isGranted('ROLE_DATA_EDITOR_OVERWRITE')) {
+            /** @var Leader $user */
+            $user = $this->getUser();
+            $launchPoint = $launchPoints->filter(function (Location $location) use ($user) {
+                return $location->getId() === $user->getLaunchPoint()->getId();
+            })->first();
+
+            return $this->redirect(
+                $adminUrlGenerator->setRoute(
+                    'event_launch_prayer_team_assignments',
+                    [
+                        'location' => $launchPoint->getId(),
+                        'event' => $event->getId(),
+                    ]
+                )
+                    ->generateUrl()
+            );
+        }
 
         return $this->render('admin/crud/PrayerTeamAssignments/launches.html.twig', [
-            'launchPoints' => $event->getLaunchPoints(),
+            'launchPoints' => $launchPoints,
             'eventId' => $event->getId(),
         ]);
     }
@@ -45,13 +69,10 @@ class PrayerTeamAssignmentsController extends AbstractController
     )]
     public function prayerTeamAssignments(EntityManagerInterface $entityManager, Request $request, Location $location, ?Event $event = null)
     {
-        if (!$this->isGranted('ROLE_SUPER_ADMIN') || !$this->isGranted('ROLE_LAUNCH_LEADER')) {
-            throw new AccessDeniedException('You do not have permission to assign prayer teams for launch points.');
-        }
-
         /** @var Leader $leader */
         $leader = $this->getUser();
-        if (!$this->isGranted('ROLE_SUPER_ADMIN') && $leader->getLaunchPoint() !== $location) {
+
+        if (!$this->isGranted('ROLE_DATA_EDITOR_OVERWRITE') && $leader->getLaunchPoint()->getId() !== $location->getId()) {
             throw new AccessDeniedException('You do not have permission to assign prayer teams for launch points.');
         }
 
@@ -87,30 +108,6 @@ class PrayerTeamAssignmentsController extends AbstractController
             $this->addFlash('success', 'Assignments Added');
 
             return $this->redirectToRoute('admin');
-        }
-
-        return $this->render('admin/crud/PrayerTeamAssignments/server-assignments.html.twig', [
-            'form' => $form->createView(),
-            'launchPoint' => $location,
-        ]);
-
-        $form = $this->createForm(EventServersType::class, $event, [
-            'launchpoint_id' => $location->getId(),
-        ]);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            dd($form->getData());
-            //            $entityManager->persist($event);
-            $entityManager->flush();
-
-            // $form->getData() holds the submitted values
-            // but, the original `$task` variable has also been updated
-            $task = $form->getData();
-
-            // ... perform some action, such as saving the task to the database
-
-            return $this->redirectToRoute('task_success');
         }
 
         return $this->render('admin/crud/PrayerTeamAssignments/server-assignments.html.twig', [

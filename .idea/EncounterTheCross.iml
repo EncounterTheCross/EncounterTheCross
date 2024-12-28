@@ -11,6 +11,7 @@
       <sourceFolder url="file://$MODULE_DIR$/tests/integration" isTestSource="true" packagePrefix="App\Tests\Integration\" />
       <sourceFolder url="file://$MODULE_DIR$/tests/unit" isTestSource="true" packagePrefix="App\Tests\Unit\" />
       <sourceFolder url="file://$MODULE_DIR$/tools/ReleaseManager/src" isTestSource="false" packagePrefix="App\Tools\MageTools\" />
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/expression-language" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-intl-grapheme" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/var-exporter" />

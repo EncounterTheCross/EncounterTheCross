@@ -69,13 +69,19 @@ class MainDashboardController extends AbstractDashboardController
             ->setPermission('ROLE_DATA_EDITOR_OVERWRITE')
         ;
 
-        yield MenuItem::section('Prayer Teams');
+        yield MenuItem::section('Prayer Teams')
+            ->setPermission('ROLE_DATA_EDITOR_OVERWRITE')
+        ;
         yield MenuItem::linkToCrud('Prayer Teams', 'fas fa-list', PrayerTeam::class)
             ->setPermission('ROLE_SUPER_ADMIN')
         ;
-        yield MenuItem::linkToRoute('Event PT Assignments', null, 'event_prayer_team_assignments');
+        yield MenuItem::linkToRoute('Event PT Assignments', null, 'event_prayer_team_assignments')
+            ->setPermission('ROLE_DATA_EDITOR_OVERWRITE')
+        ;
 
-        yield MenuItem::section('Launch Points');
+        yield MenuItem::section('Launch Points')
+            ->setPermission('ROLE_DATA_EDITOR_OVERWRITE')
+        ;
         yield MenuItem::linkToCrud(
             'Launch Points',
             'fas fa-list',
@@ -84,7 +90,9 @@ class MainDashboardController extends AbstractDashboardController
             ->setPermission('ROLE_DATA_EDITOR_OVERWRITE')
         ;
 
-        yield MenuItem::section('Testimonies');
+        yield MenuItem::section('Testimonies')
+            ->setPermission('ROLE_DATA_EDITOR_OVERWRITE')
+        ;
         yield MenuItem::linkToCrud('Testimonial', 'fas fa-list', Testimonial::class)
             ->setPermission('ROLE_TESTIMONIAL_REVIEWER');
 

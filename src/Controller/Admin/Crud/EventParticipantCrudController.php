@@ -3,11 +3,13 @@
 namespace App\Controller\Admin\Crud;
 
 use App\Contracts\ExporterContract;
+use App\Controller\Admin\Crud\Extended\HasPrayerTeamAssignmentActionTrait;
 use App\Controller\Admin\Crud\Extended\HasXlsxExporter;
 use App\Controller\Admin\Crud\Extended\ParentCrudControllerInterface;
 use App\Controller\Admin\Crud\Extended\SubCrudControllerInterface;
 use App\Controller\Admin\Crud\Extended\SubCrudTrait;
 use App\Entity\EventParticipant;
+use App\Entity\Leader;
 use App\Entity\Person;
 use App\Enum\EventParticipantStatusEnum;
 use App\Repository\EventParticipantRepository;
@@ -41,6 +43,8 @@ class EventParticipantCrudController extends AbstractCrudController implements S
 {
     use SubCrudTrait;
     use HasXlsxExporter;
+    use HasPrayerTeamAssignmentActionTrait;
+
     protected ?ExporterContract $exporter;
 
     public function __construct(
@@ -265,9 +269,37 @@ class EventParticipantCrudController extends AbstractCrudController implements S
             ->createAsGlobalAction()
         ;
 
+        $prayerTeamAssignments = Action::new('prayer_team_assignments')
+            ->createAsGlobalAction()
+            ->displayIf(function () {
+                /** @var ?Leader $user */
+                $user = $this->getUser();
+
+                if (null === $user) {
+                    return false;
+                }
+
+                if ($this->isGranted('ROLE_DATA_EDITOR_OVERWRITE')) {
+                    return true;
+                }
+
+                return null !== $user->getLaunchPoint();
+            })
+            ->linkToUrl(function (?EventParticipant $eventParticipant = null) {
+                $request = $this->getContext()->getRequest();
+
+                return $this->getAdminUrlGenerator()
+                    ->setAll($request->query->all())
+                    ->setAction('assignPrayerTeams')
+                    ->generateUrl()
+                ;
+            })
+        ;
+
         $configuredActions
             ->add(Action::INDEX, $exportAllAction)
             ->add(Action::INDEX, $exportLaunchAction)
+            ->add(Action::INDEX, $prayerTeamAssignments)
             ->add(Action::INDEX, $participantStatusDuplicate)
             ->add(Action::DETAIL, $participantStatusDuplicate)
             ->add(Action::INDEX, $participantStatusAttending)
