@@ -16,6 +16,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.14",
         "easycorp/easyadmin-bundle": "^4.6",
+        "endroid/qr-code-bundle": "^5.0",
         "guzzlehttp/psr7": "^2.6",
         "knplabs/knp-menu-bundle": "^3.2",
         "league/html-to-markdown": "^5.1",
@@ -71,7 +72,8 @@
         "allow-plugins": {
             "symfony/flex": true,
             "symfony/runtime": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "endroid/installer": true
         },
         "sort-packages": true
     },

@@ -61,7 +61,17 @@ parameters:
 			path: src/Repository/EventParticipantRepository.php
 
 		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: src/Repository/EventParticipantRepository.php
+
+		-
 			message: "#^Call to static method getRowPointerFromBase32\\(\\) on an unknown class UuidFactory\\.$#"
+			count: 1
+			path: src/Repository/EventRepository.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: src/Repository/EventRepository.php
 

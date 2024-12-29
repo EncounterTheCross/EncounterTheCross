@@ -8,5 +8,5 @@ actor: AcceptanceTester
 modules:
     enabled:
         - PhpBrowser:
-            url: https://www.encounterthecross.wip
+            url: https://www.encounterthecross.test
         - \App\Tests\Helper\Acceptance
