@@ -62,7 +62,7 @@ final class EventFactory extends ModelFactory
             'updatedAt' => self::faker()->dateTime(),
             'launchPoints' => LocationFactory::allLaunchPoints(),
             'price' => self::faker()->randomFloat(2),
-            'active' => self::faker()->boolean(),
+            'active' => true,
             'registrationOpen' => true,
         ];
     }
