@@ -59,6 +59,9 @@ class Event
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?DateTimeInterface $prayerTeamAssignmentsDeadline = null;
 
+    #[ORM\Column(length: 255, nullable: false)]
+    private ?string $checkInToken = null;
+
     public function __construct()
     {
         $this->launchPoints = new ArrayCollection();
@@ -318,6 +321,18 @@ class Event
     public function setPrayerTeamAssignmentsDeadline(?DateTimeInterface $prayerTeamAssignmentsDeadline): static
     {
         $this->prayerTeamAssignmentsDeadline = $prayerTeamAssignmentsDeadline;
+
+        return $this;
+    }
+
+    public function getCheckInToken(): ?string
+    {
+        return $this->checkInToken;
+    }
+
+    public function setCheckInToken(?string $checkInToken): static
+    {
+        $this->checkInToken = $checkInToken;
 
         return $this;
     }

@@ -9,6 +9,7 @@ use App\Controller\Admin\Crud\Field\Field;
 use App\Entity\Event;
 use App\Entity\Location;
 use App\Enum\EventParticipantStatusEnum;
+use App\Field\QrField;
 use App\Repository\LocationRepository;
 use App\Service\Exporter\XlsExporter;
 use DateTime;
@@ -53,6 +54,8 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
         array_map(function (Location $launchPoint) use ($entity) {
             $entity->addLaunchPoint($launchPoint);
         }, $this->locationRepository->getAllActiveLaunchPoints());
+
+        $entity->setCheckInToken(bin2hex(random_bytes(32)));
 
         return $entity;
     }
@@ -106,6 +109,11 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
             ->hideOnForm();
         yield Field::new('TotalAttendees')
             ->hideOnForm();
+        yield QrField::new('checkInToken')
+            ->setLabel('Check URL')
+            ->hideOnForm()
+            ->hideOnIndex()
+        ;
     }
 
     public function configureActions(Actions $actions): Actions
@@ -154,6 +162,13 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
         $registrations = Action::new('show_registrations')
             ->linkToCrudAction('redirectToShowSubCrud')
         ;
+
+        $openCheckIn = Action::new('openCheckIn', 'Check-in QR')
+            ->linkToCrudAction('openCheckInPage')
+            ->addCssClass('btn btn-primary')
+            ->displayIf(static function ($entity) {
+                return $entity->isActive();
+            });
 
         return parent::configureActions($actions)
             ->add(Crud::PAGE_INDEX, $exportByLaunchAction)
