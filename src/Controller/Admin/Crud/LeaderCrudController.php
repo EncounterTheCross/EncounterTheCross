@@ -49,6 +49,8 @@ class LeaderCrudController extends AbstractCrudController
             ->onlyOnForms()
             ->hideWhenUpdating()
         ;
+        yield AssociationField::new('launchPoint', 'Launch Point')
+            ->hideOnForm();
         yield DateField::new('updatedAt')
             ->hideOnForm();
         yield DateField::new('createdAt')

@@ -28,8 +28,8 @@ class AppFixtures extends Fixture
 
         // Make the Events
         EventFactory::createOne([
-            'start' => (new DateTime())->setTimestamp(strtotime('-1 day')),
-            'end' => (new DateTime())->setTimestamp(strtotime('+1 day')),
+            'start' => (new DateTime())->setTimestamp(strtotime('+1 day')),
+            'end' => (new DateTime())->setTimestamp(strtotime('+3 day')),
             //            'end' => new DateTime(),
         ]);
 

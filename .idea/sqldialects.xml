@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/../EncounterDatabaseBackup/Production__Encounter-avbapt_encounterdb_prod2023-2024_12_28_11_45_16-dump.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../EncounterDatabaseBackup/Production__Encounter-avbapt_encounterdb_prod2023-2024_12_28_11_52_16-dump.sql" dialect="MySQL" />
+  </component>
+</project>

@@ -4,7 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Event;
 use App\Repository\Traits\UuidFinderTrait;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -49,6 +51,24 @@ class EventRepository extends ServiceEntityRepository
      */
     public function findUpcomingEvent()
     {
+        $qb = $this->findAllUpcomingEventsInOrderQueryBuilder();
+
+        $qb->setMaxResults(1);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    public function findAllUpcomingEventsInOrder()
+    {
+        $qb = $this->findAllUpcomingEventsInOrderQueryBuilder();
+        dump(new DateTime());
+        dd($qb->getQuery()->getResult());
+
+        return $qb->getQuery()->getResult();
+    }
+
+    protected function findAllUpcomingEventsInOrderQueryBuilder(): QueryBuilder
+    {
         $qb = $this->createQueryBuilder('e');
 
         $qb
@@ -61,9 +81,8 @@ class EventRepository extends ServiceEntityRepository
             )
             ->setParameter('today', date('Y-m-d H:i:s', strtotime('tomorrow') - 1))
             ->orderBy('e.start', 'ASC')
-            ->setMaxResults(1)
         ;
 
-        return $qb->getQuery()->getOneOrNullResult();
+        return $qb;
     }
 }
