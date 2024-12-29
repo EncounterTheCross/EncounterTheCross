@@ -71,6 +71,7 @@ class EventRegistrationVoter extends Voter
                 if (new DateTime() < $subject->getStart() && !$subject->isRegistrationOpen()) {
                     // TODO: send redirect to new registration with message that registration has filled up.
                     //       display the date the next event registration will open.
+                    $this->getFlashBag()->add('error', 'This event has had a major increase in registration. To make sure all are able to attend please reach us via email or try again later.');
 
                     return false;
                 }

@@ -11,6 +11,8 @@ use App\Entity\Location;
 use App\Enum\EventParticipantStatusEnum;
 use App\Repository\LocationRepository;
 use App\Service\Exporter\XlsExporter;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -20,8 +22,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use LogicException;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class EventCrudController extends AbstractCrudController implements ParentCrudControllerInterface
@@ -89,6 +93,9 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
         yield DateField::new('end')
             ->onlyOnForms();
         yield DateField::new('registrationDeadLineServers');
+        yield DateField::new('prayerTeamAssignmentsDeadline')
+            ->setHelp('Once this is set, Launch Leaders can start assigning Servers to teams.')
+        ;
         yield $location;
 
         yield $launchPoints;
@@ -114,6 +121,36 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
             ->linkToCrudAction('exportAll')
         ;
 
+        $closeRegistration = Action::new('close_registration')
+            ->linkToCrudAction('toggleRegistration')
+            ->displayIf(function (Event $event) {
+                if (!$this->isGranted('ROLE_DATA_EDITOR_OVERWRITE')) {
+                    return false;
+                }
+
+                if (!$event->isRegistrationOpen()) {
+                    return false;
+                }
+
+                return new DateTime() < $event->getStart();
+            })
+        ;
+
+        $openRegistration = Action::new('open_registration')
+            ->linkToCrudAction('toggleRegistration')
+            ->displayIf(function (Event $event) {
+                if (!$this->isGranted('ROLE_DATA_EDITOR_OVERWRITE')) {
+                    return false;
+                }
+
+                if ($event->isRegistrationOpen()) {
+                    return false;
+                }
+
+                return new DateTime() < $event->getStart();
+            })
+        ;
+
         $registrations = Action::new('show_registrations')
             ->linkToCrudAction('redirectToShowSubCrud')
         ;
@@ -123,12 +160,34 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
             ->add(Crud::PAGE_INDEX, $exportAllAction)
             ->add(Crud::PAGE_INDEX, $registrations)
             ->add(Crud::PAGE_DETAIL, $registrations)
+            ->add(Crud::PAGE_INDEX, $closeRegistration)
+            ->add(Crud::PAGE_INDEX, $openRegistration)
             ->disable(Action::DELETE, Action::BATCH_DELETE)
             ->setPermissions([
                 Action::EDIT => 'ROLE_DATA_EDITOR_OVERWRITE',
                 Action::NEW => 'ROLE_DATA_EDITOR_OVERWRITE',
             ])
         ;
+    }
+
+    public function toggleRegistration(AdminContext $adminContext, EntityManagerInterface $entityManager, AdminUrlGenerator $urlGenerator): RedirectResponse
+    {
+        $event = $adminContext->getEntity()->getInstance();
+
+        if (!$event instanceof Event) {
+            throw new LogicException(sprintf('Trying to edit something other than an Event!'));
+        }
+
+        $event->setRegistrationOpen(!$event->isRegistrationOpen());
+        $entityManager->persist($event);
+        $entityManager->flush();
+
+        $this->addFlash('success', sprintf(
+            'Registration has been %s.',
+            $event->isRegistrationOpen() ? 'opened' : 'closed'
+        ));
+
+        return $this->redirect($urlGenerator->setAction(Action::INDEX)->generateUrl());
     }
 
     public function exportAll(AdminContext $adminContext, XlsExporter $exporter): StreamedResponse

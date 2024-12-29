@@ -8,6 +8,7 @@ use App\Controller\Admin\Crud\Extended\HasXlsxExporter;
 use App\Controller\Admin\Crud\Extended\ParentCrudControllerInterface;
 use App\Controller\Admin\Crud\Extended\SubCrudControllerInterface;
 use App\Controller\Admin\Crud\Extended\SubCrudTrait;
+use App\Entity\Event;
 use App\Entity\EventParticipant;
 use App\Entity\Leader;
 use App\Entity\Person;
@@ -277,6 +278,18 @@ class EventParticipantCrudController extends AbstractCrudController implements S
 
                 if (null === $user) {
                     return false;
+                }
+
+                $parentEventId = $this->getAdminUrlGenerator()->get(ParentCrudControllerInterface::PARENT_ID);
+                if (null !== $parentEventId) {
+                    $repository = $this->container->get('doctrine')->getRepository(Event::class);
+
+                    /** @var Event $parentEvent */
+                    $parentEvent = $repository->findOneBy(['id' => $parentEventId]);
+
+                    if (null === $parentEvent->getPrayerTeamAssignmentsDeadline()) {
+                        return false;
+                    }
                 }
 
                 if ($this->isGranted('ROLE_DATA_EDITOR_OVERWRITE')) {

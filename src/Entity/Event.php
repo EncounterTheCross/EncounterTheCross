@@ -56,6 +56,9 @@ class Event
     #[ORM\Column]
     private ?bool $registrationOpen = null;
 
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $prayerTeamAssignmentsDeadline = null;
+
     public function __construct()
     {
         $this->launchPoints = new ArrayCollection();
@@ -303,6 +306,18 @@ class Event
     public function setRegistrationOpen(bool $registrationOpen): static
     {
         $this->registrationOpen = $registrationOpen;
+
+        return $this;
+    }
+
+    public function getPrayerTeamAssignmentsDeadline(): ?DateTimeInterface
+    {
+        return $this->prayerTeamAssignmentsDeadline;
+    }
+
+    public function setPrayerTeamAssignmentsDeadline(?DateTimeInterface $prayerTeamAssignmentsDeadline): static
+    {
+        $this->prayerTeamAssignmentsDeadline = $prayerTeamAssignmentsDeadline;
 
         return $this;
     }
