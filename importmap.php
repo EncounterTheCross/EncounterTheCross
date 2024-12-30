@@ -12,21 +12,25 @@
  * The "importmap:require" command can be used to add new entries to this file.
  */
 return [
-    'app' => [
+    'tailwind_app' => [
         'path' => './assets/tailwind/app.js',
+        'entrypoint' => true,
+    ],
+    'app' => [
+        'path' => './assets/js/app.js',
         'entrypoint' => true,
     ],
     '@symfony/stimulus-bundle' => [
         'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
+    ],
+    '@symfony/ux-live-component' => [
+        'path' => './vendor/symfony/ux-live-component/assets/dist/live_controller.js',
     ],
     '@hotwired/stimulus' => [
         'version' => '3.2.2',
     ],
     '@hotwired/turbo' => [
         'version' => '8.0.12',
-    ],
-    '@symfony/ux-live-component' => [
-        'path' => './vendor/symfony/ux-live-component/assets/dist/live_controller.js',
     ],
     'bootstrap' => [
         'version' => '5.3.3',
@@ -64,7 +68,7 @@ return [
         'version' => '4.0.1',
     ],
     'color-parse' => [
-        'version' => '2.0.0',
+        'version' => '2.0.2',
     ],
     'color-space/hsl.js' => [
         'version' => '2.0.1',
@@ -73,7 +77,7 @@ return [
         'version' => '3.0.0',
     ],
     'color-name' => [
-        'version' => '1.1.4',
+        'version' => '2.0.0',
     ],
     'countdown-tmr' => [
         'version' => '1.0.0',
