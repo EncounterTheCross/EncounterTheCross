@@ -23,7 +23,7 @@ jobs:
                   extensions: ${{ env.extensions }}
                   key: extensions-${{ hashFiles('composer.lock') }}
             - name: Cache extensions
-              uses: actions/cache@v3
+              uses: actions/cache@v4
               with:
                   path: ${{ steps.extcache.outputs.dir }}
                   key: ${{ steps.extcache.outputs.key }}
@@ -37,7 +37,7 @@ jobs:
                   tools: cs2pr
 
             - name: Cache composer dependencies
-              uses: actions/cache@v3
+              uses: actions/cache@v4
               with:
                   path: vendor
                   key: composer-${{ hashFiles('composer.lock') }}
