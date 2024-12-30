@@ -110,7 +110,7 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
         yield Field::new('TotalAttendees')
             ->hideOnForm();
         yield QrField::new('checkInToken')
-            ->setLabel('Check URL')
+            ->setLabel('Check In URL')
             ->hideOnForm()
             ->hideOnIndex()
         ;

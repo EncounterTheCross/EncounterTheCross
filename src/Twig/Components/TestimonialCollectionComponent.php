@@ -12,7 +12,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 
-#[AsTwigComponent()]
+#[AsTwigComponent('TestimonialCollectionComponent')]
 final class TestimonialCollectionComponent
 {
     use GridConfigurationTrait;

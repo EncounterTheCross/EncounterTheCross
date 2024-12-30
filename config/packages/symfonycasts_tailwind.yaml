@@ -1,0 +1,3 @@
+symfonycasts_tailwind:
+  input_css:
+    - 'assets/tailwind/styles/app.css'

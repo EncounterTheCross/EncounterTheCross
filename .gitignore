@@ -85,3 +85,8 @@ bin/yaml-lint
 phpstan.neon
 ###< phpstan/phpstan ###
 /tools/ReleaseManager/.idea/
+
+###> symfony/asset-mapper ###
+/public/assets/
+/assets/vendor/
+###< symfony/asset-mapper ###

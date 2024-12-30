@@ -11,6 +11,11 @@ class CheckInController extends AbstractController
     #[Route('/{token}', name: 'app_server_checkin_register')]
     public function encounterList(string $token, EventRepository $eventRepository)
     {
-        dd($eventRepository->findOneBy(['checkInToken' => $token]));
+        $event = $eventRepository->findOneBy(['checkInToken' => $token]);
+
+        //        dd($event->getLaunchPoints()->first()->getEventAttendees()->first()->getEventPrayerTeamServers());
+        return $this->render('tailwind/checkin.html.twig', [
+            'launches' => $event->getLaunchPoints(),
+        ]);
     }
 }
