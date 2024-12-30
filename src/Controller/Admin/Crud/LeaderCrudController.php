@@ -28,7 +28,7 @@ class LeaderCrudController extends AbstractCrudController
 {
     public function __construct(
         private readonly RoleListFinder $roleFinder,
-        private readonly UserPasswordHasherInterface $passwordHasher
+        private readonly UserPasswordHasherInterface $passwordHasher,
     ) {
     }
 

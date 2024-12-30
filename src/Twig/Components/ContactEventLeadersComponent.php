@@ -9,7 +9,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 final class ContactEventLeadersComponent
 {
     public function __construct(
-        private LeaderRepository $leaderRepository
+        private LeaderRepository $leaderRepository,
     ) {
     }
 

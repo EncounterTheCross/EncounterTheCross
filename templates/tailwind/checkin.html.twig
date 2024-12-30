@@ -1,143 +1,158 @@
 {% extends 'tailwind.base.html.twig' %}
 
 {% block content %}
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold text-center mb-8">Launch Control</h1>
-
-        <!-- Command Palette -->
-        <div class="fixed inset-0 flex items-start justify-center overflow-y-auto pt-8 z-50" id="commandPalette">
-            <!-- Backdrop -->
-            <div class="fixed inset-0 bg-black bg-opacity-50"></div>
-
-            <!-- Command palette container -->
-            <div class="relative w-full max-w-lg bg-white rounded-lg shadow-lg mb-8">
-                <!-- Search bar - fixed at top -->
-                <div class="sticky top-0 flex items-center border-b px-4 py-3 bg-white rounded-t-lg z-10">
-                    <svg class="mr-2 h-4 w-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-
-                    <input
-                            type="text"
-                            class="w-full bg-transparent text-sm outline-none placeholder:text-gray-500"
-                            placeholder="Search launch points or commands..."
-                    >
-
-                    <kbd class="ml-2 rounded bg-gray-100 px-2 py-1 text-xs text-gray-500">
-                        esc
-                    </kbd>
-                </div>
-
-                <!-- Command list -->
-                <div class="divide-y divide-gray-100">
-                    {% for launch in launches %}
-                        <!-- Launch Points Group -->
-                        <div class="p-4">
-                            <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-                                {{ launch.name }}
-                            </div>
-
-                            <div class="space-y-1">
-                                <!-- Updated participant card -->
-                                {% for participant in launch.eventAttendees %}
-                                    {% if participant.type == 'server' %}
-                                        <button class="w-full flex items-center justify-between rounded-md px-3 py-3 text-left text-sm hover:bg-gray-100 group">
-                                            <!-- Left side: Person info -->
-                                            <div class="flex items-center space-x-4">
-                                                <!-- Person avatar/icon -->
-                                                <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-                                                <span class="text-gray-600 font-medium">
-                                                    {{ participant.person.initials }}
-                                                </span>
-                                                </div>
-
-                                                <!-- Person details -->
-                                                <div>
-                                                    <div class="font-medium text-gray-900">{{ participant.person.fullName }}</div>
-                                                    {% if participant.eventPrayerTeamServers|first %}
-                                                        <div class="text-xs text-gray-500 mt-0.5">
-                                                            {% set prayerTeamServer = participant.eventPrayerTeamServers|first %}
-                                                            {{ prayerTeamServer.PrayerTeam.name }}
-                                                        </div>
-                                                    {% else %}
-                                                        <span class="inline-flex items-center rounded-full bg-red-50 px-2 py-1 text-xs font-medium text-red-700">
-                                                            <svg class="mr-1 h-2 w-2 text-red-500" fill="currentColor" viewBox="0 0 8 8">
-                                                                <circle cx="4" cy="4" r="3" />
-                                                            </svg>
-                                                            Needs Team Assignment
-                                                        </span>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-
-                                            <!-- Right side: Status indicators -->
-                                            <div class="flex items-center space-x-3">
-                                                <!-- Payment status -->
-                                                <div class="flex flex-col items-end">
-                                                    {% if participant.paid %}
-                                                        <span class="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700">
-                                                        <svg class="mr-1 h-2 w-2 text-green-500" fill="currentColor" viewBox="0 0 8 8">
-                                                            <circle cx="4" cy="4" r="3" />
-                                                        </svg>
-                                                        Paid
-                                                    </span>
-                                                        <span class="text-xs text-gray-500 mt-0.5">{{ participant.paymentMethod }}</span>
-                                                    {% else %}
-                                                        <span class="inline-flex items-center rounded-full bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-700">
-                                                        <svg class="mr-1 h-2 w-2 text-yellow-500" fill="currentColor" viewBox="0 0 8 8">
-                                                            <circle cx="4" cy="4" r="3" />
-                                                        </svg>
-                                                        Pending
-                                                    </span>
-                                                    {% endif %}
-                                                </div>
-
-                                                <!-- Check-in status -->
-                                                {% if participant.checkedIn|default(false) %}
-                                                    <div class="text-green-600">
-                                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                                        </svg>
-                                                    </div>
-                                                {% else %}
-                                                    <div class="text-gray-300 group-hover:text-gray-400">
-                                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                                        </svg>
-                                                    </div>
-                                                {% endif %}
-                                            </div>
-                                        </button>
-                                    {% endif %}
-
-                                {% endfor %}
-                            </div>
-                        </div>
-                    {% endfor %}
-
-                    <!-- Quick Actions Group -->
-                    <div class="p-4">
-                        <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Quick Actions</div>
-
-                        <div class="space-y-1">
-                            <button class="w-full flex items-center justify-between rounded-md px-3 py-2 text-left text-sm hover:bg-gray-100">
-                                <div class="flex items-center">
-                                <span class="mr-2 text-gray-400">
-                                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                </span>
-                                    Configure Launch Parameters
-                                </div>
-                                <kbd class="ml-2 text-xs text-gray-400">⌘ L</kbd>
-                            </button>
-
-                            <!-- Add more quick actions -->
-                        </div>
+    <dialog
+            open
+            class="open:flex bg-gray-800 rounded-lg shadow-xl inset-0 w-full md:w-fit md:max-w-[50%] md:min-w-[50%]"
+    >
+        <div class="flex grow p-5">
+            <div class="grow overflow-auto p-1">
+                <div class="text-white space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-bold">Create new Voyage</h2>
+                        <button class="text-lg absolute top-5 right-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12"/><path d="M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                    <p class="text-gray-400">
+                        Join us on an exciting journey through the cosmos! Discover the
+                        mysteries of the universe and explore distant galaxies.
+                    </p>
+                    <div class="flex justify-end">
+                        <button
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Let's Go!
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
+    </dialog>
+
+    <div class="px-4 sm:px-6 lg:px-8 mx-auto px-4 py-8">
+        <div class="sm:flex sm:items-center">
+            <div class="sm:flex-auto">
+                <h1 class="text-lg font-semibold leading-6 text-gray-900">Server Training - Checkin</h1>
+                <p class="mt-2 text-sm text-gray-700">A list of all the registered servers grouped by launch point.</p>
+            </div>
+            <div class="relative h-auto w-48 sm:hidden md:flex">
+                <img src="{{ asset('build/images/JesusPeaking.png') }}" alt="" class="absolute h-auto w-28 -rotate-45 -right-16 -top-24">
+            </div>
+        </div>
+        <div class="mt-8 flow-root">
+            <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                    <table class="min-w-full divide-y divide-gray-300">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Name</th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Prayer Team</th>
+                            <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">Payment</th>
+{#                            <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">#}
+{#                                <span class="sr-only">Edit</span>#}
+{#                            </th>#}
+                        </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                        {% for launch in launches %}
+                            <!-- Group: Development -->
+                            <tr class="bg-gray-50">
+                                <th colspan="5" scope="colgroup" class="py-2 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                                    {{ launch.name }}
+                                </th>
+                            </tr>
+                            {% for participant in launch.eventAttendees %}
+
+                                {% if participant.type == 'server' %}
+                                    <tr>
+                                        <td class="whitespace-nowrap py-4 pl-4 pr-3 sm:pl-0">
+                                            <div class="flex items-center">
+                                                <!-- Person avatar/icon -->
+                                                <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                                                    <span class="text-gray-600 font-medium">
+                                                        {{ participant.person.initials }}
+                                                    </span>
+                                                </div>
+                                                <div class="ml-4">
+                                                    <div class="font-medium text-gray-900">{{ participant.person.fullName }}</div>
+                                                    <div class="text-gray-500">{{ participant.person.email }}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        {#                                        <td class="whitespace-nowrap px-3 py-4">#}
+                                        {#                                            <div class="text-gray-900">Front-end Developer</div>#}
+                                        {#                                            <div class="text-gray-500">Optimization</div>#}
+                                        {#                                        </td>#}
+                                        <td class="whitespace-nowrap px-3 py-4">
+                                            <!-- Check-in status -->
+                                            {% if participant.checkedIn|default(false) %}
+                                                <span class="inline-flex rounded-full px-2 text-xs font-semibold leading-5 text-green-800">
+                                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                    </svg>
+                                                    Checked In
+                                                </span>
+                                            {% else %}
+                                                <span class="inline-flex rounded-full bg-red-100 px-2 text-xs font-semibold leading-5 text-red-800">
+                                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                                    </svg>
+                                                    Not Here
+                                                </span>
+                                            {% endif %}
+
+                                        </td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                            {% if participant.eventPrayerTeamServers|first %}
+                                                <div class="text-xs text-gray-500 mt-0.5">
+                                                    {% set prayerTeamServer = participant.eventPrayerTeamServers|first %}
+                                                    {{ prayerTeamServer.PrayerTeam.name }}
+                                                </div>
+                                            {% else %}
+                                                <span class="inline-flex items-center rounded-full bg-red-50 px-2 py-1 text-xs font-medium text-red-700">
+                                                    <svg class="mr-1 h-2 w-2 text-red-500" fill="currentColor" viewBox="0 0 8 8">
+                                                        <circle cx="4" cy="4" r="3" />
+                                                    </svg>
+                                                    Needs Team Assignment
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="whitespace-nowrap px-3 py-4">
+                                            <div class="flex flex-col items-end">
+                                                {% if participant.paid %}
+                                                    <span class="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700">
+                                                            <svg class="mr-1 h-2 w-2 text-green-500" fill="currentColor" viewBox="0 0 8 8">
+                                                                <circle cx="4" cy="4" r="3" />
+                                                            </svg>
+                                                            Paid
+                                                        </span>
+                                                {% else %}
+                                                    <span class="inline-flex items-center rounded-full bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-700">
+                                                            <svg class="mr-1 h-2 w-2 text-yellow-500" fill="currentColor" viewBox="0 0 8 8">
+                                                                <circle cx="4" cy="4" r="3" />
+                                                            </svg>
+                                                            Pending
+                                                        </span>
+                                                {% endif %}
+                                                <span class="text-xs text-gray-500 mt-0.5">{{ participant.paymentMethod }}</span>
+                                            </div>
+                                        </td>
+{#                                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">#}
+{#                                            <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>#}
+{#                                        </td>#}
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
+
 
 {% endblock %}

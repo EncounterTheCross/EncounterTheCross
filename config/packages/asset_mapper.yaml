@@ -2,7 +2,9 @@ framework:
     asset_mapper:
         # The paths to make available to the asset mapper.
         paths:
-            - assets/tailwind/
+            - assets/
+        excluded_patterns:
+            - 'assets/js/*.js'
         missing_import_mode: strict
 
 when@prod:

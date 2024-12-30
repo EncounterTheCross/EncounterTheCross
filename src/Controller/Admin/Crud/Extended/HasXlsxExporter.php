@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @Author: jwamser
  *
@@ -41,7 +42,7 @@ trait HasXlsxExporter
     abstract protected function getFieldAssets(FieldCollection $fieldDtos): AssetsDto;
 
     abstract public function createIndexQueryBuilder(
-        SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters
+        SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters,
     ): QueryBuilder;
 
     protected function getExporter(): ExporterContract

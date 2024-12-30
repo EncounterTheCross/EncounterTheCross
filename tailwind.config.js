@@ -3,6 +3,8 @@ module.exports = {
   content: [
     "./assets/tailwind/**/*.js",
     "./templates/**/*.html.twig",
+    "./src/Twig/Components/**/*.php",
+    "./src/Taig/Components/**/*.php",
   ],
   theme: {
     extend: {},

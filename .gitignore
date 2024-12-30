@@ -59,13 +59,6 @@
 ###> asset example directories ###
 /horizon-ui-chakra/
 ###< asset example directories ###
-###> symfony/webpack-encore-bundle ###
-/node_modules/
-/public/build/
-npm-debug.log
-yarn-error.log
-###< symfony/webpack-encore-bundle ###
-
 .DS_Store
 
 tools/ReleaseManager/vendor/

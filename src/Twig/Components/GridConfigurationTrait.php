@@ -19,7 +19,7 @@ trait GridConfigurationTrait
     }
 
     private function setCardColumns(
-        array|int $config
+        array|int $config,
     ): void {
         if (is_int($config)) {
             $config = [

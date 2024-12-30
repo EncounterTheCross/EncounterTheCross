@@ -7,11 +7,13 @@
     {% block meta %}{% endblock %}
 
     {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+{#        <link rel="stylesheet" href="{{ asset('styles/app.css') }}">#}
     {% endblock %}
 
     {% block javascripts %}
-        {% block importmap %}{% endblock %}
+        {% block importmap %}
+            {{ importmap('app') }}
+        {% endblock %}
     {% endblock %}
 </head>
 {% block body %}
