@@ -1,16 +1,17 @@
 twig_component:
-  defaults:
-    App\Taig\Components\:
-      template_directory: components/Taig/
-      # component names will have an extra "Taig:" prefix
-      #    App\Taig\Components\Alert => Taig:Alert
-      #    App\Taig\Components\Button\Primary => Taig:Button:Primary
-      name_prefix: Taig
-    # short form: components under this namespace:
-    #    - name will be the class name that comes after the prefix
-    #        App\Twig\Components\Alert => Alert
-    #        App\Twig\Components\Button\Primary => Button:Primary
-    #    - templates will live in "components/"
-    #        Alert => templates/components/Alert.html.twig
-    #        Button:Primary => templates/components/Button/Primary.html.twig
-    App\Twig\Components\: components/
+    anonymous_template_directory: 'components/'
+    defaults:
+        App\Taig\Components\:
+            template_directory: 'components/Taig/'
+            # component names will have an extra "Taig:" prefix
+            #    App\Taig\Components\Alert => Taig:Alert
+            #    App\Taig\Components\Button\Primary => Taig:Button:Primary
+            name_prefix: Taig
+            # short form: components under this namespace:
+            #    - name will be the class name that comes after the prefix
+            #        App\Twig\Components\Alert => Alert
+            #        App\Twig\Components\Button\Primary => Button:Primary
+            #    - templates will live in "components/"
+            #        Alert => templates/components/Alert.html.twig
+            #        Button:Primary => templates/components/Button/Primary.html.twig
+        App\Twig\Components\: 'components/'
