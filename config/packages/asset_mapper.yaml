@@ -3,7 +3,6 @@ framework:
         # The paths to make available to the asset mapper.
         paths:
             - assets/
-#            - node_modules/bootstrap/scss/
         excluded_patterns:
             - '*/assets/styles/_*.scss'
             - '*/assets/styles/**/_*.scss'

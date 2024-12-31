@@ -1,8 +1,10 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
-    form_themes: ['bootstrap_5_layout.html.twig']
+    form_themes:
+        - 'bootstrap_5_layout.html.twig'
+#        - '@TalesFromADevFlowbite/form/default.html.twig'
     paths:
-        'assets/static/images': images
+#        'assets/static/images': images
         'assets/css': styles
     globals:
         ga_tracking: 'UA-xxxxx-x'

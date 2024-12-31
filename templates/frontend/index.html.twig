@@ -2,8 +2,9 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {{ encore_entry_script_tags('event-counter') }}
+{#    {{ encore_entry_script_tags('event-counter') }}#}
 {% endblock %}
+{% block importmap %}{{ importmap(['app','app_event_counter']) }}{% endblock %}
 
 {% block masthead %}
     <header class="masthead">

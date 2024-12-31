@@ -64,6 +64,7 @@ final class EventFactory extends ModelFactory
             'price' => self::faker()->randomFloat(2),
             'active' => true,
             'registrationOpen' => true,
+            'checkInToken' => bin2hex(random_bytes(32)),
         ];
     }
 

@@ -20,6 +20,14 @@ return [
         'path' => './assets/js/app.js',
         'entrypoint' => true,
     ],
+    'app_event_counter' => [
+        'path' => './assets/js/EventCountDown.js',
+        'entrypoint' => true,
+    ],
+    'app_map' => [
+        'path' => './assets/js/map.js',
+        'entrypoint' => true,
+    ],
     '@symfony/stimulus-bundle' => [
         'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
     ],
