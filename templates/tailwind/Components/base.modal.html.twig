@@ -1,0 +1,2 @@
+{# This allows ajax modal requests without the full page formating #}
+{% extends app.request.headers.get('turbo-frame') == 'modal' ? 'tailwind/Components/modalFrame.html.twig' : 'tailwind.base.html.twig' %}

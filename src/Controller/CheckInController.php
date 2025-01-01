@@ -35,7 +35,7 @@ class CheckInController extends AbstractController
 
         $form = $this->createServerCheckinForm($participant);
 
-        return $this->render('tailwind/form.html.twig', [
+        return $this->render('tailwind/checkin-form.html.twig', [
             'form' => $form->createView(),
         ]);
     }

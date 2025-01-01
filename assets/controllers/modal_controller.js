@@ -4,6 +4,7 @@ export default class extends Controller {
 
     observer = null;
     connect() {
+        console.log('connect start')
         if (this.hasDynamicContentTarget) {
             // when the content changes, call this.open()
             this.observer = new MutationObserver(() => {
@@ -22,6 +23,7 @@ export default class extends Controller {
         }
     }
     disconnect() {
+        console.log('disconnect start')
         if (this.observer) {
             this.observer.disconnect();
         }
@@ -31,10 +33,13 @@ export default class extends Controller {
     }
 
     open() {
+        // console.log('try to open');
         this.dialogTarget.showModal();
+        // document.body.classList.add('overflow-hidden', 'blur-sm');
     }
 
     close() {
+        console.log(this.dialogTarget)
         if (this.hasDialogTarget) {
             this.dialogTarget.close();
         }
