@@ -296,6 +296,7 @@ class EventParticipantCrudController extends AbstractCrudController implements S
                     return true;
                 }
 
+                // dd($user);
                 return null !== $user->getLaunchPoint();
             })
             ->linkToUrl(function (?EventParticipant $eventParticipant = null) {

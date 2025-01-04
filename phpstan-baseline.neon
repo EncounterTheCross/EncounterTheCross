@@ -6,6 +6,11 @@ parameters:
 			path: src/Controller/Admin/Crud/Field/Field.php
 
 		-
+			message: "#^Call to an undefined method App\\\\Controller\\\\CheckInController\\:\\:renderComponent\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/CheckInController.php
+
+		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: src/Controller/DevelopmentController.php
@@ -14,6 +19,11 @@ parameters:
 			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: src/Entity/ContactPerson.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, App\\\\Entity\\\\EventPrayerTeamServer\\>\\:\\:matching\\(\\)\\.$#"
+			count: 1
+			path: src/Entity/EventParticipant.php
 
 		-
 			message: "#^Attribute class JetBrains\\\\PhpStorm\\\\ArrayShape does not exist\\.$#"
