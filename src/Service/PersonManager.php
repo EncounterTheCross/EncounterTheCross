@@ -8,7 +8,7 @@ use App\Repository\PersonRepository;
 class PersonManager
 {
     public function __construct(
-        private PersonRepository $personRepository
+        private PersonRepository $personRepository,
     ) {
     }
 

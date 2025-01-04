@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
     <div class="container-fluid px-4 px-lg-5">
         <a class="navbar-brand" href="{{ path('app_index') }}#page-top">
-            <img src="{{ asset('build/images/logo.png') }}" height="60" alt="Encounter the Cross Logo">
+            <img src="{{ asset('static/images/logo.png') }}" height="60" alt="Encounter the Cross Logo">
                 <span class="d-none d-md-inline">Encounter The Cross
                 {% if app.environment != 'prod' %} - <span class="text-primary">{{ app.environment|upper }}</span>{% endif %}</span>
         </a>

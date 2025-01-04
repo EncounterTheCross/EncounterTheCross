@@ -167,7 +167,7 @@ class FunctionalTester extends \Codeception\Actor
                 MainDashboardController::class,
                 LeaderCrudController::class
             ),
-            default => throw new TestRuntimeException(sprintf('No object called %s, found in an Admin page.', $objectType))
+            default => throw new TestRuntimeException(sprintf('No object called %s, found in an Admin page.', $objectType)),
         };
 
         $this->seeInCurrentUrl('crudAction=index');
@@ -253,7 +253,7 @@ class FunctionalTester extends \Codeception\Actor
                 LeaderCrudController::class,
                 $id ?? $this->findFirstEntityId()
             ),
-            default => throw new TestRuntimeException(sprintf('No object called %s, found in an Admin page.', $objectType))
+            default => throw new TestRuntimeException(sprintf('No object called %s, found in an Admin page.', $objectType)),
         };
 
         $this->seeInCurrentUrl('crudAction=detail');
@@ -377,7 +377,7 @@ class FunctionalTester extends \Codeception\Actor
             'Event Participants' => EventParticipantCrudController::class,
             'Leaders' => LeaderCrudController::class,
             'Launch Points' => LaunchPointCrudController::class,
-            default => $this->fail('Not able to identify the Entity for the CRUD.')
+            default => $this->fail('Not able to identify the Entity for the CRUD.'),
         };
 
         $this->seeInCurrentUrl($crudControllerPart.urlencode($crudControllerPartClass));
@@ -580,7 +580,7 @@ class FunctionalTester extends \Codeception\Actor
         $event = $this->entities[Event::class][0];
 
         $repoResponse = match ($entityType) {
-            'persons' => $this->grabEntitiesFromRepository(Person::class, ['email' => 'a@a.com'])
+            'persons' => $this->grabEntitiesFromRepository(Person::class, ['email' => 'a@a.com']),
         };
 
         $this->assertTrue((int) $quantity === count($repoResponse), sprintf(

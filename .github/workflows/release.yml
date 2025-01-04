@@ -52,21 +52,25 @@ jobs:
               run: |
                 export APP_ENV=prod
                 php bin/console assets:install
+                php bin/console sass:build
+                php bin/console tailwind:build -m
+                php bin/console asset-map:compile
+                
 
             #       No Private Repos are being used
             #      - name: Add HTTP basic auth credentials
             #        run: echo '${{ secrets.COMPOSER_AUTH_JSON }}' > $GITHUB_WORKSPACE/auth.json
 
-            - name: Setup NodeJS 18
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 18
-
-            - name: Install yarn
-              run: npm install -g yarn
-
-            - name: Build Yarn
-              run: yarn && yarn build
+#            - name: Setup NodeJS 18
+#              uses: actions/setup-node@v4
+#              with:
+#                  node-version: 18
+#
+#            - name: Install yarn
+#              run: npm install -g yarn
+#
+#            - name: Build Yarn
+#              run: yarn && yarn build
 
             - name: Compile the Release Manager
               run: composer install --no-interaction --no-progress --ansi --prefer-dist -d ./tools/ReleaseManager

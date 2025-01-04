@@ -8,7 +8,7 @@
         #{fade-out($black, 0.9)} 0%,
         #{fade-out($black, 0.5)} 75%,
         $black 100%),
-    url("../../static/images/bg-signup.jpg");
+    url("/static/images/bg-signup.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: scroll;

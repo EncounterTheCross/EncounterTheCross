@@ -10,6 +10,7 @@ use App\Repository\EventParticipantRepository;
 use App\Service\Exporter\EntityExportableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -321,6 +322,18 @@ class EventParticipant implements EntityExportableInterface
     public function getEventPrayerTeamServers(): Collection
     {
         return $this->eventPrayerTeamServers;
+    }
+
+    public function getCurrentEventPrayerTeamServer(): ?EventPrayerTeamServer
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('event', $this->event));
+
+        if (count($this->eventPrayerTeamServers) <= 0) {
+            return null;
+        }
+
+        return $this->eventPrayerTeamServers->matching($criteria)->first();
     }
 
     public function addEventPrayerTeamServer(EventPrayerTeamServer $eventPrayerTeamServer): static

@@ -23,7 +23,7 @@ class XlsExporter implements ExporterContract
     public const EXPORT_ALL_SORTED = 'EventReportByLaunchPoint';
 
     public function __construct(
-        private readonly Factory $spreadsheetFactory
+        private readonly Factory $spreadsheetFactory,
     ) {
     }
 
@@ -120,7 +120,7 @@ class XlsExporter implements ExporterContract
         $type = IOFactory::WRITER_XLSX,
         $status = 200,
         $headers = [],
-        $writerOptions = []
+        $writerOptions = [],
     ): StreamedResponse {
         $dispositionHeader = HeaderUtils::makeDisposition(
             HeaderUtils::DISPOSITION_ATTACHMENT,

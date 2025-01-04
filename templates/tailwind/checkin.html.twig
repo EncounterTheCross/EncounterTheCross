@@ -1,0 +1,44 @@
+{% extends 'tailwind.base.html.twig' %}
+
+{% block content %}
+    <div class="px-4 sm:px-6 lg:px-8 mx-auto px-4 py-8">
+        <div class="sm:flex sm:items-center  overflow-hidden">
+            <div class="sm:flex-auto mb-3">
+                <h1 class="text-lg font-semibold leading-6 text-gray-900">Server Training - Checkin</h1>
+                <p class="mt-2 text-sm text-gray-700">A list of all the registered servers grouped by launch point.</p>
+            </div>
+            <div class="fixed right-[-7rem] h-auto w-48 sm:hidden md:flex">
+                <img src="{{ asset('static/images/JesusPeaking.png') }}" alt="" class="relative h-auto w-28 -rotate-[30deg]">
+            </div>
+        </div>
+        <!-- Header Row -->
+        <div class="grid grid-cols-4 gap-4 py-3 border-b border-gray-200 text-sm font-medium text-gray-500">
+            <div>Name</div>
+            <div>Status</div>
+            <div>Prayer Team</div>
+            <div>Payment</div>
+        </div>
+
+
+        <div class="py-3 border-b border-gray-200">
+            {% for launch in launches %}
+                <!-- Group: Launch Point -->
+                <div class="px-4 py-2 font-medium mb-2 bg-gray-200"> {{ launch.name }}</div>
+
+                {% for participant in launch.eventAttendees %}
+                    {% if participant.type == 'server' and participant.event.id == event.id %}
+                        <twig:Taig:ServerRegistrationDetailRow
+                                :participant="participant"
+                                key="{{ participant.id }}"
+                        />
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+
+
+
+    </div>
+
+
+{% endblock %}

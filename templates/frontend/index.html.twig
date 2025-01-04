@@ -2,8 +2,9 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {{ encore_entry_script_tags('event-counter') }}
+{#    {{ encore_entry_script_tags('event-counter') }}#}
 {% endblock %}
+{% block importmap %}{{ importmap(['app','app_event_counter']) }}{% endblock %}
 
 {% block masthead %}
     <header class="masthead">
@@ -118,7 +119,7 @@
 
             </div>
 
-            <img class="img-fluid" src="{{ asset('build/images/HillCross.png') }}"  alt="Cross on a hill" />
+            <img class="img-fluid" src="{{ asset('static/images/HillCross.png') }}"  alt="Cross on a hill" />
         </div>
     </section>
 {% endblock %}

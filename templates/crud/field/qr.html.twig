@@ -1,0 +1,23 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{# NOTE: the rel="noopener" attr is needed to avoid performance and security issues
+  (see https://web.dev/external-anchors-use-rel-noopener/) #}
+{% if ea.crud.currentAction == 'detail' %}
+{#    <a target="_blank" rel="noopener" href="{{ field.value }}">{{ field.value }}</a>#}
+    {% if field.value is not empty %}
+        <a href="{{ absolute_url(path('app_server_checkin_register',{token: field.value})) }}" class="ea-lightbox-thumbnail">
+            <img src="{{ qr_code_path(
+                absolute_url(path('app_server_checkin_register',{token: field.value}))
+            ) }}" class="img-fluid">
+        </a>
+    {% else %}
+        <div>
+            QR Code unable to be generated..
+        </div>
+    {% endif %}
+
+{% else %}
+{#    <a target="_blank" rel="noopener" href="{{ field.value }}">{{ field.formattedValue }}</a>#}
+    <div>WORK IN PROGRESS</div>
+{% endif %}

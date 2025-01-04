@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @Author: jwamser
  *
@@ -27,7 +28,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class LaunchPointCrudController extends LocationCrudController
 {
     public function __construct(
-        private readonly HttpClientInterface $httpClient
+        private readonly HttpClientInterface $httpClient,
     ) {
     }
 

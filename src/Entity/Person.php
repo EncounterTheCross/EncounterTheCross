@@ -150,6 +150,17 @@ class Person
         return $this->getFirstName().' '.$this->getLastName();
     }
 
+    public function getInitials(): string
+    {
+        $firstName = $this->getFirstName();
+        $lastName = $this->getLastName();
+
+        return strtoupper(
+            substr($firstName, 0, 1).
+            substr($lastName, 0, 1)
+        );
+    }
+
     public function __toString(): string
     {
         return $this->getFirstName().' '.$this->getLastName();

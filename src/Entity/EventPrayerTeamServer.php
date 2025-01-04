@@ -26,12 +26,15 @@ class EventPrayerTeamServer
     private ?Event $event = null;
 
     #[ORM\ManyToOne(inversedBy: 'eventPrayerTeamServers')]
-    #[ORM\JoinColumn(nullable: false, )]
+    #[ORM\JoinColumn(nullable: true, )]
     private ?PrayerTeam $PrayerTeam = null;
 
     #[ORM\ManyToOne(inversedBy: 'eventPrayerTeamServers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?EventParticipant $EventParticipant = null;
+
+    #[ORM\Column]
+    private bool $checkedIn = false;
 
     public function getEvent(): ?Event
     {
@@ -65,6 +68,18 @@ class EventPrayerTeamServer
     public function setEventParticipant(?EventParticipant $EventParticipant): static
     {
         $this->EventParticipant = $EventParticipant;
+
+        return $this;
+    }
+
+    public function isCheckedIn(): ?bool
+    {
+        return $this->checkedIn;
+    }
+
+    public function setCheckedIn(bool $checkedIn): static
+    {
+        $this->checkedIn = $checkedIn;
 
         return $this;
     }
