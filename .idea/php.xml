@@ -175,7 +175,6 @@
       <path value="$PROJECT_DIR$/vendor/symfony/notifier" />
       <path value="$PROJECT_DIR$/vendor/myclabs/deep-copy" />
       <path value="$PROJECT_DIR$/vendor/symfony/ux-turbo" />
-      <path value="$PROJECT_DIR$/vendor/pagerfanta/pagerfanta" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-icu" />
       <path value="$PROJECT_DIR$/vendor/symfony/string" />
       <path value="$PROJECT_DIR$/vendor/symfony/twig-bridge" />
@@ -276,6 +275,36 @@
       <path value="$PROJECT_DIR$/vendor/tales-from-a-dev/flowbite-bundle" />
       <path value="$PROJECT_DIR$/vendor/tales-from-a-dev/twig-tailwind-extra" />
       <path value="$PROJECT_DIR$/vendor/gehrisandro/tailwind-merge-php" />
+      <path value="$PROJECT_DIR$/vendor/friendsofsymfony/http-cache-bundle" />
+      <path value="$PROJECT_DIR$/vendor/friendsofsymfony/http-cache" />
+      <path value="$PROJECT_DIR$/vendor/netgen/content-browser" />
+      <path value="$PROJECT_DIR$/vendor/sensio/framework-extra-bundle" />
+      <path value="$PROJECT_DIR$/vendor/emodric/twig-package-versions" />
+      <path value="$PROJECT_DIR$/vendor/jean85/pretty-package-versions" />
+      <path value="$PROJECT_DIR$/vendor/netgen/content-browser-ui" />
+      <path value="$PROJECT_DIR$/vendor/clue/stream-filter" />
+      <path value="$PROJECT_DIR$/vendor/phplang/scope-exit" />
+      <path value="$PROJECT_DIR$/vendor/xemlock/htmlpurifier-html5" />
+      <path value="$PROJECT_DIR$/vendor/swaggest/json-schema" />
+      <path value="$PROJECT_DIR$/vendor/swaggest/json-diff" />
+      <path value="$PROJECT_DIR$/vendor/php-http/message-factory" />
+      <path value="$PROJECT_DIR$/vendor/php-http/promise" />
+      <path value="$PROJECT_DIR$/vendor/php-http/client-common" />
+      <path value="$PROJECT_DIR$/vendor/php-http/message" />
+      <path value="$PROJECT_DIR$/vendor/php-http/discovery" />
+      <path value="$PROJECT_DIR$/vendor/php-http/httplug" />
+      <path value="$PROJECT_DIR$/vendor/brick/math" />
+      <path value="$PROJECT_DIR$/vendor/ramsey/collection" />
+      <path value="$PROJECT_DIR$/vendor/ramsey/uuid" />
+      <path value="$PROJECT_DIR$/vendor/nikolaposa/version" />
+      <path value="$PROJECT_DIR$/vendor/netgen/layouts-standard" />
+      <path value="$PROJECT_DIR$/vendor/netgen/layouts-core" />
+      <path value="$PROJECT_DIR$/vendor/erusev/parsedown" />
+      <path value="$PROJECT_DIR$/vendor/beberlei/assert" />
+      <path value="$PROJECT_DIR$/vendor/netgen/layouts-ui" />
+      <path value="$PROJECT_DIR$/vendor/symfony/webpack-encore-bundle" />
+      <path value="$PROJECT_DIR$/vendor/pagerfanta/doctrine-orm-adapter" />
+      <path value="$PROJECT_DIR$/vendor/pagerfanta/core" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1">
