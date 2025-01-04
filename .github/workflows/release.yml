@@ -55,6 +55,7 @@ jobs:
               run: |
                 export APP_ENV=prod
                 php bin/console assets:install
+                php bin/console importmap:install
                 php bin/console sass:build
                 php bin/console tailwind:build -m
                 php bin/console asset-map:compile
