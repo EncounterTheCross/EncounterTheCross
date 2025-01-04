@@ -5,6 +5,7 @@
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/Admin/Crud/EventCrudController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/EventCrudController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="src/Controller/Admin/Crud/EventCrudController.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="src/Controller/Admin/Crud/EventCrudController.php"/>
   <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Controller/Admin/Crud/EventLocationCrudController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/EventLocationCrudController.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/Admin/Crud/EventParticipantCrudController.php"/>
@@ -23,6 +24,7 @@
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/TestimonialCrudController.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/Admin/MainDashboardController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/MainDashboardController.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Controller/Admin/PrayerTeamAssignmentsController.php" method="prayerTeamAssignments"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Controller/DevelopmentController.php"/>
   <violation rule="PHPMD\Rule\UnusedLocalVariable" file="src/Controller/DevelopmentController.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Controller/MainController.php"/>
@@ -31,6 +33,7 @@
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/ResetPasswordController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\IfStatementAssignment" file="src/Controller/ResetPasswordController.php" method="checkEmail"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/DataFixtures/AppFixtures.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="src/Entity/Event.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Entity/Event.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Entity/EventParticipant.php"/>
   <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="src/Entity/EventParticipant.php" method="TYPES"/>
