@@ -26,7 +26,7 @@ class EventPrayerTeamServer
     private ?Event $event = null;
 
     #[ORM\ManyToOne(inversedBy: 'eventPrayerTeamServers')]
-    #[ORM\JoinColumn(nullable: false, )]
+    #[ORM\JoinColumn(nullable: true, )]
     private ?PrayerTeam $PrayerTeam = null;
 
     #[ORM\ManyToOne(inversedBy: 'eventPrayerTeamServers')]

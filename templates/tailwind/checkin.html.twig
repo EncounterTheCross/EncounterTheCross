@@ -2,134 +2,41 @@
 
 {% block content %}
     <div class="px-4 sm:px-6 lg:px-8 mx-auto px-4 py-8">
-        <div class="sm:flex sm:items-center">
-            <div class="sm:flex-auto">
+        <div class="sm:flex sm:items-center  overflow-hidden">
+            <div class="sm:flex-auto mb-3">
                 <h1 class="text-lg font-semibold leading-6 text-gray-900">Server Training - Checkin</h1>
                 <p class="mt-2 text-sm text-gray-700">A list of all the registered servers grouped by launch point.</p>
             </div>
-            <div class="relative h-auto w-48 sm:hidden md:flex">
-                <img src="{{ asset('static/images/JesusPeaking.png') }}" alt="" class="absolute h-auto w-28 -rotate-45 -right-16 -top-24">
+            <div class="fixed right-[-7rem] h-auto w-48 sm:hidden md:flex">
+                <img src="{{ asset('static/images/JesusPeaking.png') }}" alt="" class="relative h-auto w-28 -rotate-[30deg]">
             </div>
         </div>
-        <div class="mt-8 flow-root">
-            <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                    <table class="min-w-full divide-y divide-gray-300">
-                        <thead>
-                        <tr>
-                            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Name</th>
-                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
-                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Prayer Team</th>
-                            <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">Payment</th>
-                            <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
-                                <span class="sr-only">Checkin Action</span>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200">
-                        {% for launch in launches %}
-                            <!-- Group: Development -->
-                            <tr class="bg-gray-50">
-                                <th colspan="5" scope="colgroup" class="py-2 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
-                                    {{ launch.name }}
-                                </th>
-                            </tr>
-                            {% for participant in launch.eventAttendees %}
-                                {% if participant.type == 'server' and participant.event.id == event.id %}
-                                    <tr>
-                                        <td class="whitespace-nowrap py-4 pl-4 pr-3 sm:pl-0">
-                                            <div class="flex items-center">
-                                                <!-- Person avatar/icon -->
-                                                <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-                                                    <span class="text-gray-600 font-medium">
-                                                        {{ participant.person.initials }}
-                                                    </span>
-                                                </div>
-                                                <div class="ml-4">
-                                                    <div class="font-medium text-gray-900">{{ participant.person.fullName }}</div>
-                                                    <div class="text-gray-500">{{ participant.person.email }}</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        {#                                        <td class="whitespace-nowrap px-3 py-4">#}
-                                        {#                                            <div class="text-gray-900">Front-end Developer</div>#}
-                                        {#                                            <div class="text-gray-500">Optimization</div>#}
-                                        {#                                        </td>#}
-                                        <td class="whitespace-nowrap px-3 py-4">
-                                            <!-- Check-in status -->
-                                            {% if participant.eventPrayerTeamServers.CheckedIn|default(false) %}
-                                                <span class="inline-flex rounded-full px-2 text-xs font-semibold leading-5 text-green-800">
-                                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                                    </svg>
-                                                    Checked In
-                                                </span>
-                                            {% else %}
-                                                <span class="inline-flex rounded-full bg-red-100 px-2 text-xs font-semibold leading-5 text-red-800">
-                                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                                    </svg>
-                                                    Not Here
-                                                </span>
-                                            {% endif %}
-
-                                        </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                            {% if participant.eventPrayerTeamServers|first %}
-                                                <div class="text-xs text-gray-500 mt-0.5">
-                                                    {% set prayerTeamServer = participant.eventPrayerTeamServers|first %}
-                                                    {{ prayerTeamServer.PrayerTeam.name }}
-                                                </div>
-                                            {% else %}
-                                                <span class="inline-flex items-center rounded-full bg-red-50 px-2 py-1 text-xs font-medium text-red-700">
-                                                    <svg class="mr-1 h-2 w-2 text-red-500" fill="currentColor" viewBox="0 0 8 8">
-                                                        <circle cx="4" cy="4" r="3" />
-                                                    </svg>
-                                                    Needs Team Assignment
-                                                </span>
-                                            {% endif %}
-                                        </td>
-                                        <td class="whitespace-nowrap px-3 py-4">
-                                            <div class="flex flex-col items-end">
-                                                {% if participant.paid %}
-                                                    <span class="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700">
-                                                            <svg class="mr-1 h-2 w-2 text-green-500" fill="currentColor" viewBox="0 0 8 8">
-                                                                <circle cx="4" cy="4" r="3" />
-                                                            </svg>
-                                                            Paid
-                                                        </span>
-                                                {% else %}
-                                                    <span class="inline-flex items-center rounded-full bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-700">
-                                                            <svg class="mr-1 h-2 w-2 text-yellow-500" fill="currentColor" viewBox="0 0 8 8">
-                                                                <circle cx="4" cy="4" r="3" />
-                                                            </svg>
-                                                            Pending
-                                                        </span>
-                                                {% endif %}
-                                                <span class="text-xs text-gray-500 mt-0.5">{{ participant.paymentMethod }}</span>
-                                            </div>
-                                        </td>
-                                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                                            <a
-                                                    data-action="click->modal#open"
-                                                    data-turbo-frame="modal"
-                                                    href="{{ path('app_server_checkin_form', {token: app.request.attributes.get('_route_params')['token'], participant: participant.id }) }}"
-                                                    class="flex items-center space-x-1 bg-blue-500 hover:bg-blue-700 text-white text-sm font-bold px-4 rounded"
-                                            >
-                                                Checkin
-                                            </a>
-
-                                        </td>
-                                    </tr>
-                                {% endif %}
-                            {% endfor %}
-                        {% endfor %}
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <!-- Header Row -->
+        <div class="grid grid-cols-4 gap-4 py-3 border-b border-gray-200 text-sm font-medium text-gray-500">
+            <div>Name</div>
+            <div>Status</div>
+            <div>Prayer Team</div>
+            <div>Payment</div>
         </div>
+
+
+        <div class="py-3 border-b border-gray-200">
+            {% for launch in launches %}
+                <!-- Group: Launch Point -->
+                <div class="px-4 py-2 font-medium mb-2 bg-gray-200"> {{ launch.name }}</div>
+
+                {% for participant in launch.eventAttendees %}
+                    {% if participant.type == 'server' and participant.event.id == event.id %}
+                        <twig:Taig:ServerRegistrationDetailRow
+                                :participant="participant"
+                                key="{{ participant.id }}"
+                        />
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+
+
 
     </div>
 

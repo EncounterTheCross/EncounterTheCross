@@ -6,6 +6,7 @@ use App\Entity\EventParticipant;
 use App\Form\ServerTrainingCheckInType;
 use App\Repository\EventRepository;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/checkin')]
@@ -35,9 +36,16 @@ class CheckInController extends AbstractController
 
         $form = $this->createServerCheckinForm($participant);
 
-        return $this->render('tailwind/checkin-form.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        if ($form->isSubmitted() && $form->isValid()) {
+            dd($form, $form->getData());
+        }
+
+        return new Response(
+            $this->renderComponent('Taig:Modal', [
+                'participant' => $participant,
+                'isOpen' => true,
+            ])
+        );
     }
 
     private function createServerCheckinForm(?EventParticipant $participant = null): FormInterface

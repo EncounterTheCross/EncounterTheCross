@@ -1,0 +1,95 @@
+<div{{ attributes }}>
+    <!-- Antonina Tromp -->
+    <div class="grid grid-cols-4 gap-4 items-center py-2">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-sm">{{ participant.person.initials }}</div>
+            <div>
+                <div class="font-medium">{{ participant.person.fullName }}</div>
+                <div class="text-sm text-gray-500">{{ participant.person.email }}</div>
+            </div>
+        </div>
+
+            {% if participant.CurrentEventPrayerTeamServer.CheckedIn|default(false) %}
+                <div class="flex items-center text-green-600">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Checked In
+                </div>
+            {% else %}
+                <div class="flex items-center text-red-600">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                    Not Here
+                </div>
+            {% endif %}
+
+        <div>
+            {% if participant.CurrentEventPrayerTeamServer is not null and participant.CurrentEventPrayerTeamServer.PrayerTeam is not null %}
+                <div class="text-base font-medium text-gray-500 mt-0.5">
+                    {% set prayerTeamServer = participant.CurrentEventPrayerTeamServer %}
+                    {{ prayerTeamServer.PrayerTeam.name }}
+                </div>
+            {% else %}
+                <div class="flex items-center text-red-600">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                    Needs Team Assignment
+                </div>
+            {% endif %}
+        </div>
+        <div class="flex items-center justify-between">
+            <div>
+                {% if participant.paid %}
+                    <div class="text-green-600 flex items-center">
+                        <span class="w-1.5 h-1.5 bg-green-600 rounded-full mr-1"></span>
+                        Paid
+                    </div>
+
+                {% else %}
+                    <div class="text-red-600 flex items-center">
+                        <span class="w-1.5 h-1.5 bg-red-600 rounded-full mr-1"></span>
+                        Pending
+                    </div>
+                {% endif %}
+                <div class="text-xs text-gray-500">{{ participant.paymentMethod }}</div>
+
+            </div>
+            {% if participant.CurrentEventPrayerTeamServer.CheckedIn|default(false) %}
+                <button
+                        class=" px-6 py-3 text-white flex items-center space-x-1 bg-blue-400 cursor-not-allowed font-bold rounded text-sm"
+                        disabled
+                >Check In
+                </button>
+            {% else %}
+                <twig:Taig:Modal :closeButton="true"
+                >
+                    <twig:block name="trigger">
+                        <button
+
+                                class="py-3 px-6 flex items-center space-x-1 bg-blue-500 hover:bg-blue-700 text-white text-sm font-bold px-4 rounded"
+                                data-action="click->modal#open"
+                                data-participant="{{ participant }}"
+                        >Check In
+                        </button>
+                    </twig:block>
+
+                    <twig:block name="content">
+                        <twig:Taig:CheckInForm
+                                :participant="participant"
+                                key="form-{{ participant.id }}"
+                        />
+                    </twig:block>
+
+                </twig:Taig:Modal>
+            {% endif %}
+        </div>
+    </div>
+
+</div>

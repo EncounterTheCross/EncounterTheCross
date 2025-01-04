@@ -7,7 +7,6 @@
     {% block meta %}{% endblock %}
 
     {% block stylesheets %}
-{#        <link rel="stylesheet" href="{{ asset('styles/app.css') }}">#}
         {{ ux_controller_link_tags() }}
     {% endblock %}
 
@@ -25,10 +24,8 @@
             <turbo-frame
                     id="modal"
                     data-modal-target="dynamicContent"
-{#                    data-action="turbo:before-fetch-request->modal#showLoading"#}
                     class="aria-busy:opacity-50 transition-opacity"
             >
-                {#                                                    {{ include('_frameSuccessStreams.html.twig', { frame: 'modal' }) }}#}
             </turbo-frame>
         </twig:Taig:Modal>
     </body>

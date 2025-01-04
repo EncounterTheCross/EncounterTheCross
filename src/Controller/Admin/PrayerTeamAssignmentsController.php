@@ -8,6 +8,7 @@ use App\Entity\EventParticipant;
 use App\Entity\EventPrayerTeamServer;
 use App\Entity\Leader;
 use App\Entity\Location;
+use App\Enum\EventParticipantStatusEnum;
 use App\Form\LaunchPointServerPrayerTeamAssignmentsType;
 use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -82,6 +83,12 @@ class PrayerTeamAssignmentsController extends AbstractController
             }
 
             if ($participant->getLaunchPoint() !== $location) {
+                return false;
+            }
+
+            // Validate the attending status
+
+            if ($participant->getStatus() !== EventParticipantStatusEnum::ATTENDING->value) {
                 return false;
             }
 
