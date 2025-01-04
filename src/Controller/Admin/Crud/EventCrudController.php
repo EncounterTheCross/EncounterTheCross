@@ -95,8 +95,11 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
         yield DateField::new('start');
         yield DateField::new('end')
             ->onlyOnForms();
-        yield DateField::new('registrationDeadLineServers');
+        yield DateField::new('registrationDeadLineServers')
+            ->hideOnIndex()
+        ;
         yield DateField::new('prayerTeamAssignmentsDeadline')
+            ->hideOnIndex()
             ->setHelp('Once this is set, Launch Leaders can start assigning Servers to teams.')
         ;
         yield $location;
@@ -104,7 +107,9 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
         yield $launchPoints;
         yield MoneyField::new('price')
             ->setStoredAsCents(false)
-            ->setCurrency('USD');
+            ->setCurrency('USD')
+            ->hideOnIndex()
+        ;
         yield Field::new('TotalServers')
             ->hideOnForm();
         yield Field::new('TotalAttendees')
@@ -113,6 +118,7 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
             ->setLabel('Check In URL')
             ->hideOnForm()
             ->hideOnIndex()
+            ->setPermission('ROLE_DATA_EDITOR_OVERWRITE')
         ;
     }
 

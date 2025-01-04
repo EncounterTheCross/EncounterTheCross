@@ -157,36 +157,44 @@ class Event
         return $this;
     }
 
+    public function getAllAttending(): Collection
+    {
+        return $this->getEventParticipants(EventParticipantStatusEnum::ATTENDING);
+    }
+
+    public function getDrops(): Collection
+    {
+        return $this->getEventParticipants(EventParticipantStatusEnum::DROPPED);
+    }
+
+    public function getDropTotal(): float
+    {
+        return $this->getDrops()->count();
+    }
+
+    public function getAttendingTotal(): float
+    {
+        return $this->getAllAttending()->count();
+    }
+
     public function getTotalServers(): int
     {
-        $total = 0;
-        foreach ($this->getEventParticipants()->getIterator() as $server) {
-            if (
-                EventParticipant::TYPE_SERVER === $server->getType()
-                && EventParticipantStatusEnum::ATTENDING->value === $server->getStatus()
-            ) {
-                ++$total;
-            }
-        }
+        $servers = $this->getEventParticipants()->filter(function (EventParticipant $eventParticipant) {
+            return (EventParticipant::TYPE_SERVER === $eventParticipant->getType())
+                && (EventParticipantStatusEnum::ATTENDING->value === $eventParticipant->getStatus());
+        });
 
-        return $total;
+        return $servers->count();
     }
 
     public function getTotalAttendees(): int
     {
-        $total = 0;
+        $attendees = $this->getEventParticipants()->filter(function (EventParticipant $eventParticipant) {
+            return (EventParticipant::TYPE_ATTENDEE === $eventParticipant->getType())
+                && (EventParticipantStatusEnum::ATTENDING->value === $eventParticipant->getStatus());
+        });
 
-        /** @var EventParticipant $attendee */
-        foreach ($this->getEventParticipants()->getIterator() as $attendee) {
-            if (
-                EventParticipant::TYPE_ATTENDEE === $attendee->getType()
-                && EventParticipantStatusEnum::ATTENDING->value === $attendee->getStatus()
-            ) {
-                ++$total;
-            }
-        }
-
-        return $total;
+        return $attendees->count();
     }
 
     public function __toString(): string

@@ -85,4 +85,15 @@ class EventRepository extends ServiceEntityRepository
 
         return $qb;
     }
+
+    public function findLastPastEvent(): ?Event
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.start < :today')
+            ->setParameter('today', new DateTime('today'))
+            ->orderBy('e.start', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

@@ -20,6 +20,10 @@ return [
         'path' => './assets/js/app.js',
         'entrypoint' => true,
     ],
+    'ea_dashboard' => [
+        'path' => './assets/js/dashboard.js',
+        'entrypoint' => true,
+    ],
     'app_event_counter' => [
         'path' => './assets/js/EventCountDown.js',
         'entrypoint' => true,
@@ -89,5 +93,8 @@ return [
     ],
     'countdown-tmr' => [
         'version' => '1.0.0',
+    ],
+    'chart.js' => [
+        'version' => '3.9.1',
     ],
 ];

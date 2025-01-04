@@ -10,8 +10,11 @@ use App\Entity\Leader;
 use App\Entity\Location;
 use App\Entity\PrayerTeam;
 use App\Entity\Testimonial;
+use App\Repository\EventRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -19,14 +22,45 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\UX\Chartjs\Model\Chart;
 
 class MainDashboardController extends AbstractDashboardController
 {
+    public function __construct(
+        private EventRepository $eventRepository,
+        private ChartBuilderInterface $chartBuilder,
+    ) {
+    }
+
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        return $this->render('admin/page/content.html.twig');
+        $upcomingEvent = $this->eventRepository->findUpcomingEvent();
+
+        //        dd($this->eventRepository->findLastPastEvent());
+
+        $chart = $this->chartBuilder->createChart(Chart::TYPE_PIE);
+
+        $chart->setData([
+            'labels' => ['Servers', 'Attendees'],
+            'datasets' => [
+                [
+                    'data' => [
+                        $upcomingEvent->getTotalServers(),
+                        $upcomingEvent->getTotalAttendees(),
+                    ],
+                    'backgroundColor' => ['#007bff', '#dc3545'],
+                ],
+            ],
+        ]);
+        $chart->setOptions([]);
+
+        return $this->render('admin/page/mainDashboard.html.twig', [
+            'event' => $upcomingEvent,
+            'chart' => $chart,
+        ]);
 
         // Option 1. You can make your dashboard redirect to some common page of your backend
         //
@@ -48,7 +82,8 @@ class MainDashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Leaders Admin');
+            ->setTitle('Leaders Admin')
+        ;
     }
 
     public function configureMenuItems(): iterable
@@ -104,5 +139,15 @@ class MainDashboardController extends AbstractDashboardController
     {
         return parent::configureActions()
             ->add(Crud::PAGE_INDEX, Action::DETAIL);
+    }
+
+    public function configureAssets(): Assets
+    {
+        $assets = parent::configureAssets()
+            ->addAssetMapperEntry(Asset::new('ea_dashboard')->onlyOnIndex());
+
+        //        dd($assets);
+
+        return $assets;
     }
 }
