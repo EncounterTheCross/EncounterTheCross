@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use App\Entity\Traits\AddressTrait;
 use App\Entity\Traits\CoreEntityTrait;
+use App\Enum\EventParticipantStatusEnum;
 use App\Repository\LocationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Order;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use JetBrains\PhpStorm\ArrayShape;
@@ -151,6 +154,16 @@ class Location
     public function getEventAttendees(): Collection
     {
         return $this->eventAttendees;
+    }
+
+    public function getAttendingEventAttendees(): Collection
+    {
+        $criteria = Criteria::create()
+            ->orderBy(['person.firstName' => Order::Ascending]);
+
+        return $this->getEventAttendees()->filter(function (EventParticipant $eventAttendee) {
+            return $eventAttendee->getStatus() === EventParticipantStatusEnum::ATTENDING->value;
+        })->matching($criteria);
     }
 
     public function addEventAttendee(EventParticipant $eventAttendee): self

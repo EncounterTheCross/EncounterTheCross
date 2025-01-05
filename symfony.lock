@@ -380,6 +380,9 @@
             "config/packages/uid.yaml"
         ]
     },
+    "symfony/ux-chartjs": {
+        "version": "v2.22.1"
+    },
     "symfony/ux-live-component": {
         "version": "2.22",
         "recipe": {

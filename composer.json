@@ -54,6 +54,7 @@
         "symfony/translation": "6.4.*",
         "symfony/twig-bundle": "6.4.*",
         "symfony/uid": "6.4.*",
+        "symfony/ux-chartjs": "^2.22",
         "symfony/ux-live-component": "^2.22",
         "symfony/ux-turbo": "^2.10",
         "symfony/ux-twig-component": "^2.10",
