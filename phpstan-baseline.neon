@@ -1,14 +1,14 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Method App\\\\Controller\\\\Admin\\\\CheckInController\\:\\:createServerCheckinForm\\(\\) is unused\\.$#"
+			count: 1
+			path: src/Controller/Admin/CheckInController.php
+
+		-
 			message: "#^Property App\\\\Controller\\\\Admin\\\\Crud\\\\Field\\\\Field\\:\\:\\$dto is never read, only written\\.$#"
 			count: 1
 			path: src/Controller/Admin/Crud/Field/Field.php
-
-		-
-			message: "#^Call to an undefined method App\\\\Controller\\\\CheckInController\\:\\:renderComponent\\(\\)\\.$#"
-			count: 1
-			path: src/Controller/CheckInController.php
 
 		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
@@ -27,6 +27,11 @@ parameters:
 
 		-
 			message: "#^Attribute class JetBrains\\\\PhpStorm\\\\ArrayShape does not exist\\.$#"
+			count: 1
+			path: src/Entity/Location.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, App\\\\Entity\\\\EventParticipant\\>\\:\\:matching\\(\\)\\.$#"
 			count: 1
 			path: src/Entity/Location.php
 

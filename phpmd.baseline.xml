@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <phpmd-baseline>
   <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Command/CreateAdminCommand.php"/>
+  <violation rule="PHPMD\Rule\UnusedPrivateMethod" file="src/Controller/Admin/CheckInController.php" method="createServerCheckinForm"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/AbstractCrudController.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/Admin/Crud/EventCrudController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/EventCrudController.php"/>
@@ -45,6 +46,7 @@
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Entity/Leader.php"/>
   <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="src/Entity/Leader.php" method="DEFAULT_ROLES"/>
   <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="src/Entity/Location.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="src/Entity/Location.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Entity/Location.php"/>
   <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="src/Entity/Location.php" method="TYPES"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Entity/PrayerTeam.php"/>
