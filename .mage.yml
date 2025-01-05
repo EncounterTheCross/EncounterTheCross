@@ -13,7 +13,7 @@ magephp:
       tar_extract_path: tar
       user: avbapt
       from: ./
-      releases: 4
+      releases: 8
       host_path: /home3/avbapt/releases/production
       exclude:
         - ./var/cache/*
