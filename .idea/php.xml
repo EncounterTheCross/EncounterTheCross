@@ -307,6 +307,9 @@
       <path value="$PROJECT_DIR$/vendor/pagerfanta/core" />
       <path value="$PROJECT_DIR$/vendor/pagerfanta/twig" />
       <path value="$PROJECT_DIR$/vendor/symfony/ux-chartjs" />
+      <path value="$PROJECT_DIR$/vendor/symfony/psr-http-message-bridge" />
+      <path value="$PROJECT_DIR$/vendor/sentry/sentry-symfony" />
+      <path value="$PROJECT_DIR$/vendor/sentry/sentry" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1">

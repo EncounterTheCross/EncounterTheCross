@@ -11,6 +11,10 @@
     {% endblock %}
 
     {% block javascripts %}
+        <script
+                src="https://js.sentry-cdn.com/348fef7ffde4e3763d97c39c5595ccd0.min.js"
+                crossorigin="anonymous"
+        ></script>
         {% block importmap %}
             {{ importmap('tailwind_app') }}
         {% endblock %}
