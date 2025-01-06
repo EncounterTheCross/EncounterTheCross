@@ -30,10 +30,10 @@ magephp:
         - fs/copy: { from: '/home3/avbapt/releases/production/.env.local.php', to: '/home3/avbapt/releases/production/releases/%release%/.env.local.php' }
         - exec: { cmd: '/home3/avbapt/releases/production/releases/%release%/bin/console doctrine:migrations:migrate --env=prod --no-interaction', desc: 'Run Doctrine Migrations if needed.' }
         - exec: { cmd: '/home3/avbapt/releases/production/releases/%release%/bin/console assets:install --env=prod --no-interaction', desc: 'Asset Install.'}
-        - exec: { cmd: '/home3/avbapt/releases/production/releases/%release%/bin/console importmap:install --env=prod --no-interaction', desc: 'Importmap (asset-mapper) install.'}
-        - exec: { cmd: '/home3/avbapt/releases/production/releases/%release%/bin/console sass:build --env=prod --no-interaction', desc: 'sass build.'}
-        - exec: { cmd: '/home3/avbapt/releases/production/releases/%release%/bin/console tailwind:build -m --env=prod --no-interaction', desc: 'tailwind compile.'}
-        - exec: { cmd: '/home3/avbapt/releases/production/releases/%release%/bin/console asset-map:compile --env=prod --no-interaction', desc: 'Asset-mapper build.'}
+        - exec: { cmd: '/home3/avbapt/releases/production/releases/%release%/bin/console importmap:install --env=prod --no-interaction -q', desc: 'Importmap (asset-mapper) install.'}
+        - exec: { cmd: '/home3/avbapt/releases/production/releases/%release%/bin/console sass:build --env=prod --no-interaction -q', desc: 'sass build.'}
+        - exec: { cmd: '/home3/avbapt/releases/production/releases/%release%/bin/console tailwind:build -m --env=prod --no-interaction -q', desc: 'tailwind compile.'}
+        - exec: { cmd: '/home3/avbapt/releases/production/releases/%release%/bin/console asset-map:compile --env=prod --no-interaction -q', desc: 'Asset-mapper build.'}
       on-release:
         - fs/link:
             from: '/home3/avbapt/releases/production/releases/%release%/public/bundles'
