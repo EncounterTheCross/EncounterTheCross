@@ -7,6 +7,7 @@ parameters:
     tzunghaor_settings.default_collection: 'global'
     public_domain_core: '.encounterthecross.com|encounterthecross.com'
     public_domains_allowed: 'www.encounterthecross.com|encounterthecross.com'
+    app.log_path: '%env(default:kernel.logs_dir:LOG_PATH)%'
 
 services:
     # default configuration for services in *this* file
