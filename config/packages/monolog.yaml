@@ -46,17 +46,18 @@ when@prod:
                 action_level: error
                 handler: nested
                 excluded_http_codes: [404, 405]
-                buffer_size: 50 # How many messages should be saved? Prevent memory leaks
-#            nested:
-#                type: stream
-#                path: php://stderr
-#                level: debug
-#                formatter: monolog.formatter.json
+                buffer_size: 50
             nested:
                 type: rotating_file
-                path: "%kernel.logs_dir%/%kernel.environment%.log"
+                # Use absolute path
+                path: "/home3/avbapt/log/php/%kernel.environment%.log"
                 level: debug
                 max_files: 14
+                file_permission: 0664
+                filename_format: "{filename}-{date}"
+                date_format: "Y-m-d"
+                max_size: 10485760  # 10MB per file
+                formatter: monolog.formatter.json
             console:
                 type: console
                 process_psr_3_messages: false
@@ -64,4 +65,5 @@ when@prod:
             deprecation:
                 type: stream
                 channels: [deprecation]
-                path: php://stderr
+                # Use absolute path for deprecation logs too
+                path: "/home3/avbapt/log/php/deprecation.log"
