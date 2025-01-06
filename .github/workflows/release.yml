@@ -51,9 +51,14 @@ jobs:
             - name: Run composer install
               run: APP_ENV=prod composer install --no-interaction --no-progress --ansi --prefer-dist --no-dev -o --no-scripts
 
-#            - name: Install assets
-#              run: |
-#                export APP_ENV=prod
+            - name: Install assets
+              run: |
+                export APP_ENV=prod
+                php bin/console assets:install
+                php bin/console importmap:install
+                php bin/console sass:build
+                php bin/console tailwind:build -m
+                php bin/console asset-map:compile
                 
 
             #       No Private Repos are being used
