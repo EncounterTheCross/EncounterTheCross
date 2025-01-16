@@ -176,10 +176,17 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
                 return $entity->isActive();
             });
 
+        $serverAssignments = Action::new('server_assignments')
+            ->linkToRoute('event_launch_prayer_team_assignments_report', static function ($entity) {
+                //                return $entity;
+                return ['event' => $entity->getId()];
+            });
+
         return parent::configureActions($actions)
             ->add(Crud::PAGE_INDEX, $exportByLaunchAction)
             ->add(Crud::PAGE_INDEX, $exportAllAction)
             ->add(Crud::PAGE_INDEX, $registrations)
+            ->add(Crud::PAGE_INDEX, $serverAssignments)
             ->add(Crud::PAGE_DETAIL, $registrations)
             ->add(Crud::PAGE_INDEX, $closeRegistration)
             ->add(Crud::PAGE_INDEX, $openRegistration)

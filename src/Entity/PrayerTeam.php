@@ -22,9 +22,19 @@ class PrayerTeam
     #[ORM\OneToMany(mappedBy: 'PrayerTeam', targetEntity: EventPrayerTeamServer::class)]
     private Collection $eventPrayerTeamServers;
 
+    /**
+     * @var Collection<int, EventPrayerTeamServer>
+     */
+    #[ORM\OneToMany(mappedBy: 'intersessionAssignment', targetEntity: EventPrayerTeamServer::class)]
+    private Collection $leaderEventPrayerTeamServers;
+
+    #[ORM\Column]
+    private bool $requiresIntersession = false;
+
     public function __construct()
     {
         $this->eventPrayerTeamServers = new ArrayCollection();
+        $this->leaderEventPrayerTeamServers = new ArrayCollection();
     }
 
     public function getName(): ?string
@@ -72,5 +82,47 @@ class PrayerTeam
     public function __toString(): string
     {
         return $this->getName() ?? '';
+    }
+
+    /**
+     * @return Collection<int, EventPrayerTeamServer>
+     */
+    public function getLeaderEventPrayerTeamServers(): Collection
+    {
+        return $this->leaderEventPrayerTeamServers;
+    }
+
+    public function addLeaderEventPrayerTeamServer(EventPrayerTeamServer $leaderEventPrayerTeamServer): static
+    {
+        if (!$this->leaderEventPrayerTeamServers->contains($leaderEventPrayerTeamServer)) {
+            $this->leaderEventPrayerTeamServers->add($leaderEventPrayerTeamServer);
+            $leaderEventPrayerTeamServer->setIntersessionAssignment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLeaderEventPrayerTeamServer(EventPrayerTeamServer $leaderEventPrayerTeamServer): static
+    {
+        if ($this->leaderEventPrayerTeamServers->removeElement($leaderEventPrayerTeamServer)) {
+            // set the owning side to null (unless already changed)
+            if ($leaderEventPrayerTeamServer->getIntersessionAssignment() === $this) {
+                $leaderEventPrayerTeamServer->setIntersessionAssignment(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isRequiresIntersession(): ?bool
+    {
+        return $this->requiresIntersession;
+    }
+
+    public function setRequiresIntersession(bool $requiresIntersession): static
+    {
+        $this->requiresIntersession = $requiresIntersession;
+
+        return $this;
     }
 }
