@@ -36,6 +36,9 @@ class EventPrayerTeamServer
     #[ORM\Column]
     private bool $checkedIn = false;
 
+    #[ORM\ManyToOne(inversedBy: 'leaderEventPrayerTeamServers')]
+    private ?PrayerTeam $intersessionAssignment = null;
+
     public function getEvent(): ?Event
     {
         return $this->event;
@@ -80,6 +83,18 @@ class EventPrayerTeamServer
     public function setCheckedIn(bool $checkedIn): static
     {
         $this->checkedIn = $checkedIn;
+
+        return $this;
+    }
+
+    public function getIntersessionAssignment(): ?PrayerTeam
+    {
+        return $this->intersessionAssignment;
+    }
+
+    public function setIntersessionAssignment(?PrayerTeam $intersessionAssignment): static
+    {
+        $this->intersessionAssignment = $intersessionAssignment;
 
         return $this;
     }

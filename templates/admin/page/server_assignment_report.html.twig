@@ -1,0 +1,59 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_actions %}
+    {% if is_granted('ROLE_DATA_EDITOR_OVERWRITE') %}
+        {{ include('@EasyAdmin/crud/action.html.twig', {
+            action: action,
+            entity_id: entity is defined ? entity.instance.id : null,
+            entity_config: entity is defined ? entity : null
+        }, with_context = false) }}
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+        <tr>
+{#            <th>Position</th>#}
+            {% for team, members in teams %}
+                <th>{{ team }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% set maxMembers = 0 %}
+        {% for members in teams %}
+            {% set maxMembers = max(maxMembers, members|length) %}
+        {% endfor %}
+
+        {% for i in 0..(maxMembers - 1) %}
+            <tr>
+{#                <td>Position {{ i + 1 }}</td>#}
+                {% for team, members in teams %}
+                        {% if members[i] is defined %}
+                            {% set ServerName = members[i].person.fullName %}
+                            {% set ServerNameAssignment = members[i].CurrentEventPrayerTeamServer %}
+                            {% if ServerNameAssignment is not null and members[i].CurrentEventPrayerTeamServer.checkedIn  %}
+                                <td class="table-success">
+                                    {{ ServerName }}
+                                    {% if ServerNameAssignment.intersessionAssignment is not empty %}
+                                        ({{ ServerNameAssignment.intersessionAssignment }})
+                                    {% endif %}
+                                </td>
+                            {% else %}
+                                <td>
+                                    {{ ServerName }}
+                                    {% if ServerNameAssignment.intersessionAssignment is not empty %}
+                                        ({{ ServerNameAssignment.intersessionAssignment }})
+                                    {% endif %}
+                                </td>
+                            {% endif %}
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

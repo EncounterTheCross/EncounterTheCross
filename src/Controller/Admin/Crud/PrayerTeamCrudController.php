@@ -3,6 +3,7 @@
 namespace App\Controller\Admin\Crud;
 
 use App\Entity\PrayerTeam;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class PrayerTeamCrudController extends AbstractCrudController
@@ -16,6 +17,8 @@ class PrayerTeamCrudController extends AbstractCrudController
     {
         return [
             TextField::new('name'),
+            BooleanField::new('requiresIntersession')
+                ->setPermission('ROLE_DATA_EDITOR_OVERWRITE'),
         ];
     }
 }

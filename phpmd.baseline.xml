@@ -13,6 +13,7 @@
   <violation rule="PHPMD\Rule\Design\LongMethod" file="src/Controller/Admin/Crud/EventParticipantCrudController.php" method="configureActions"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/EventParticipantCrudController.php"/>
   <violation rule="PHPMD\Rule\Design\LongMethod" file="src/Controller/Admin/Crud/EventParticipantCrudController.php" method="configureFields"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Controller/Admin/Crud/EventPrayerTeamServerCrudController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/Extended/HasXlsxExporter.php"/>
   <violation rule="PHPMD\Rule\UnusedPrivateField" file="src/Controller/Admin/Crud/Field/Field.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/Admin/Crud/LaunchPointCrudController.php"/>
@@ -25,6 +26,7 @@
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/TestimonialCrudController.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/Admin/MainDashboardController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/MainDashboardController.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/Admin/PrayerTeamAssignmentsController.php"/>
   <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Controller/Admin/PrayerTeamAssignmentsController.php" method="prayerTeamAssignments"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Controller/DevelopmentController.php"/>
   <violation rule="PHPMD\Rule\UnusedLocalVariable" file="src/Controller/DevelopmentController.php"/>
@@ -40,6 +42,7 @@
   <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="src/Entity/EventParticipant.php" method="TYPES"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Entity/EventParticipant.php"/>
   <violation rule="PHPMD\Rule\Controversial\CamelCasePropertyName" file="src/Entity/EventPrayerTeamServer.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Entity/EventPrayerTeamServer.php"/>
   <violation rule="PHPMD\Rule\Controversial\CamelCaseParameterName" file="src/Entity/EventPrayerTeamServer.php" method="setPrayerTeam"/>
   <violation rule="PHPMD\Rule\Controversial\CamelCaseVariableName" file="src/Entity/EventPrayerTeamServer.php"/>
   <violation rule="PHPMD\Rule\Controversial\CamelCaseParameterName" file="src/Entity/EventPrayerTeamServer.php" method="setEventParticipant"/>

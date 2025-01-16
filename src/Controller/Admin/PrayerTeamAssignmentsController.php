@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Controller\AbstractController;
+use App\Controller\Admin\Crud\EventPrayerTeamServerCrudController;
 use App\Entity\Event;
 use App\Entity\EventParticipant;
 use App\Entity\EventPrayerTeamServer;
@@ -11,7 +12,13 @@ use App\Entity\Location;
 use App\Enum\EventParticipantStatusEnum;
 use App\Form\LaunchPointServerPrayerTeamAssignmentsType;
 use App\Repository\EventRepository;
+use App\Repository\PrayerTeamRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Order;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -120,6 +127,80 @@ class PrayerTeamAssignmentsController extends AbstractController
         return $this->render('admin/crud/PrayerTeamAssignments/server-assignments.html.twig', [
             'form' => $form->createView(),
             'launchPoint' => $location,
+        ]);
+    }
+
+    #[Route(
+        path: '/{event}',
+        name: 'event_launch_prayer_team_assignments_report',
+    )]
+    public function prayerTeamAssignmentsReport(Event $event, AdminUrlGenerator $adminUrlGenerator, PrayerTeamRepository $prayerTeamRepository)
+    {
+        if (!$this->isGranted('ROLE_LEADER')) {
+            throw new AccessDeniedException('You do not have permission to assign prayer teams for launch points.');
+        }
+
+        $criteria = Criteria::create()
+            ->orderBy([
+                'person.firstName' => Order::Ascending,
+            ]);
+
+        /** @var ArrayCollection $servers */
+        $servers = $event->getEventParticipants(EventParticipantStatusEnum::ATTENDING)->filter(function (EventParticipant $participant) {
+            return $participant->isServer();
+        });
+        $servers = $servers->matching($criteria);
+
+        $teams = [
+            'unassigned' => [],
+        ];
+
+        $servers->map(function (EventParticipant $server) use (&$teams) {
+            $assignment = $server->getCurrentEventPrayerTeamServer();
+            $teamId = 'unassigned';
+            if (null !== $assignment) {
+                $teamId = $assignment->getPrayerTeam()->getName();
+                if (!array_key_exists($teamId, $teams)) {
+                    $teams[$teamId] = [];
+                }
+            }
+
+            $teams[$teamId][] = $server;
+        });
+
+        ksort($teams);
+
+        $prayerTeam = $prayerTeamRepository->findOneBy([
+            'requiresIntersession' => true,
+        ]);
+
+        // actions
+        $leaderCrudLink = $adminUrlGenerator
+            ->setController(EventPrayerTeamServerCrudController::class)
+            ->setAction(Crud::PAGE_INDEX)
+            ->set('event', $event->getId())
+            ->set('filters', [
+                'PrayerTeam' => [
+                    'comparison' => '=',
+                    'value' => $prayerTeam->getId(),
+                ],
+                'event' => [
+                    'comparison' => '=',
+                    'value' => $event->getId(),
+                ],
+            ])
+        ;
+
+        $action = Action::new('assign_leadership_intersessions')
+            ->linkToUrl($leaderCrudLink)
+//            ->displayAsButton()
+            ->setIcon('fa fa-pencil')
+            ->getAsDto();
+        $action->setLinkUrl($leaderCrudLink); // hmm this is weird but needed
+
+        return $this->render('admin/page/server_assignment_report.html.twig', [
+            'teams' => $teams,
+            'action' => $action,
         ]);
     }
 }

@@ -6,6 +6,7 @@ use App\Controller\Admin\Crud\EventLocationCrudController;
 use App\Controller\Admin\Crud\LaunchPointCrudController;
 use App\Entity\Event;
 use App\Entity\EventParticipant;
+use App\Entity\EventPrayerTeamServer;
 use App\Entity\Leader;
 use App\Entity\Location;
 use App\Entity\PrayerTeam;
@@ -20,7 +21,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
@@ -61,22 +62,6 @@ class MainDashboardController extends AbstractDashboardController
             'event' => $upcomingEvent,
             'chart' => $chart,
         ]);
-
-        // Option 1. You can make your dashboard redirect to some common page of your backend
-        //
-        // $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-        // return $this->redirect($adminUrlGenerator->setController(OneOfYourCrudController::class)->generateUrl());
-
-        // Option 2. You can make your dashboard redirect to different pages depending on the user
-        //
-        // if ('jane' === $this->getUser()->getUsername()) {
-        //     return $this->redirect('...');
-        // }
-
-        // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
-        // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
-        //
-        // return $this->render('some/path/my-dashboard.html.twig');
     }
 
     public function configureDashboard(): Dashboard
@@ -113,6 +98,7 @@ class MainDashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('Event PT Assignments', null, 'event_prayer_team_assignments')
             ->setPermission('ROLE_DATA_EDITOR_OVERWRITE')
         ;
+        //        yield MenuItem::linkToCrud('PT Assignment Report',null, EventPrayerTeamServer::class);
 
         yield MenuItem::section('Launch Points')
             ->setPermission('ROLE_DATA_EDITOR_OVERWRITE')
