@@ -12,7 +12,7 @@
             </div>
         </div>
         <!-- Header Row -->
-        <div class="grid grid-cols-4 gap-4 py-3 border-b border-gray-200 text-sm font-medium text-gray-500">
+        <div class="grid grid-cols-4 gap-4 py-3 border-b border-gray-200 text-sm font-medium text-gray-500 sticky top-0 bg-white z-20">
             <div>Name</div>
             <div>Status</div>
             <div>Prayer Team</div>
@@ -23,7 +23,7 @@
         <div class="py-3 border-b border-gray-200">
             {% for launch in launches %}
                 <!-- Group: Launch Point -->
-                <div class="px-4 py-2 font-medium mb-2 bg-gray-200"> {{ launch.name }}</div>
+                <div class="px-4 py-2 font-medium mb-2 bg-gray-200 sticky top-14 z-10"> {{ launch.name }}</div>
 
                 {% for participant in launch.attendingEventAttendees %}
                     {% if participant.type == 'server' and participant.event.id == event.id %}
