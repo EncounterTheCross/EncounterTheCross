@@ -23,7 +23,7 @@
         <div class="py-3 border-b border-gray-200">
             {% for launch in launches %}
                 <!-- Group: Launch Point -->
-                <div class="px-4 py-2 font-medium mb-2 bg-gray-200 sticky top-14 z-10"> {{ launch.name }}</div>
+                <div class="px-4 py-2 font-bold text-2xl mb-2 bg-gray-200 sticky top-14 z-10"> {{ launch.name }}</div>
 
                 {% for participant in launch.attendingEventAttendees %}
                     {% if participant.type == 'server' and participant.event.id == event.id %}

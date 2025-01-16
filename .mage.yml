@@ -33,15 +33,15 @@ magephp:
         - fs/link:
             from: '/home3/avbapt/releases/production/releases/%release%/public/bundles'
             to: '/home3/avbapt/public_html/bundles'
-            flags: '-snf'
+            flags: '-sf'
         - fs/link:
             from: '/home3/avbapt/releases/production/releases/%release%/public/assets'
             to: '/home3/avbapt/public_html/assets'
-            flags: '-snf'
+            flags: '-sf'
         - fs/link:
             from: '/home3/avbapt/releases/production/releases/%release%/public/static'
             to: '/home3/avbapt/public_html/static'
-            flags: '-snf'
+            flags: '-sf'
       post-release:
 #      post-deploy:
     production:
