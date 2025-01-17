@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Crud;
 
 use App\Controller\Admin\Crud\Field\Field;
 use App\Entity\Event;
+use App\Entity\Leader;
 use App\Entity\Location;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -63,10 +64,22 @@ class LocationCrudController extends AbstractCrudController
             yield AssociationField::new('launchPointEvents')
                 ->autocomplete()
             ;
-            yield AssociationField::new('launchPointContacts')
+            //            yield AssociationField::new('launchPointContacts.leader', 'Launch Point')
+            //                ->setCrudController(Leader::class)
+            //                ->setFormTypeOptions([
+            //                    'multiple' => true,
+            //                    'by_reference' => false,
+            //                    'class' => Location::class,
+            //                    'choice_label' => 'name'
+            //                ]);
+            yield CollectionField::new('launchPointContacts')
+                ->useEntryCrudForm(LaunchPointContactsCrudController::class)
+//                ->setCrudController(LeaderCrudController::class)
                 ->setFormTypeOptionIfNotSet('by_reference', false)
-                ->autocomplete()
+//                ->autocomplete()
 //                ->allowMultipleChoices()
+                ->renderExpanded()
+                ->setEntryIsComplex()
             ;
             yield ColorField::new('pinColor');
         }

@@ -16,6 +16,7 @@
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Controller/Admin/Crud/EventPrayerTeamServerCrudController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/Extended/HasXlsxExporter.php"/>
   <violation rule="PHPMD\Rule\UnusedPrivateField" file="src/Controller/Admin/Crud/Field/Field.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/LaunchPointContactsCrudController.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/Admin/Crud/LaunchPointCrudController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/LaunchPointCrudController.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/Admin/Crud/LeaderCrudController.php"/>
@@ -46,6 +47,7 @@
   <violation rule="PHPMD\Rule\Controversial\CamelCaseParameterName" file="src/Entity/EventPrayerTeamServer.php" method="setPrayerTeam"/>
   <violation rule="PHPMD\Rule\Controversial\CamelCaseVariableName" file="src/Entity/EventPrayerTeamServer.php"/>
   <violation rule="PHPMD\Rule\Controversial\CamelCaseParameterName" file="src/Entity/EventPrayerTeamServer.php" method="setEventParticipant"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Entity/LaunchPointContacts.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Entity/Leader.php"/>
   <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="src/Entity/Leader.php" method="DEFAULT_ROLES"/>
   <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="src/Entity/Location.php"/>
@@ -76,7 +78,6 @@
   <violation rule="PHPMD\Rule\Naming\LongClassName" file="src/Form/ServerPrayerTeamAssignmentEmbeddedFormType.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Repository/ContactPersonRepository.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Repository/EventParticipantRepository.php"/>
-  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Repository/EventParticipantRepository.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Repository/EventRepository.php"/>
   <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Repository/EventRepository.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Repository/LeaderRepository.php"/>

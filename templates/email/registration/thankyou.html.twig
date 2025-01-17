@@ -13,7 +13,8 @@
                 <p>
                     If you have any questions about Men’s Encounter, or if a situation arises and you are unable to attend, please contact the person who invited you or reach out to the representative(s) from your Launch Point right away.  Contact information is:
                 </p>
-                {% for contact in registration.launchPoint.launchPointContacts %}
+                {% for contactJoin in registration.launchPoint.launchPointContacts %}
+                    {% set contact = contactJoin.leader %}
                     <p>{{ contact.person.fullName }}<br/>
                         {{ contact.person.phone }}<br/>
                         {{ contact.person.email }}</p>

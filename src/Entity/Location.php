@@ -42,14 +42,17 @@ class Location
     #[ORM\Column(nullable: true)]
     private ?array $geolocation = null;
 
-    #[ORM\OneToMany(mappedBy: 'launchPoint', targetEntity: Leader::class)]
-    private Collection $launchPointContacts;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $pinColor = null;
 
     #[ORM\Column()]
     private bool $active = true;
+
+    /**
+     * @var Collection<int, LaunchPointContacts>
+     */
+    #[ORM\OneToMany(mappedBy: 'launchPoint', targetEntity: LaunchPointContacts::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $launchPointContacts;
 
     public function __construct()
     {
@@ -264,7 +267,27 @@ class Location
         return $this->launchPointContacts;
     }
 
-    public function addLaunchPointContact(Leader $launchPointContact): static
+    public function getLaunchPointContactLeaders(): Collection
+    {
+        $mainLeaders = Criteria::create()
+            ->andWhere(
+                Criteria::expr()->eq('helper', false),
+            );
+
+        return $this->launchPointContacts->matching($mainLeaders);
+    }
+
+    public function getLaunchPointContactHelpers(): Collection
+    {
+        $mainLeaders = Criteria::create()
+            ->andWhere(
+                Criteria::expr()->eq('helper', true),
+            );
+
+        return $this->launchPointContacts->matching($mainLeaders);
+    }
+
+    public function addLaunchPointContact(LaunchPointContacts $launchPointContact): static
     {
         if (!$this->launchPointContacts->contains($launchPointContact)) {
             $this->launchPointContacts->add($launchPointContact);
@@ -274,7 +297,7 @@ class Location
         return $this;
     }
 
-    public function removeLaunchPointContact(Leader $launchPointContact): static
+    public function removeLaunchPointContact(LaunchPointContacts $launchPointContact): static
     {
         if ($this->launchPointContacts->removeElement($launchPointContact)) {
             // set the owning side to null (unless already changed)

@@ -32,8 +32,8 @@ class Leader implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(name: 'person_id', referencedColumnName: 'id', nullable: false)]
     private ?Person $person = null;
 
-    #[ORM\ManyToOne(inversedBy: 'launchPointContacts')]
-    private ?Location $launchPoint = null;
+    #[ORM\OneToOne(mappedBy: 'leader', cascade: ['persist', 'remove'])]
+    private ?LaunchPointContacts $launchPointContact = null;
 
     /**
      * !! KEY OVERLAP ISSUES - SET TO TRUE IF IT COULD HAPPEN !!
@@ -148,14 +148,7 @@ class Leader implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getLaunchPoint(): ?Location
     {
-        return $this->launchPoint;
-    }
-
-    public function setLaunchPoint(?Location $launchPoint): static
-    {
-        $this->launchPoint = $launchPoint;
-
-        return $this;
+        return $this->getLaunchPointContact()?->getLaunchPoint();
     }
 
     public function __toString(): string
@@ -163,5 +156,22 @@ class Leader implements UserInterface, PasswordAuthenticatedUserInterface
         $person = $this->getPerson();
 
         return $person->getFullName()." ({$this->getEmail()})";
+    }
+
+    public function getLaunchPointContact(): ?LaunchPointContacts
+    {
+        return $this->launchPointContact;
+    }
+
+    public function setLaunchPointContact(LaunchPointContacts $launchPointContact): static
+    {
+        // set the owning side of the relation if necessary
+        if ($launchPointContact->getLeader() !== $this) {
+            $launchPointContact->setLeader($this);
+        }
+
+        $this->launchPointContact = $launchPointContact;
+
+        return $this;
     }
 }

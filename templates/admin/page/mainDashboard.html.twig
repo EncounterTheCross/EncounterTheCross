@@ -13,21 +13,6 @@
                 .setAction('index')
                 .generateUrl()
             }}">Show Registrations</a>
-{#            {% if event.prayerTeamAssignmentsDeadline is not null and app.user.launchPoint is not null %}#}
-{#                <a class="btn btn-lg" href="{{ ea_url()#}
-{#                    .setController('App\\Controller\\Admin\\Crud\\EventParticipantCrudController')#}
-{#                    .set(constant('App\\Controller\\Admin\\Crud\\Extended\\ParentCrudControllerInterface::PARENT_ID'), event.id)#}
-{#                    .setAction('assignPrayerTeams')#}
-{#                    .generateUrl()#}
-{#                }}">Assign Prayer Teams</a>#}
-{#            {% elseif is_granted('ROLE_DATA_EDITOR_OVERWRITE') %}#}
-{#                <a class="btn btn-lg" href="{{ ea_url()#}
-{#                    .setController('App\\Controller\\Admin\\Crud\\EventParticipantCrudController')#}
-{#                    .set(constant('App\\Controller\\Admin\\Crud\\Extended\\ParentCrudControllerInterface::PARENT_ID'), event.id)#}
-{#                    .setAction('assignPrayerTeams')#}
-{#                    .generateUrl()#}
-{#                }}">Assign Prayer Teams</a>#}
-{#            {% endif %}#}
         </div>
     </div>
 
