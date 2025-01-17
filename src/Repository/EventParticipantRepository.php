@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\EventParticipant;
 use App\Repository\Traits\UuidFinderTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -42,22 +41,6 @@ class EventParticipantRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
-    }
-
-    public function findParticipantsForEventGroupByLaunch($eventId)
-    {
-        $qb = $this->createQueryBuilder('ep');
-        $qb->select(['ep', 'lp'])
-            ->innerJoin('ep.launchPoint', 'lp')
-            ->where('ep.event = :eventId')
-            ->andWhere('ep.type = :type')
-            ->setParameter('type', EventParticipant::TYPE_SERVER)
-            ->groupBy('lp.id')
-        ;
-        dd($qb->getQuery()->getSQL());
-        $qb->setParameter('eventId', $eventId);
-
-        return new ArrayCollection($qb->getQuery()->getResult());
     }
 
     public static function queryBuilderFilterToParentId($parentId, ?QueryBuilder $queryBuilder = null): QueryBuilder
