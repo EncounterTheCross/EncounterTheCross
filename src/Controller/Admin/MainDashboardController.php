@@ -11,7 +11,9 @@ use App\Entity\Leader;
 use App\Entity\Location;
 use App\Entity\PrayerTeam;
 use App\Entity\Testimonial;
+use App\Enum\EventParticipantStatusEnum;
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
@@ -39,24 +41,96 @@ class MainDashboardController extends AbstractDashboardController
     public function index(): Response
     {
         $upcomingEvent = $this->eventRepository->findUpcomingEvent();
+        $launchPointData = new ArrayCollection();
 
-        //        dd($this->eventRepository->findLastPastEvent());
+        $participants = $upcomingEvent->getEventParticipants(EventParticipantStatusEnum::ATTENDING);
+
+        foreach ($participants as $participant) {
+            $launchName = $participant->getLaunchPoint()->getName();
+            if (null === $launchPointData->get($launchName)) {
+                $launchPointCounter = new ArrayCollection();
+                $launchPointCounter->set('servers', new ArrayCollection());
+                $launchPointCounter->set('attendees', new ArrayCollection());
+
+                $launchPointData->set($launchName, $launchPointCounter);
+            }
+
+            if ($participant->isServer()) {
+                $launchPointData->get($launchName)->get('servers')->add($participant);
+                continue;
+            }
+
+            $launchPointData->get($launchName)->get('attendees')->add($participant);
+        }
+
+        // Prepare data for outer ring (per location)
+        $locationAttendees = array_values($launchPointData->map(function (ArrayCollection $point) {
+            return $point->get('attendees')->count();
+        })->toArray());
+
+        $locationServers = array_values($launchPointData->map(function (ArrayCollection $point) {
+            return $point->get('servers')->count();
+        })->toArray());
+
+        $locationLabels = $launchPointData->getKeys();
 
         $chart = $this->chartBuilder->createChart(Chart::TYPE_PIE);
+        $attendeesColors = [
+            'rgba(0, 136, 254, 0.8)',
+            'rgba(75, 167, 255, 0.8)',
+            'rgba(127, 193, 255, 0.8)',
+            'rgba(168, 212, 255, 0.8)',
+            'rgba(209, 232, 255, 0.8)',
+        ];
+
+        $serversColors = [
+            'rgba(0, 196, 159, 0.8)',
+            'rgba(64, 211, 180, 0.8)',
+            'rgba(112, 225, 201, 0.8)',
+            'rgba(159, 237, 221, 0.8)',
+            'rgba(207, 250, 242, 0.8)',
+        ];
+
+        $multilevel = [
+            [
+                'data' => [
+                    $upcomingEvent->getTotalAttendees(),
+                    $upcomingEvent->getTotalServers(),
+                ],
+                'backgroundColor' => [$attendeesColors[0], $serversColors[0]],
+                'labels' => ['Total Attendees', 'Total Servers'],
+                'borderWidth' => 1,
+                'weight' => 0.4,
+            ],
+            [
+                'data' => $locationAttendees,
+                'backgroundColor' => $attendeesColors,
+                'labels' => $locationLabels,
+                'borderWidth' => 1,
+                'weight' => 0.3,
+            ],
+            [
+                'data' => $locationServers,
+                'backgroundColor' => $serversColors,
+                'labels' => $locationLabels,
+                'borderWidth' => 1,
+                'weight' => 0.3,
+            ],
+        ];
 
         $chart->setData([
-            'labels' => ['Servers', 'Attendees'],
-            'datasets' => [
-                [
-                    'data' => [
-                        $upcomingEvent->getTotalServers(),
-                        $upcomingEvent->getTotalAttendees(),
-                    ],
-                    'backgroundColor' => ['#007bff', '#dc3545'],
+            //            'labels' => ['Servers', 'Attendees'],
+            'datasets' => $multilevel,
+        ]);
+        $chart->setOptions([
+            'responsive' => true,
+            'plugins' => [
+                'legend' => [
+                    'display' => true,
+                    'position' => 'bottom',
                 ],
             ],
         ]);
-        $chart->setOptions([]);
 
         return $this->render('admin/page/mainDashboard.html.twig', [
             'event' => $upcomingEvent,

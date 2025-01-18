@@ -330,4 +330,13 @@ class Location
     {
         $this->active = $active;
     }
+
+    public function getChartData(): ?array
+    {
+        return [
+            'name' => $this->getName(),
+            'attendees' => $this->getEventAttendees(),
+            'servers' => 15,
+        ];
+    }
 }
