@@ -145,7 +145,7 @@ class MainDashboardController extends AbstractDashboardController
             foreach ($info->get('servers') as $server) {
                 $assignment = $server->getCurrentEventPrayerTeamServer();
                 if (null !== $assignment) {
-                    ++$radarData[$name][$assignment->getPrayerTeam()->getName()];
+                    ++$radarData[$name][$assignment->getPrayerTeam()?->getName() ?? 'Unassigned'];
                 }
             }
         }
