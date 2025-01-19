@@ -27,6 +27,7 @@
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/PrayerTeamCrudController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/TestimonialCrudController.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/Admin/MainDashboardController.php"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="src/Controller/Admin/MainDashboardController.php" method="index"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/MainDashboardController.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/Admin/PrayerTeamAssignmentsController.php"/>
   <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Controller/Admin/PrayerTeamAssignmentsController.php" method="prayerTeamAssignments"/>

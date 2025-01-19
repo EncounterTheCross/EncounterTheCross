@@ -13,6 +13,7 @@ use App\Entity\PrayerTeam;
 use App\Entity\Testimonial;
 use App\Enum\EventParticipantStatusEnum;
 use App\Repository\EventRepository;
+use App\Repository\PrayerTeamRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -33,6 +34,7 @@ class MainDashboardController extends AbstractDashboardController
     public function __construct(
         private EventRepository $eventRepository,
         private ChartBuilderInterface $chartBuilder,
+        private PrayerTeamRepository $prayerTeamRepository,
     ) {
     }
 
@@ -41,40 +43,40 @@ class MainDashboardController extends AbstractDashboardController
     public function index(): Response
     {
         $upcomingEvent = $this->eventRepository->findUpcomingEvent();
-        $launchPointData = new ArrayCollection();
+        $launchPointDatasets = new ArrayCollection();
 
         $participants = $upcomingEvent->getEventParticipants(EventParticipantStatusEnum::ATTENDING);
 
         foreach ($participants as $participant) {
             $launchName = $participant->getLaunchPoint()->getName();
-            if (null === $launchPointData->get($launchName)) {
+            if (null === $launchPointDatasets->get($launchName)) {
                 $launchPointCounter = new ArrayCollection();
                 $launchPointCounter->set('servers', new ArrayCollection());
                 $launchPointCounter->set('attendees', new ArrayCollection());
 
-                $launchPointData->set($launchName, $launchPointCounter);
+                $launchPointDatasets->set($launchName, $launchPointCounter);
             }
 
             if ($participant->isServer()) {
-                $launchPointData->get($launchName)->get('servers')->add($participant);
+                $launchPointDatasets->get($launchName)->get('servers')->add($participant);
                 continue;
             }
 
-            $launchPointData->get($launchName)->get('attendees')->add($participant);
+            $launchPointDatasets->get($launchName)->get('attendees')->add($participant);
         }
 
         // Prepare data for outer ring (per location)
-        $locationAttendees = array_values($launchPointData->map(function (ArrayCollection $point) {
+        $locationAttendees = array_values($launchPointDatasets->map(function (ArrayCollection $point) {
             return $point->get('attendees')->count();
         })->toArray());
 
-        $locationServers = array_values($launchPointData->map(function (ArrayCollection $point) {
+        $locationServers = array_values($launchPointDatasets->map(function (ArrayCollection $point) {
             return $point->get('servers')->count();
         })->toArray());
 
-        $locationLabels = $launchPointData->getKeys();
+        $locationLabels = $launchPointDatasets->getKeys();
 
-        $chart = $this->chartBuilder->createChart(Chart::TYPE_PIE);
+        $chartPie = $this->chartBuilder->createChart(Chart::TYPE_PIE);
         $attendeesColors = [
             'rgba(0, 136, 254, 0.8)',
             'rgba(75, 167, 255, 0.8)',
@@ -82,7 +84,6 @@ class MainDashboardController extends AbstractDashboardController
             'rgba(168, 212, 255, 0.8)',
             'rgba(209, 232, 255, 0.8)',
         ];
-
         $serversColors = [
             'rgba(0, 196, 159, 0.8)',
             'rgba(64, 211, 180, 0.8)',
@@ -90,7 +91,6 @@ class MainDashboardController extends AbstractDashboardController
             'rgba(159, 237, 221, 0.8)',
             'rgba(207, 250, 242, 0.8)',
         ];
-
         $multilevel = [
             [
                 'data' => [
@@ -118,11 +118,11 @@ class MainDashboardController extends AbstractDashboardController
             ],
         ];
 
-        $chart->setData([
-            'labels' => ['Servers', 'Attendees'],
+        $chartPie->setData([
+            //            'labels' => ['Attendees', 'Servers'],
             'datasets' => $multilevel,
         ]);
-        $chart->setOptions([
+        $chartPie->setOptions([
             'responsive' => true,
             'plugins' => [
                 'legend' => [
@@ -132,9 +132,45 @@ class MainDashboardController extends AbstractDashboardController
             ],
         ]);
 
+        $prayerTeams = new ArrayCollection($this->prayerTeamRepository->findAll());
+        $prayerTeamNames = $prayerTeams->map(fn (PrayerTeam $prayerTeam) => $prayerTeam->getName());
+
+        $chartRadar = $this->chartBuilder->createChart(Chart::TYPE_RADAR);
+        $radarData = [];
+        foreach ($launchPointDatasets as $name => $info) {
+            if (!array_key_exists($name, $radarData)) {
+                $radarData[$name] = array_fill_keys($prayerTeamNames->toArray(), 0);
+            }
+            /** @var EventParticipant $server */
+            foreach ($info->get('servers') as $server) {
+                $assignment = $server->getCurrentEventPrayerTeamServer();
+                ++$radarData[$name][$assignment->getPrayerTeam()->getName()];
+            }
+        }
+        $radarChartData = [];
+        foreach ($radarData as $name => $data) {
+            $radarChartData[] = [
+                'label' => $name,
+                'data' => array_values($data),
+                'fill' => true,
+                //                'backgroundColor'=>'rgba(255, 99, 132, 0.2)',
+                //                'borderColor'=>'rgb(255, 99, 132)',
+                //                'pointBackgroundColor'=>'rgb(255, 99, 132)',
+                //                'pointBorderColor'=>'#fff',
+                //                'pointHoverBackgroundColor'=>'#fff',
+                //                'pointHoverBorderColor'=>'rgb(255, 99, 132)',
+            ];
+        }
+
+        $chartRadar->setData([
+            'labels' => array_merge($prayerTeamNames->toArray(), ['Unassigned']),
+            'datasets' => $radarChartData,
+        ]);
+
         return $this->render('admin/page/mainDashboard.html.twig', [
             'event' => $upcomingEvent,
-            'chart' => $chart,
+            'chartPie' => $chartPie,
+            'chartRadar' => $chartRadar,
         ]);
     }
 
