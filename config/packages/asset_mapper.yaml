@@ -8,7 +8,9 @@ framework:
             - '*/assets/styles/**/_*.scss'
         missing_import_mode: strict
 
+
 when@prod:
     framework:
         asset_mapper:
             missing_import_mode: warn
+

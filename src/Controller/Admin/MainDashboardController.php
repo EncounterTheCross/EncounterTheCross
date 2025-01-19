@@ -119,7 +119,7 @@ class MainDashboardController extends AbstractDashboardController
         ];
 
         $chart->setData([
-            'labels' => ['Servers', 'Attendees'],
+            'labels' => ['Attendees', 'Servers'],
             'datasets' => $multilevel,
         ]);
         $chart->setOptions([
