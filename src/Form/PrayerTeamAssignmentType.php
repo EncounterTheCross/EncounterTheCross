@@ -8,6 +8,7 @@ use App\Entity\PrayerTeam;
 use App\Repository\LeaderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -16,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PrayerTeamAssignmentType extends AbstractType
 {
-    public function __construct(private EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager, private Security $security)
     {
     }
 
@@ -57,7 +58,7 @@ class PrayerTeamAssignmentType extends AbstractType
         // Example: Is a leader account show all prayer teams
         $leaders = $leaderRepo->findBy(['email' => $email]);
 
-        if (str_ends_with($email, '@encounterthecross.com') || !empty($leaders)) {
+        if (str_ends_with($email, '@encounterthecross.com') || !empty($leaders) || $this->security->isGranted('ROLE_DATA_EDITOR_OVERWRITE')) {
             return $queryBuilder->getQuery()->getResult();
         }
 

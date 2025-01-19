@@ -177,22 +177,32 @@ class Event
         return $this->getAllAttending()->count();
     }
 
-    public function getTotalServers(): int
+    public function getServers(): Collection
     {
-        $servers = $this->getEventParticipants()->filter(function (EventParticipant $eventParticipant) {
+        return $this->getEventParticipants()->filter(function (EventParticipant $eventParticipant) {
             return (EventParticipant::TYPE_SERVER === $eventParticipant->getType())
                 && (EventParticipantStatusEnum::ATTENDING->value === $eventParticipant->getStatus());
         });
+    }
+
+    public function getTotalServers(): int
+    {
+        $servers = $this->getServers();
 
         return $servers->count();
     }
 
-    public function getTotalAttendees(): int
+    public function getAttendees(): Collection
     {
-        $attendees = $this->getEventParticipants()->filter(function (EventParticipant $eventParticipant) {
+        return $this->getEventParticipants()->filter(function (EventParticipant $eventParticipant) {
             return (EventParticipant::TYPE_ATTENDEE === $eventParticipant->getType())
                 && (EventParticipantStatusEnum::ATTENDING->value === $eventParticipant->getStatus());
         });
+    }
+
+    public function getTotalAttendees(): int
+    {
+        $attendees = $this->getAttendees();
 
         return $attendees->count();
     }

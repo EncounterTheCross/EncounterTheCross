@@ -28,7 +28,6 @@
         "scienta/doctrine-json-functions": "~4.3",
         "sentry/sentry-symfony": "^5.1",
         "stof/doctrine-extensions-bundle": "^1.7",
-        "symfony/apache-pack": "^1.0",
         "symfony/asset": "6.4.*",
         "symfony/asset-mapper": "6.4.*",
         "symfony/console": "6.4.*",
