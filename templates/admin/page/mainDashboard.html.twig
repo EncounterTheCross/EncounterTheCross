@@ -130,20 +130,23 @@
             </div>
         </div>
 
-        <!-- Donut Chart -->
-        <div class="col-xl-6 col-md-12">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Prayer Teams</h6>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <!-- Chart -->
-                    {{ render_chart(chartRadar, {}) }}
+        <!-- Radar Chart -->
+        {% if is_granted('ROLE_DATA_EDITOR_OVERWRITE') %}
+            <div class="col-xl-6 col-md-12">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Prayer Teams</h6>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <!-- Chart -->
+                        {{ render_chart(chartRadar, {}) }}
 
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
+
     </div>
 {% endblock %}
