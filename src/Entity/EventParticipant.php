@@ -249,7 +249,7 @@ class EventParticipant implements EntityExportableInterface
             'createdAt' => $this->getCreatedAt(),
             'updatedAt' => $this->getUpdatedAt(),
             // prayer team
-            'prayerTeam' => $training->getPrayerTeam()?->getName() ?? 'NOT ASSIGNED',
+            'prayerTeam' => $training?->getPrayerTeam()?->getName() ?? 'NOT ASSIGNED',
             // server training check in
             'attendedJointTraining' => $training->isCheckedIn() ? 'Yes' : 'No',
         ];
