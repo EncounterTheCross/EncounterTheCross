@@ -226,6 +226,7 @@ class EventParticipant implements EntityExportableInterface
             .$this->getCity().', '.$this->getState().', '.$this->getZipcode().PHP_EOL;
 
         $contactPerson = $this->getAttendeeContactPerson();
+        $training = $this->getCurrentEventPrayerTeamServer();
 
         return [
             'status' => $this->getStatus(),
@@ -247,6 +248,10 @@ class EventParticipant implements EntityExportableInterface
             'paymentMethod' => $this->paymentMethod ?? '',
             'createdAt' => $this->getCreatedAt(),
             'updatedAt' => $this->getUpdatedAt(),
+            // prayer team
+            'prayerTeam' => $training->getPrayerTeam()?->getName() ?? 'NOT ASSIGNED',
+            // server training check in
+            'attendedJointTraining' => $training->isCheckedIn() ? 'Yes' : 'No',
         ];
     }
 
