@@ -251,7 +251,7 @@ class EventParticipant implements EntityExportableInterface
             // prayer team
             'prayerTeam' => $training?->getPrayerTeam()?->getName() ?? 'NOT ASSIGNED',
             // server training check in
-            'attendedJointTraining' => $training->isCheckedIn() ? 'Yes' : 'No',
+            'attendedJointTraining' => ($training?->isCheckedIn() ?? false) ? 'Yes' : 'No',
         ];
     }
 
