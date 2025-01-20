@@ -227,6 +227,9 @@ class EventParticipant implements EntityExportableInterface
 
         $contactPerson = $this->getAttendeeContactPerson();
         $training = $this->getCurrentEventPrayerTeamServer();
+        $checkedIn = null === $training
+            ? 'No'
+            : ($training->isCheckedIn() ? 'Yes' : 'No');
 
         return [
             'status' => $this->getStatus(),
@@ -251,7 +254,7 @@ class EventParticipant implements EntityExportableInterface
             // prayer team
             'prayerTeam' => $training?->getPrayerTeam()?->getName() ?? 'NOT ASSIGNED',
             // server training check in
-            'attendedJointTraining' => $training->isCheckedIn() ? 'Yes' : 'No',
+            'attendedJointTraining' => $checkedIn,
         ];
     }
 
