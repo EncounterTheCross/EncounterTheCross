@@ -20,6 +20,7 @@ use App\Security\Voter\EventRegistrationVoter;
 use App\Service\Mailer\RegistrationLeaderNotificationContextAwareMailer;
 use App\Service\Mailer\RegistrationThankYouContextAwareMailer;
 use App\Service\PersonManager;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
@@ -38,6 +39,9 @@ class RegistrationController extends AbstractController
     ) {
     }
 
+    /**
+     * @throws NonUniqueResultException
+     */
     #[Route('/register', name: 'app_registration_list')]
     public function encounterList(EventRepository $eventRepository)
     {

@@ -45,11 +45,9 @@ class EventRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Event|null
-     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findUpcomingEvent()
+    public function findUpcomingEvent(): ?Event
     {
         $qb = $this->findAllUpcomingEventsInOrderQueryBuilder();
 

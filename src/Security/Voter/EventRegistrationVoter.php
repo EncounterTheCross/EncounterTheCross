@@ -42,7 +42,7 @@ class EventRegistrationVoter extends Voter
     {
         $upcomingEvent = $this->eventRepository->findUpcomingEvent();
 
-        if ($upcomingEvent->getId() !== $subject->getId()) {
+        if ($upcomingEvent->getId() !== $subject->getId() || !$upcomingEvent->isRegistrationStarted()) {
             $this->getFlashBag()->add('error', 'Registration is not opened for this event.');
 
             return false;

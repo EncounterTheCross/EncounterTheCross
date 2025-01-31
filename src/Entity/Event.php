@@ -62,6 +62,9 @@ class Event
     #[ORM\Column(length: 255, nullable: false)]
     private ?string $checkInToken = null;
 
+    #[ORM\Column(options: ['default' => false])]
+    private bool $registrationStarted = false;
+
     public function __construct()
     {
         $this->launchPoints = new ArrayCollection();
@@ -351,6 +354,18 @@ class Event
     public function setCheckInToken(?string $checkInToken): static
     {
         $this->checkInToken = $checkInToken;
+
+        return $this;
+    }
+
+    public function isRegistrationStarted(): ?bool
+    {
+        return $this->registrationStarted;
+    }
+
+    public function setRegistrationStarted(bool $registrationStarted): static
+    {
+        $this->registrationStarted = $registrationStarted;
 
         return $this;
     }
