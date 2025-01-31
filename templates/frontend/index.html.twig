@@ -27,13 +27,22 @@
                     {% endif %}
                 </div>
             </div>
-            {% if event is not null and event.start > date('now') %}
-            <div class="d-flex flex-column flex-md-row justify-content-md-around">
-                <a class="btn btn-primary m-2" href="{{ path('app_registration_attendee_formentry',{'event': event.id}) }}">Attendee Register</a>
-                {% if event.canServerRegister %}
-                    <a class="btn btn-outline-light m-2" href="{{ path('app_registration_server_formentry',{'event': event.id}) }}">Server Register</a>
-                {% endif %}
-            </div>
+            {% if event is not null and event.start > date('now') and event.registrationStarted %}
+                <div class="d-flex flex-column flex-md-row justify-content-md-around">
+                    <a class="btn btn-primary m-2" href="{{ path('app_registration_attendee_formentry',{'event': event.id}) }}">Attendee Register</a>
+                    {% if event.canServerRegister %}
+                        <a class="btn btn-outline-light m-2" href="{{ path('app_registration_server_formentry',{'event': event.id}) }}">Server Register</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+            {% if not event.registrationStarted %}
+                <div>
+                    <p class="text-white-50 mx-auto mt-2 mb-5 text-center">
+                        Join us for a transformative weekend as we explore true freedom in Christ.
+                    </p>
+                    <p class="text-info text-center">Stay tuned for registration details.</p>
+
+                </div>
             {% endif %}
         </div>
     </header>
