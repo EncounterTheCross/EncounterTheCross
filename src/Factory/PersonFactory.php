@@ -6,6 +6,7 @@ use App\Entity\Person;
 use App\Repository\PersonRepository;
 use Symfony\Component\Uid\Uuid;
 use Zenstruck\Foundry\ModelFactory;
+use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
 
@@ -28,7 +29,7 @@ use Zenstruck\Foundry\RepositoryProxy;
  * @method static Person[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
  * @method static Person[]|Proxy[]                 randomSet(int $number, array $attributes = [])
  */
-final class PersonFactory extends ModelFactory
+final class PersonFactory extends PersistentProxyObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -36,34 +37,6 @@ final class PersonFactory extends ModelFactory
     public function __construct()
     {
         parent::__construct();
-    }
-
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
-     *
-     * TODO remove row pointer once DoctrineEvent Hook is used
-     */
-    protected function getDefaults(): array
-    {
-        $email = self::faker()->boolean(80) ? self::faker()->email() : null;
-        $phone = self::faker()->boolean(80) ? self::faker()->phoneNumber() : null;
-        $data = [
-            'createdAt' => self::faker()->dateTime(),
-            'firstName' => self::faker()->firstName(),
-            'lastName' => self::faker()->lastName(),
-            'rowPointer' => new Uuid(self::faker()->uuid()),
-            'updatedAt' => self::faker()->dateTime(),
-        ];
-
-        if ($email) {
-            $data['email'] = $email;
-        }
-
-        if ($phone) {
-            $data['phone'] = $phone;
-        }
-
-        return $data;
     }
 
     public static function findByEmailOrPhone($email, $phone)
@@ -105,8 +78,31 @@ final class PersonFactory extends ModelFactory
         ;
     }
 
-    protected static function getClass(): string
+    public static function class(): string
     {
         return Person::class;
+    }
+
+    protected function defaults(): array|callable
+    {
+        $email = self::faker()->boolean(80) ? self::faker()->email() : null;
+        $phone = self::faker()->boolean(80) ? self::faker()->phoneNumber() : null;
+        $data = [
+            'createdAt' => self::faker()->dateTime(),
+            'firstName' => self::faker()->firstName(),
+            'lastName' => self::faker()->lastName(),
+            'rowPointer' => new Uuid(self::faker()->uuid()),
+            'updatedAt' => self::faker()->dateTime(),
+        ];
+
+        if ($email) {
+            $data['email'] = $email;
+        }
+
+        if ($phone) {
+            $data['phone'] = $phone;
+        }
+
+        return $data;
     }
 }

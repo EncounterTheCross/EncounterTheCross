@@ -6,6 +6,7 @@ use App\Entity\Testimonial;
 use App\Repository\TestimonialRepository;
 use Symfony\Component\Uid\Uuid;
 use Zenstruck\Foundry\ModelFactory;
+use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
 
@@ -28,7 +29,7 @@ use Zenstruck\Foundry\RepositoryProxy;
  * @method static Testimonial[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
  * @method static Testimonial[]|Proxy[]                 randomSet(int $number, array $attributes = [])
  */
-final class TestimonialFactory extends ModelFactory
+final class TestimonialFactory extends PersistentProxyObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -41,11 +42,21 @@ final class TestimonialFactory extends ModelFactory
     }
 
     /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
-     *
-     * @todo add your default values here
+     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
      */
-    protected function getDefaults(): array
+    protected function initialize(): self
+    {
+        return $this
+            // ->afterInstantiate(function(Testimonial $testimonial): void {})
+        ;
+    }
+
+    public static function class(): string
+    {
+        return Testimonial::class;
+    }
+
+    protected function defaults(): array|callable
     {
         return [
             'name' => self::faker()->firstNameMale(),
@@ -57,20 +68,5 @@ final class TestimonialFactory extends ModelFactory
             'sharable' => 1,
             'approved' => self::faker()->boolean(),
         ];
-    }
-
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
-     */
-    protected function initialize(): self
-    {
-        return $this
-            // ->afterInstantiate(function(Testimonial $testimonial): void {})
-        ;
-    }
-
-    protected static function getClass(): string
-    {
-        return Testimonial::class;
     }
 }

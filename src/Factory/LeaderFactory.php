@@ -8,6 +8,7 @@ use App\Service\RoleManager\Role;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Uid\Uuid;
 use Zenstruck\Foundry\ModelFactory;
+use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
 
@@ -30,7 +31,7 @@ use Zenstruck\Foundry\RepositoryProxy;
  * @method static Leader[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
  * @method static Leader[]|Proxy[]                 randomSet(int $number, array $attributes = [])
  */
-final class LeaderFactory extends ModelFactory
+final class LeaderFactory extends PersistentProxyObjectFactory
 {
     private UserPasswordHasherInterface $passwordHasher;
 
@@ -41,25 +42,6 @@ final class LeaderFactory extends ModelFactory
     {
         parent::__construct();
         $this->passwordHasher = $passwordHasher;
-    }
-
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
-     *
-     * TODO remove row pointer once DoctrineEvent Hook is used
-     */
-    protected function getDefaults(): array
-    {
-        return [
-            'person' => PersonFactory::new(),
-            'createdAt' => self::faker()->dateTime(),
-            'email' => self::faker()->email(),
-            //            'password' => self::faker()->text(),
-            'plainPassword' => 'tada',
-            'roles' => [Role::LIMITED_FULL],
-            'rowPointer' => new Uuid(self::faker()->uuid()),
-            'updatedAt' => self::faker()->dateTime(),
-        ];
     }
 
     /**
@@ -79,8 +61,22 @@ final class LeaderFactory extends ModelFactory
         ;
     }
 
-    protected static function getClass(): string
+    public static function class(): string
     {
         return Leader::class;
+    }
+
+    protected function defaults(): array|callable
+    {
+        return [
+            'person' => PersonFactory::new(),
+            'createdAt' => self::faker()->dateTime(),
+            'email' => self::faker()->email(),
+            //            'password' => self::faker()->text(),
+            'plainPassword' => 'tada',
+            'roles' => [Role::LIMITED_FULL],
+            'rowPointer' => new Uuid(self::faker()->uuid()),
+            'updatedAt' => self::faker()->dateTime(),
+        ];
     }
 }

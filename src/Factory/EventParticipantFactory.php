@@ -6,6 +6,7 @@ use App\Entity\EventParticipant;
 use App\Repository\EventParticipantRepository;
 use Symfony\Component\Uid\Uuid;
 use Zenstruck\Foundry\ModelFactory;
+use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
 
@@ -28,7 +29,7 @@ use Zenstruck\Foundry\RepositoryProxy;
  * @method static EventParticipant[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
  * @method static EventParticipant[]|Proxy[]                 randomSet(int $number, array $attributes = [])
  */
-final class EventParticipantFactory extends ModelFactory
+final class EventParticipantFactory extends PersistentProxyObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -38,12 +39,50 @@ final class EventParticipantFactory extends ModelFactory
         parent::__construct();
     }
 
+    public function server(): EventParticipantFactory
+    {
+        return $this->with([
+            'type' => EventParticipant::TYPE_SERVER,
+            'attendeeContactPerson' => null,
+        ]);
+    }
+
+    public function attendee(): EventParticipantFactory
+    {
+        return $this->with([
+            'type' => EventParticipant::TYPE_ATTENDEE,
+            'attendeeContactPerson' => $this->findByPersonDetailsOrCreate(),
+        ]);
+    }
+
+    protected function findByPersonDetailsOrCreate($email = null, $phone = null)
+    {
+        if (null === $email) {
+            $email = self::faker()->email();
+        }
+        if (null === $phone) {
+            $phone = self::faker()->phoneNumber();
+        }
+
+        return ContactPersonFactory::findByPersonDetailsOrCreate($email, $phone);
+    }
+
     /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
-     *
-     * TODO remove row pointer once DoctrineEvent Hook is used
+     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
      */
-    protected function getDefaults(): array
+    protected function initialize(): self
+    {
+        return $this
+            // ->afterInstantiate(function(EventParticipant $eventParticipant): void {})
+        ;
+    }
+
+    public static function class(): string
+    {
+        return EventParticipant::class;
+    }
+
+    protected function defaults(): array|callable
     {
         $type = self::faker()->randomElement(EventParticipant::TYPES());
 
@@ -78,48 +117,5 @@ final class EventParticipantFactory extends ModelFactory
             'event' => EventFactory::randomOrCreate(),
             'paymentMethod' => self::faker()->randomElement(EventParticipant::PAYMENT_METHODS),
         ], $typeDefaults);
-    }
-
-    public function server()
-    {
-        return $this->addState([
-            'type' => EventParticipant::TYPE_SERVER,
-            'attendeeContactPerson' => null,
-        ]);
-    }
-
-    public function attendee()
-    {
-        return $this->addState([
-            'type' => EventParticipant::TYPE_ATTENDEE,
-            'attendeeContactPerson' => $this->findByPersonDetailsOrCreate(),
-        ]);
-    }
-
-    protected function findByPersonDetailsOrCreate($email = null, $phone = null)
-    {
-        if (null === $email) {
-            $email = self::faker()->email();
-        }
-        if (null === $phone) {
-            $phone = self::faker()->phoneNumber();
-        }
-
-        return ContactPersonFactory::findByPersonDetailsOrCreate($email, $phone);
-    }
-
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
-     */
-    protected function initialize(): self
-    {
-        return $this
-            // ->afterInstantiate(function(EventParticipant $eventParticipant): void {})
-        ;
-    }
-
-    protected static function getClass(): string
-    {
-        return EventParticipant::class;
     }
 }

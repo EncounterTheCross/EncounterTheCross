@@ -6,6 +6,7 @@ use App\Entity\ContactPerson;
 use App\Repository\ContactPersonRepository;
 use Symfony\Component\Uid\Uuid;
 use Zenstruck\Foundry\ModelFactory;
+use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
 
@@ -28,7 +29,7 @@ use Zenstruck\Foundry\RepositoryProxy;
  * @method static ContactPerson[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
  * @method static ContactPerson[]|Proxy[]                 randomSet(int $number, array $attributes = [])
  */
-final class ContactPersonFactory extends ModelFactory
+final class ContactPersonFactory extends PersistentProxyObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -38,12 +39,27 @@ final class ContactPersonFactory extends ModelFactory
         parent::__construct();
     }
 
+    public static function findByPersonDetailsOrCreate($email, $phone)
+    {
+        return self::new(['details' => PersonFactory::findByEmailOrPhoneOrCreate($email, $phone)]);
+    }
+
     /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
-     *
-     * TODO remove row pointer once DoctrineEvent Hook is used
+     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
      */
-    protected function getDefaults(): array
+    protected function initialize(): self
+    {
+        return $this
+            // ->afterInstantiate(function(ContactPerson $contactPerson): void {})
+        ;
+    }
+
+    public static function class(): string
+    {
+        return ContactPerson::class;
+    }
+
+    protected function defaults(): array|callable
     {
         return [
             'createdAt' => self::faker()->dateTime(),
@@ -63,25 +79,5 @@ final class ContactPersonFactory extends ModelFactory
             'rowPointer' => new Uuid(self::faker()->uuid()),
             'updatedAt' => self::faker()->dateTime(),
         ];
-    }
-
-    public static function findByPersonDetailsOrCreate($email, $phone)
-    {
-        return self::new(['details' => PersonFactory::findByEmailOrPhoneOrCreate($email, $phone)]);
-    }
-
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
-     */
-    protected function initialize(): self
-    {
-        return $this
-            // ->afterInstantiate(function(ContactPerson $contactPerson): void {})
-        ;
-    }
-
-    protected static function getClass(): string
-    {
-        return ContactPerson::class;
     }
 }

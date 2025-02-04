@@ -6,6 +6,7 @@ use App\Entity\Location;
 use App\Repository\LocationRepository;
 use Symfony\Component\Uid\Uuid;
 use Zenstruck\Foundry\ModelFactory;
+use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
 
@@ -28,7 +29,7 @@ use Zenstruck\Foundry\RepositoryProxy;
  * @method static Location[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
  * @method static Location[]|Proxy[]                 randomSet(int $number, array $attributes = [])
  */
-final class LocationFactory extends ModelFactory
+final class LocationFactory extends PersistentProxyObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -38,35 +39,14 @@ final class LocationFactory extends ModelFactory
         parent::__construct();
     }
 
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
-     *
-     * TODO remove row pointer once DoctrineEvent Hook is used
-     */
-    protected function getDefaults(): array
-    {
-        return [
-            'city' => self::faker()->city(),
-            'country' => self::faker()->country(),
-            'createdAt' => self::faker()->dateTime(),
-            'line1' => self::faker()->streetAddress(),
-            'name' => self::faker()->company(),
-            'rowPointer' => new Uuid(self::faker()->uuid()),
-            'state' => self::faker()->state(),
-            'type' => self::faker()->randomElement(Location::TYPES()),
-            'updatedAt' => self::faker()->dateTime(),
-            'zipcode' => self::faker()->postcode(),
-        ];
-    }
-
     public function launchPoint(): self
     {
-        return $this->addState(['type' => Location::TYPE_LAUNCH_POINT, 'pinColor' => self::faker()->hexColor()]);
+        return $this->with(['type' => Location::TYPE_LAUNCH_POINT, 'pinColor' => self::faker()->hexColor()]);
     }
 
     public function event(): self
     {
-        return $this->addState(['type' => Location::TYPE_EVENT]);
+        return $this->with(['type' => Location::TYPE_EVENT]);
     }
 
     public static function allLaunchPoints($min = 1)
@@ -88,8 +68,24 @@ final class LocationFactory extends ModelFactory
         ;
     }
 
-    protected static function getClass(): string
+    public static function class(): string
     {
         return Location::class;
+    }
+
+    protected function defaults(): array|callable
+    {
+        return [
+            'city' => self::faker()->city(),
+            'country' => self::faker()->country(),
+            'createdAt' => self::faker()->dateTime(),
+            'line1' => self::faker()->streetAddress(),
+            'name' => self::faker()->company(),
+            'rowPointer' => new Uuid(self::faker()->uuid()),
+            'state' => self::faker()->state(),
+            'type' => self::faker()->randomElement(Location::TYPES()),
+            'updatedAt' => self::faker()->dateTime(),
+            'zipcode' => self::faker()->postcode(),
+        ];
     }
 }

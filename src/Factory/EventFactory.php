@@ -8,6 +8,7 @@ use DateInterval;
 use DateTime;
 use Symfony\Component\Uid\Uuid;
 use Zenstruck\Foundry\ModelFactory;
+use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
 
@@ -30,7 +31,7 @@ use Zenstruck\Foundry\RepositoryProxy;
  * @method static Event[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
  * @method static Event[]|Proxy[]                 randomSet(int $number, array $attributes = [])
  */
-final class EventFactory extends ModelFactory
+final class EventFactory extends PersistentProxyObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -41,11 +42,21 @@ final class EventFactory extends ModelFactory
     }
 
     /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
-     *
-     * TODO remove row pointer once DoctrineEvent Hook is used
+     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
      */
-    protected function getDefaults(): array
+    protected function initialize(): self
+    {
+        return $this
+            // ->afterInstantiate(function(Event $event): void {})
+        ;
+    }
+
+    public static function class(): string
+    {
+        return Event::class;
+    }
+
+    protected function defaults(): array|callable
     {
         $start = self::faker()->dateTimeBetween('+1 month', '+1 year');
         $end = new DateTime($start->format('Y-m-d H:i:s'));
@@ -66,20 +77,5 @@ final class EventFactory extends ModelFactory
             'registrationOpen' => true,
             'checkInToken' => bin2hex(random_bytes(32)),
         ];
-    }
-
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
-     */
-    protected function initialize(): self
-    {
-        return $this
-            // ->afterInstantiate(function(Event $event): void {})
-        ;
-    }
-
-    protected static function getClass(): string
-    {
-        return Event::class;
     }
 }

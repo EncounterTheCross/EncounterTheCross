@@ -3,6 +3,7 @@
 namespace App\EventSubscriber;
 
 use App\Settings\Global\SystemSettings;
+use stdClass;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\IpUtils;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,11 +14,11 @@ use Tzunghaor\SettingsBundle\Service\SettingsService;
 
 class MaintenanceModeSubscriber implements EventSubscriberInterface
 {
-    private SystemSettings|\stdClass $settings;
+    private SystemSettings|stdClass $settings;
 
     public function __construct(
-        private readonly string      $environment,
-        SettingsService              $globalSettings,
+        private readonly string $environment,
+        SettingsService $globalSettings,
         private readonly Environment $twig,
     ) {
         $this->settings = $globalSettings->getSection(SystemSettings::class);
