@@ -15,4 +15,4 @@ framework:
   # the form is not saving, due to default symfony configuration
   # https://github.com/tzunghaor/settings-bundle/issues/3
   # https://github.com/symfony/symfony/issues/45278
-  http_method_override: true
+#  http_method_override: true

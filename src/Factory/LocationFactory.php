@@ -3,11 +3,7 @@
 namespace App\Factory;
 
 use App\Entity\Location;
-use App\Repository\LocationRepository;
-use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
-use Zenstruck\Foundry\Proxy;
-use Zenstruck\Foundry\RepositoryProxy;
 
 final class LocationFactory extends PersistentProxyObjectFactory
 {

@@ -3,13 +3,9 @@
 namespace App\Factory;
 
 use App\Entity\Leader;
-use App\Repository\LeaderRepository;
 use App\Service\RoleManager\Role;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
-use Zenstruck\Foundry\Proxy;
-use Zenstruck\Foundry\RepositoryProxy;
 
 final class LeaderFactory extends PersistentProxyObjectFactory
 {

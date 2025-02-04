@@ -3,11 +3,7 @@
 namespace App\Factory;
 
 use App\Entity\Person;
-use App\Repository\PersonRepository;
-use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
-use Zenstruck\Foundry\Proxy;
-use Zenstruck\Foundry\RepositoryProxy;
 
 final class PersonFactory extends PersistentProxyObjectFactory
 {

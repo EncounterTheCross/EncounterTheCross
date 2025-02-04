@@ -3,12 +3,7 @@
 namespace App\Factory;
 
 use App\Entity\Testimonial;
-use App\Repository\TestimonialRepository;
-use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
-use Zenstruck\Foundry\Proxy;
-use Zenstruck\Foundry\RepositoryProxy;
-
 
 final class TestimonialFactory extends PersistentProxyObjectFactory
 {

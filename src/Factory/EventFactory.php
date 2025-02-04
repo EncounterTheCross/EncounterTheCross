@@ -3,13 +3,9 @@
 namespace App\Factory;
 
 use App\Entity\Event;
-use App\Repository\EventRepository;
 use DateInterval;
 use DateTime;
-use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
-use Zenstruck\Foundry\Proxy;
-use Zenstruck\Foundry\RepositoryProxy;
 
 final class EventFactory extends PersistentProxyObjectFactory
 {

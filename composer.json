@@ -11,6 +11,7 @@
         "ext-iconv": "*",
         "ext-zip": "*",
         "babdev/pagerfanta-bundle": "^4.2",
+        "codeception/module-doctrine": "^3.1",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/doctrine-migrations-bundle": "^3.2",
@@ -71,8 +72,8 @@
         "twig/inky-extra": "^3.7",
         "twig/intl-extra": "^3.7",
         "twig/twig": "^2.12|^3.0",
-        "tzunghaor/settings-bundle": "^0.13.0",
-        "yectep/phpspreadsheet-bundle": "^1.0"
+        "tzunghaor/settings-bundle": "^0.15.0",
+        "yectep/phpspreadsheet-bundle": "@dev"
     },
     "config": {
         "allow-plugins": {
@@ -131,7 +132,6 @@
         "codeception/codeception": "^5.0",
         "codeception/module-asserts": "^3.0",
         "codeception/module-db": "^3.1",
-        "codeception/module-doctrine2": "^3.0",
         "codeception/module-filesystem": "^3.0",
         "codeception/module-phpbrowser": "^3.0",
         "codeception/module-symfony": "^3.1",
@@ -162,6 +162,10 @@
         {
             "type": "vcs",
             "url": "git@github.com:jmwamser/module-foundry.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:redpandacoding/phpspreadsheet-bundle.git"
         }
     ]
 }
