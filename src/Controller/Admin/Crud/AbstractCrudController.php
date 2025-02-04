@@ -13,12 +13,10 @@ namespace App\Controller\Admin\Crud;
 use App\Controller\Admin\Crud\Extended\CoreCrudTrait;
 use App\Controller\Admin\Crud\Extended\CrudControllerInterface;
 use App\Controller\Admin\Crud\Field\Field;
-use App\Controller\Admin\Crud\Field\UuidField;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
-use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController as BaseAbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
@@ -44,20 +42,11 @@ abstract class AbstractCrudController extends BaseAbstractCrudController impleme
     {
         // Make sure we assign Uuid types
         $fields = FieldCollection::new(parent::configureFields($pageName));
-        $fields
-            ->getByProperty('rowPointer')
-            ->setFieldFqcn(UuidField::class);
 
         yield from array_map(
             fn ($dto) => Field::newFromDto($dto),
             array_values($fields->getIterator()->getArrayCopy())
         );
-    }
-
-    protected function addRowPointerField(): FieldInterface
-    {
-        return UuidField::new('rowPointer')
-            ->hideOnForm();
     }
 
     public function configureAssets(Assets $assets): Assets

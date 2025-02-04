@@ -10,7 +10,6 @@
 
 namespace App\Entity\Traits;
 
-use App\Service\UuidManager\UuidFactory;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
@@ -35,34 +34,8 @@ trait EntityIdTrait
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     protected ?int $id;
 
-    #[ORM\Column(type: 'uuid', unique: true)]
-    protected ?Uuid $rowPointer = null;
-
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getRowPointer(): ?Uuid
-    {
-        return $this->rowPointer;
-    }
-
-    /**
-     * TODO: remove this and update the Fixtures Factories, this will use Doctrine EventSucscribers to assign this value.
-     */
-    public function setRowPointer(?Uuid $rowPointer): void
-    {
-        $this->rowPointer = $rowPointer;
-    }
-
-    public function getBase32RowPointer(): string
-    {
-        return UuidFactory::getBase32RowPointer($this->rowPointer);
-    }
-
-    public function getRowPointerFromBase32(string $base): ?Uuid
-    {
-        return UuidFactory::getRowPointerFromBase32($base);
     }
 }

@@ -13,12 +13,12 @@ use Tzunghaor\SettingsBundle\Service\SettingsService;
 
 class MaintenanceModeSubscriber implements EventSubscriberInterface
 {
-    private SystemSettings $settings;
+    private SystemSettings|\stdClass $settings;
 
     public function __construct(
-        private string $environment,
-        SettingsService $globalSettings,
-        private Environment $twig,
+        private readonly string      $environment,
+        SettingsService              $globalSettings,
+        private readonly Environment $twig,
     ) {
         $this->settings = $globalSettings->getSection(SystemSettings::class);
     }
