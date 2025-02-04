@@ -95,13 +95,13 @@ class StateType extends AbstractType
         ]);
     }
 
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
-        return 'vortex.form.states';
+        return 'encounter.form.states';
     }
 }

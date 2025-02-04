@@ -4,31 +4,11 @@ namespace App\Factory;
 
 use App\Entity\EventParticipant;
 use App\Repository\EventParticipantRepository;
-use Symfony\Component\Uid\Uuid;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
 
-/**
- * @extends ModelFactory<EventParticipant>
- *
- * @method        EventParticipant|Proxy                     create(array|callable $attributes = [])
- * @method static EventParticipant|Proxy                     createOne(array $attributes = [])
- * @method static EventParticipant|Proxy                     find(object|array|mixed $criteria)
- * @method static EventParticipant|Proxy                     findOrCreate(array $attributes)
- * @method static EventParticipant|Proxy                     first(string $sortedField = 'id')
- * @method static EventParticipant|Proxy                     last(string $sortedField = 'id')
- * @method static EventParticipant|Proxy                     random(array $attributes = [])
- * @method static EventParticipant|Proxy                     randomOrCreate(array $attributes = [])
- * @method static EventParticipantRepository|RepositoryProxy repository()
- * @method static EventParticipant[]|Proxy[]                 all()
- * @method static EventParticipant[]|Proxy[]                 createMany(int $number, array|callable $attributes = [])
- * @method static EventParticipant[]|Proxy[]                 createSequence(iterable|callable $sequence)
- * @method static EventParticipant[]|Proxy[]                 findBy(array $attributes)
- * @method static EventParticipant[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
- * @method static EventParticipant[]|Proxy[]                 randomSet(int $number, array $attributes = [])
- */
 final class EventParticipantFactory extends PersistentProxyObjectFactory
 {
     /**
@@ -109,7 +89,7 @@ final class EventParticipantFactory extends PersistentProxyObjectFactory
                 self::faker()->email(),
                 self::faker()->phoneNumber()
             ),
-            'rowPointer' => new Uuid(self::faker()->uuid()),
+
             'state' => self::faker()->state(),
             'type' => $type,
             'updatedAt' => self::faker()->dateTime(),

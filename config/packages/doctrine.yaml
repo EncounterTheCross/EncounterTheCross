@@ -13,6 +13,7 @@ doctrine:
 #        server_version: '8'
 
     orm:
+#        default_annotation_metadata_driver:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
         report_fields_where_declared: true

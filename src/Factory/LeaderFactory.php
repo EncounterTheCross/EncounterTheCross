@@ -6,31 +6,11 @@ use App\Entity\Leader;
 use App\Repository\LeaderRepository;
 use App\Service\RoleManager\Role;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Uid\Uuid;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
 
-/**
- * @extends ModelFactory<Leader>
- *
- * @method        Leader|Proxy                     create(array|callable $attributes = [])
- * @method static Leader|Proxy                     createOne(array $attributes = [])
- * @method static Leader|Proxy                     find(object|array|mixed $criteria)
- * @method static Leader|Proxy                     findOrCreate(array $attributes)
- * @method static Leader|Proxy                     first(string $sortedField = 'id')
- * @method static Leader|Proxy                     last(string $sortedField = 'id')
- * @method static Leader|Proxy                     random(array $attributes = [])
- * @method static Leader|Proxy                     randomOrCreate(array $attributes = [])
- * @method static LeaderRepository|RepositoryProxy repository()
- * @method static Leader[]|Proxy[]                 all()
- * @method static Leader[]|Proxy[]                 createMany(int $number, array|callable $attributes = [])
- * @method static Leader[]|Proxy[]                 createSequence(iterable|callable $sequence)
- * @method static Leader[]|Proxy[]                 findBy(array $attributes)
- * @method static Leader[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
- * @method static Leader[]|Proxy[]                 randomSet(int $number, array $attributes = [])
- */
 final class LeaderFactory extends PersistentProxyObjectFactory
 {
     private UserPasswordHasherInterface $passwordHasher;
@@ -75,7 +55,7 @@ final class LeaderFactory extends PersistentProxyObjectFactory
             //            'password' => self::faker()->text(),
             'plainPassword' => 'tada',
             'roles' => [Role::LIMITED_FULL],
-            'rowPointer' => new Uuid(self::faker()->uuid()),
+
             'updatedAt' => self::faker()->dateTime(),
         ];
     }

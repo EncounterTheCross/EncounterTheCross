@@ -4,31 +4,11 @@ namespace App\Factory;
 
 use App\Entity\Location;
 use App\Repository\LocationRepository;
-use Symfony\Component\Uid\Uuid;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
 
-/**
- * @extends ModelFactory<Location>
- *
- * @method        Location|Proxy                     create(array|callable $attributes = [])
- * @method static Location|Proxy                     createOne(array $attributes = [])
- * @method static Location|Proxy                     find(object|array|mixed $criteria)
- * @method static Location|Proxy                     findOrCreate(array $attributes)
- * @method static Location|Proxy                     first(string $sortedField = 'id')
- * @method static Location|Proxy                     last(string $sortedField = 'id')
- * @method static Location|Proxy                     random(array $attributes = [])
- * @method static Location|Proxy                     randomOrCreate(array $attributes = [])
- * @method static LocationRepository|RepositoryProxy repository()
- * @method static Location[]|Proxy[]                 all()
- * @method static Location[]|Proxy[]                 createMany(int $number, array|callable $attributes = [])
- * @method static Location[]|Proxy[]                 createSequence(iterable|callable $sequence)
- * @method static Location[]|Proxy[]                 findBy(array $attributes)
- * @method static Location[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
- * @method static Location[]|Proxy[]                 randomSet(int $number, array $attributes = [])
- */
 final class LocationFactory extends PersistentProxyObjectFactory
 {
     /**
@@ -81,7 +61,7 @@ final class LocationFactory extends PersistentProxyObjectFactory
             'createdAt' => self::faker()->dateTime(),
             'line1' => self::faker()->streetAddress(),
             'name' => self::faker()->company(),
-            'rowPointer' => new Uuid(self::faker()->uuid()),
+
             'state' => self::faker()->state(),
             'type' => self::faker()->randomElement(Location::TYPES()),
             'updatedAt' => self::faker()->dateTime(),
