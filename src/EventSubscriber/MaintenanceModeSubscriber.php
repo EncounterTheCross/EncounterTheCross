@@ -10,12 +10,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
+use Tzunghaor\SettingsBundle\Exception\SettingsException;
 use Tzunghaor\SettingsBundle\Service\SettingsService;
 
 class MaintenanceModeSubscriber implements EventSubscriberInterface
 {
     private SystemSettings|stdClass $settings;
 
+    /**
+     * @throws SettingsException
+     * @throws \Throwable
+     */
     public function __construct(
         private readonly string $environment,
         SettingsService $globalSettings,
@@ -24,6 +32,11 @@ class MaintenanceModeSubscriber implements EventSubscriberInterface
         $this->settings = $globalSettings->getSection(SystemSettings::class);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     public function onKernelRequest(RequestEvent $event): void
     {
         if ('dev' === $this->environment) {
