@@ -9,7 +9,7 @@ actor: FunctionalTester
 modules:
     enabled:
         -   Foundry:
-                depends: Doctrine2
+                depends: Doctrine
                 factories:
                     - \App\Factory\ContactPersonFactory
                     - \App\Factory\EventFactory
@@ -22,7 +22,7 @@ modules:
         -   Symfony:
                 app_path: 'src'
                 environment: 'test'
-        -   Doctrine2:
+        -   Doctrine:
                 depends: Symfony
                 cleanup: true
         - Filesystem:
