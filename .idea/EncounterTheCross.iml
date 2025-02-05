@@ -109,7 +109,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/easycorp/easyadmin-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfonycasts/reset-password-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/horizon-ui-chakra" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/ezyang/htmlpurifier" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/knplabs/knp-menu" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/knplabs/knp-menu-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/http-client" />
@@ -209,7 +208,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/yosymfony/parser-utils" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/yosymfony/toml" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/zeek/zeek-build-process" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/codeception/module-doctrine2" />
       <excludeFolder url="file://$MODULE_DIR$/public/build" />
       <excludeFolder url="file://$MODULE_DIR$/public/bundles" />
       <excludeFolder url="file://$MODULE_DIR$/var" />
@@ -263,6 +261,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/sentry/sentry-symfony" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/psr-http-message-bridge" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/ux-chartjs" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/codeception/module-doctrine" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/twig/html-extra" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

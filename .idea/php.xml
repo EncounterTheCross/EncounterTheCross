@@ -104,7 +104,6 @@
       <path value="$PROJECT_DIR$/vendor/monolog/monolog" />
       <path value="$PROJECT_DIR$/vendor/scienta/doctrine-json-functions" />
       <path value="$PROJECT_DIR$/vendor/doctrine/collections" />
-      <path value="$PROJECT_DIR$/vendor/ezyang/htmlpurifier" />
       <path value="$PROJECT_DIR$/vendor/theseer/tokenizer" />
       <path value="$PROJECT_DIR$/vendor/symfony/expression-language" />
       <path value="$PROJECT_DIR$/vendor/symfony/clock" />
@@ -240,7 +239,6 @@
       <path value="$PROJECT_DIR$/vendor/twig/inky-extra" />
       <path value="$PROJECT_DIR$/vendor/twig/twig" />
       <path value="$PROJECT_DIR$/vendor/codeception/module-db" />
-      <path value="$PROJECT_DIR$/vendor/codeception/module-doctrine2" />
       <path value="$PROJECT_DIR$/vendor/codeception/module-phpbrowser" />
       <path value="$PROJECT_DIR$/vendor/codeception/module-filesystem" />
       <path value="$PROJECT_DIR$/vendor/codeception/lib-web" />
@@ -309,6 +307,9 @@
       <path value="$PROJECT_DIR$/vendor/symfony/psr-http-message-bridge" />
       <path value="$PROJECT_DIR$/vendor/sentry/sentry-symfony" />
       <path value="$PROJECT_DIR$/vendor/sentry/sentry" />
+      <path value="$PROJECT_DIR$/vendor/symfony/apache-pack" />
+      <path value="$PROJECT_DIR$/vendor/twig/html-extra" />
+      <path value="$PROJECT_DIR$/vendor/codeception/module-doctrine" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1">
