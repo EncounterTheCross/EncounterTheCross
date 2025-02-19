@@ -3,7 +3,6 @@
 namespace App\Factory;
 
 use App\Entity\Event;
-use DateTime;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 final class EventFactory extends PersistentProxyObjectFactory

@@ -62,6 +62,7 @@
   <violation rule="PHPMD\Rule\Naming\LongClassName" file="src/Exception/MissingMailerContextRequiredValuesException.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Exception/MissingMailerContextRequiredValuesException.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Factory/ContactPersonFactory.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\MissingImport" file="src/Factory/EventFactory.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Factory/EventFactory.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Factory/EventParticipantFactory.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Factory/LeaderFactory.php"/>
@@ -103,5 +104,4 @@
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Settings/SettingsEnumConverter.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Twig/Components/TestimonialCollectionComponent.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Twig/Components/TestimonialCollectionComponent.php"/>
-  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Twig/Runtime/UuidFormaterRuntime.php"/>
 </phpmd-baseline>
