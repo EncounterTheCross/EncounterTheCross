@@ -30,6 +30,11 @@ final class ContactPersonFactory extends PersistentProxyObjectFactory
         ;
     }
 
+    public static function getClass(): string
+    {
+        return self::class();
+    }
+
     public static function class(): string
     {
         return ContactPerson::class;

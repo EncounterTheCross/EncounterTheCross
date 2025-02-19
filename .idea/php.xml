@@ -308,7 +308,6 @@
       <path value="$PROJECT_DIR$/vendor/codeception/module-doctrine" />
       <path value="$PROJECT_DIR$/vendor/staabm/side-effects-detector" />
       <path value="$PROJECT_DIR$/vendor/symfony/type-info" />
-      <path value="$PROJECT_DIR$/vendor/dama/doctrine-test-bundle" />
       <path value="$PROJECT_DIR$/vendor/zenstruck/callback" />
     </include_path>
   </component>

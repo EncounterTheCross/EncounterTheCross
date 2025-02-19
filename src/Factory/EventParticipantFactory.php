@@ -53,6 +53,11 @@ final class EventParticipantFactory extends PersistentProxyObjectFactory
         ;
     }
 
+    public static function getClass(): string
+    {
+        return self::class();
+    }
+
     public static function class(): string
     {
         return EventParticipant::class;

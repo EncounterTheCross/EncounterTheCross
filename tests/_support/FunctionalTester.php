@@ -399,6 +399,12 @@ class FunctionalTester extends \Codeception\Actor
             'name' => 'I made this in a test',
         ];
 
+        if (strtolower($entity) === 'event') {
+            $attributes = [
+                'registrationStarted' => true,
+            ];
+        }
+
         if (in_array($entity, array_keys($subEntity))) {
             $attributes = match ($entity) {
                 'Server' => $this->getServerAttributes(),
@@ -424,7 +430,8 @@ class FunctionalTester extends \Codeception\Actor
             );
         }
 
-        $entityObject = $this->have($baseEntityPath.$entity, $attributes);
+        $entityObject = $this->make($baseEntityPath.$entity, $attributes);
+
 
         $this->entities[$baseEntityPath.$entity.$subEntityPath][] = $entityObject;
     }

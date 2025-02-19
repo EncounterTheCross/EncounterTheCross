@@ -3,7 +3,6 @@
 namespace App\Factory;
 
 use App\Entity\Event;
-use DateInterval;
 use DateTime;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
@@ -27,6 +26,11 @@ final class EventFactory extends PersistentProxyObjectFactory
         ;
     }
 
+    public static function getClass(): string
+    {
+        return self::class();
+    }
+
     public static function class(): string
     {
         return Event::class;
@@ -35,15 +39,15 @@ final class EventFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         $start = self::faker()->dateTimeBetween('+1 month', '+1 year');
-        $end = new DateTime($start->format('Y-m-d H:i:s'));
-        $end->add(new DateInterval('P2D'));
+        $end = new \DateTime($start->format('Y-m-d H:i:s'));
+        $end->add(new \DateInterval('P2D'));
 
         return [
             'createdAt' => self::faker()->dateTime(),
             'end' => $end,
             'location' => LocationFactory::new('event'),
             'name' => $start->format('M Y').' Men\'s Encounter',
-            'registrationDeadLineServers' => $start->add(new DateInterval('P2W')), // self::faker()->dateTime(),
+            'registrationDeadLineServers' => $start->add(new \DateInterval('P2W')), // self::faker()->dateTime(),
 
             'start' => $start,
             'updatedAt' => self::faker()->dateTime(),
@@ -52,6 +56,7 @@ final class EventFactory extends PersistentProxyObjectFactory
             'active' => true,
             'registrationOpen' => true,
             'checkInToken' => bin2hex(random_bytes(32)),
+            'registrationStarted' => true,
         ];
     }
 }

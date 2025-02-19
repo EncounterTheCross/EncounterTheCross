@@ -37,6 +37,11 @@ final class LeaderFactory extends PersistentProxyObjectFactory
         ;
     }
 
+    public static function getClass(): string
+    {
+        return self::class();
+    }
+
     public static function class(): string
     {
         return Leader::class;
