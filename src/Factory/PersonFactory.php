@@ -3,32 +3,9 @@
 namespace App\Factory;
 
 use App\Entity\Person;
-use App\Repository\PersonRepository;
-use Symfony\Component\Uid\Uuid;
-use Zenstruck\Foundry\ModelFactory;
-use Zenstruck\Foundry\Proxy;
-use Zenstruck\Foundry\RepositoryProxy;
+use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
-/**
- * @extends ModelFactory<Person>
- *
- * @method        Person|Proxy                     create(array|callable $attributes = [])
- * @method static Person|Proxy                     createOne(array $attributes = [])
- * @method static Person|Proxy                     find(object|array|mixed $criteria)
- * @method static Person|Proxy                     findOrCreate(array $attributes)
- * @method static Person|Proxy                     first(string $sortedField = 'id')
- * @method static Person|Proxy                     last(string $sortedField = 'id')
- * @method static Person|Proxy                     random(array $attributes = [])
- * @method static Person|Proxy                     randomOrCreate(array $attributes = [])
- * @method static PersonRepository|RepositoryProxy repository()
- * @method static Person[]|Proxy[]                 all()
- * @method static Person[]|Proxy[]                 createMany(int $number, array|callable $attributes = [])
- * @method static Person[]|Proxy[]                 createSequence(iterable|callable $sequence)
- * @method static Person[]|Proxy[]                 findBy(array $attributes)
- * @method static Person[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
- * @method static Person[]|Proxy[]                 randomSet(int $number, array $attributes = [])
- */
-final class PersonFactory extends ModelFactory
+final class PersonFactory extends PersistentProxyObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -36,34 +13,6 @@ final class PersonFactory extends ModelFactory
     public function __construct()
     {
         parent::__construct();
-    }
-
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
-     *
-     * TODO remove row pointer once DoctrineEvent Hook is used
-     */
-    protected function getDefaults(): array
-    {
-        $email = self::faker()->boolean(80) ? self::faker()->email() : null;
-        $phone = self::faker()->boolean(80) ? self::faker()->phoneNumber() : null;
-        $data = [
-            'createdAt' => self::faker()->dateTime(),
-            'firstName' => self::faker()->firstName(),
-            'lastName' => self::faker()->lastName(),
-            'rowPointer' => new Uuid(self::faker()->uuid()),
-            'updatedAt' => self::faker()->dateTime(),
-        ];
-
-        if ($email) {
-            $data['email'] = $email;
-        }
-
-        if ($phone) {
-            $data['phone'] = $phone;
-        }
-
-        return $data;
     }
 
     public static function findByEmailOrPhone($email, $phone)
@@ -98,15 +47,43 @@ final class PersonFactory extends ModelFactory
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
      */
-    protected function initialize(): self
+    protected function initialize(): static
     {
         return $this
             // ->afterInstantiate(function(Person $person): void {})
         ;
     }
 
-    protected static function getClass(): string
+    public static function getClass(): string
+    {
+        return self::class();
+    }
+
+    public static function class(): string
     {
         return Person::class;
+    }
+
+    protected function defaults(): array|callable
+    {
+        $email = self::faker()->boolean(80) ? self::faker()->email() : null;
+        $phone = self::faker()->boolean(80) ? self::faker()->phoneNumber() : null;
+        $data = [
+            'createdAt' => self::faker()->dateTime(),
+            'firstName' => self::faker()->firstName(),
+            'lastName' => self::faker()->lastName(),
+
+            'updatedAt' => self::faker()->dateTime(),
+        ];
+
+        if ($email) {
+            $data['email'] = $email;
+        }
+
+        if ($phone) {
+            $data['phone'] = $phone;
+        }
+
+        return $data;
     }
 }

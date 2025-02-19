@@ -66,6 +66,11 @@ parameters:
 			path: src/Factory/EventParticipantFactory.php
 
 		-
+			message: "#^Call to an undefined method Zenstruck\\\\Foundry\\\\Persistence\\\\Proxy\\<object\\>\\:\\:getLaunchPoints\\(\\)\\.$#"
+			count: 1
+			path: src/Factory/EventParticipantFactory.php
+
+		-
 			message: "#^Call to an undefined method Faker\\\\Generator\\:\\:state\\(\\)\\.$#"
 			count: 1
 			path: src/Factory/LocationFactory.php
@@ -179,8 +184,3 @@ parameters:
 			message: "#^Attribute class JetBrains\\\\PhpStorm\\\\ArrayShape does not exist\\.$#"
 			count: 1
 			path: src/Twig/Components/TestimonialComponent.php
-
-		-
-			message: "#^Call to static method getBase32RowPointer\\(\\) on an unknown class UuidFactory\\.$#"
-			count: 1
-			path: src/Twig/Runtime/UuidFormaterRuntime.php

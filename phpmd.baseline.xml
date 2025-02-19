@@ -58,17 +58,16 @@
   <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="src/Entity/Location.php" method="TYPES"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Entity/PrayerTeam.php"/>
   <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Entity/Traits/EntityIdTrait.php"/>
-  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Entity/Traits/EntityIdTrait.php"/>
-  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/EventSubscriber/DoctrineSubscriber.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/EventSubscriber/MaintenanceModeSubscriber.php"/>
   <violation rule="PHPMD\Rule\Naming\LongClassName" file="src/Exception/MissingMailerContextRequiredValuesException.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Exception/MissingMailerContextRequiredValuesException.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Factory/ContactPersonFactory.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\MissingImport" file="src/Factory/EventFactory.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Factory/EventFactory.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Factory/EventParticipantFactory.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Factory/LeaderFactory.php"/>
-  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Factory/LocationFactory.php"/>
   <violation rule="PHPMD\Rule\CleanCode\IfStatementAssignment" file="src/Factory/LocationFactory.php" method="allLaunchPoints"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Factory/LocationFactory.php"/>
   <violation rule="PHPMD\Rule\CleanCode\IfStatementAssignment" file="src/Factory/PersonFactory.php" method="findByEmailOrPhone"/>
   <violation rule="PHPMD\Rule\CleanCode\IfStatementAssignment" file="src/Factory/PersonFactory.php" method="findByEmailOrPhoneOrCreate"/>
   <violation rule="PHPMD\Rule\Design\LongMethod" file="src/Form/AttendeeEventParticipantType.php" method="buildForm"/>
@@ -105,5 +104,4 @@
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Settings/SettingsEnumConverter.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Twig/Components/TestimonialCollectionComponent.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Twig/Components/TestimonialCollectionComponent.php"/>
-  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Twig/Runtime/UuidFormaterRuntime.php"/>
 </phpmd-baseline>

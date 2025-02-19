@@ -3,34 +3,9 @@
 namespace App\Factory;
 
 use App\Entity\Event;
-use App\Repository\EventRepository;
-use DateInterval;
-use DateTime;
-use Symfony\Component\Uid\Uuid;
-use Zenstruck\Foundry\ModelFactory;
-use Zenstruck\Foundry\Proxy;
-use Zenstruck\Foundry\RepositoryProxy;
+use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
-/**
- * @extends ModelFactory<Event>
- *
- * @method        Event|Proxy                     create(array|callable $attributes = [])
- * @method static Event|Proxy                     createOne(array $attributes = [])
- * @method static Event|Proxy                     find(object|array|mixed $criteria)
- * @method static Event|Proxy                     findOrCreate(array $attributes)
- * @method static Event|Proxy                     first(string $sortedField = 'id')
- * @method static Event|Proxy                     last(string $sortedField = 'id')
- * @method static Event|Proxy                     random(array $attributes = [])
- * @method static Event|Proxy                     randomOrCreate(array $attributes = [])
- * @method static EventRepository|RepositoryProxy repository()
- * @method static Event[]|Proxy[]                 all()
- * @method static Event[]|Proxy[]                 createMany(int $number, array|callable $attributes = [])
- * @method static Event[]|Proxy[]                 createSequence(iterable|callable $sequence)
- * @method static Event[]|Proxy[]                 findBy(array $attributes)
- * @method static Event[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
- * @method static Event[]|Proxy[]                 randomSet(int $number, array $attributes = [])
- */
-final class EventFactory extends ModelFactory
+final class EventFactory extends PersistentProxyObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -41,23 +16,38 @@ final class EventFactory extends ModelFactory
     }
 
     /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
-     *
-     * TODO remove row pointer once DoctrineEvent Hook is used
+     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
      */
-    protected function getDefaults(): array
+    protected function initialize(): static
+    {
+        return $this
+            // ->afterInstantiate(function(Event $event): void {})
+        ;
+    }
+
+    public static function getClass(): string
+    {
+        return self::class();
+    }
+
+    public static function class(): string
+    {
+        return Event::class;
+    }
+
+    protected function defaults(): array|callable
     {
         $start = self::faker()->dateTimeBetween('+1 month', '+1 year');
-        $end = new DateTime($start->format('Y-m-d H:i:s'));
-        $end->add(new DateInterval('P2D'));
+        $end = new \DateTime($start->format('Y-m-d H:i:s'));
+        $end->add(new \DateInterval('P2D'));
 
         return [
             'createdAt' => self::faker()->dateTime(),
             'end' => $end,
             'location' => LocationFactory::new('event'),
             'name' => $start->format('M Y').' Men\'s Encounter',
-            'registrationDeadLineServers' => $start->add(new DateInterval('P2W')), // self::faker()->dateTime(),
-            'rowPointer' => new Uuid(self::faker()->uuid()),
+            'registrationDeadLineServers' => $start->add(new \DateInterval('P2W')), // self::faker()->dateTime(),
+
             'start' => $start,
             'updatedAt' => self::faker()->dateTime(),
             'launchPoints' => LocationFactory::allLaunchPoints(),
@@ -65,21 +55,7 @@ final class EventFactory extends ModelFactory
             'active' => true,
             'registrationOpen' => true,
             'checkInToken' => bin2hex(random_bytes(32)),
+            'registrationStarted' => true,
         ];
-    }
-
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
-     */
-    protected function initialize(): self
-    {
-        return $this
-            // ->afterInstantiate(function(Event $event): void {})
-        ;
-    }
-
-    protected static function getClass(): string
-    {
-        return Event::class;
     }
 }

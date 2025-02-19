@@ -131,7 +131,7 @@ class AttendeeEventParticipantType extends AbstractType
             ]);
         $launchPointOptions = [
             'placeholder' => 'Please choose a Launch Point',
-            'help' => 'The Launch Point is the area location we will meet up before attending Encounter.',
+            'help' => 'The Launch Point is the location in the list below that is closest to you and where we will initially meet. If you are located more than 100 miles from one of these locations, please select "Venue" and we will contact you with more details.',
             'class' => Location::class,
             'label' => 'Launch Point',
             'required' => true,

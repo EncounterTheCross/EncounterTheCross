@@ -8,6 +8,7 @@ twig:
         'assets/css': styles
     globals:
         ga_tracking: 'UA-xxxxx-x'
+    file_name_pattern: '*.twig'
 
 when@test:
     twig:

@@ -10,7 +10,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class EventParticapentToEventPrayerTeamServerTransformer implements DataTransformerInterface
 {
-    public function transform(mixed $value)
+    public function transform(mixed $value): ?EventPrayerTeamServer
     {
         if (null === $value) {
             return null;
@@ -31,7 +31,7 @@ class EventParticapentToEventPrayerTeamServerTransformer implements DataTransfor
         return $prayerAssignment;
     }
 
-    public function reverseTransform(mixed $value)
+    public function reverseTransform(mixed $value): ?EventParticipant
     {
         if (null === $value) {
             return null;

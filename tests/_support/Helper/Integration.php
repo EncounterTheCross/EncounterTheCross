@@ -10,7 +10,7 @@ namespace App\Tests\Helper;
 use App\DataFixtures\AppFixtures;
 use Codeception\Exception\ModuleException;
 use Codeception\Exception\ModuleRequireException;
-use Codeception\Module\Doctrine2;
+use Codeception\Module\Doctrine;
 
 class Integration extends \Codeception\Module
 {
@@ -22,8 +22,8 @@ class Integration extends \Codeception\Module
     {
         parent::_beforeSuite($settings);
 
-        $doctrine = $this->getModule('Doctrine2');
-        if ($doctrine instanceof Doctrine2) {
+        $doctrine = $this->getModule('Doctrine');
+        if ($doctrine instanceof Doctrine) {
             $doctrine->loadFixtures(AppFixtures::class, false);
         }
     }

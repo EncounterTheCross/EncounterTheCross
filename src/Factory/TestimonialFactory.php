@@ -3,32 +3,9 @@
 namespace App\Factory;
 
 use App\Entity\Testimonial;
-use App\Repository\TestimonialRepository;
-use Symfony\Component\Uid\Uuid;
-use Zenstruck\Foundry\ModelFactory;
-use Zenstruck\Foundry\Proxy;
-use Zenstruck\Foundry\RepositoryProxy;
+use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
-/**
- * @extends ModelFactory<Testimonial>
- *
- * @method        Testimonial|Proxy                     create(array|callable $attributes = [])
- * @method static Testimonial|Proxy                     createOne(array $attributes = [])
- * @method static Testimonial|Proxy                     find(object|array|mixed $criteria)
- * @method static Testimonial|Proxy                     findOrCreate(array $attributes)
- * @method static Testimonial|Proxy                     first(string $sortedField = 'id')
- * @method static Testimonial|Proxy                     last(string $sortedField = 'id')
- * @method static Testimonial|Proxy                     random(array $attributes = [])
- * @method static Testimonial|Proxy                     randomOrCreate(array $attributes = [])
- * @method static TestimonialRepository|RepositoryProxy repository()
- * @method static Testimonial[]|Proxy[]                 all()
- * @method static Testimonial[]|Proxy[]                 createMany(int $number, array|callable $attributes = [])
- * @method static Testimonial[]|Proxy[]                 createSequence(iterable|callable $sequence)
- * @method static Testimonial[]|Proxy[]                 findBy(array $attributes)
- * @method static Testimonial[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
- * @method static Testimonial[]|Proxy[]                 randomSet(int $number, array $attributes = [])
- */
-final class TestimonialFactory extends ModelFactory
+final class TestimonialFactory extends PersistentProxyObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -41,36 +18,36 @@ final class TestimonialFactory extends ModelFactory
     }
 
     /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
-     *
-     * @todo add your default values here
-     */
-    protected function getDefaults(): array
-    {
-        return [
-            'name' => self::faker()->firstNameMale(),
-            'quote' => self::faker()->paragraph(),
-            'rowPointer' => new Uuid(self::faker()->uuid()),
-            'email' => self::faker()->email(),
-            'attendedAt' => self::faker()->city(),
-            'city' => self::faker()->city(),
-            'sharable' => 1,
-            'approved' => self::faker()->boolean(),
-        ];
-    }
-
-    /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
      */
-    protected function initialize(): self
+    protected function initialize(): static
     {
         return $this
             // ->afterInstantiate(function(Testimonial $testimonial): void {})
         ;
     }
 
-    protected static function getClass(): string
+    public static function getClass(): string
+    {
+        return self::class();
+    }
+
+    public static function class(): string
     {
         return Testimonial::class;
+    }
+
+    protected function defaults(): array|callable
+    {
+        return [
+            'name' => self::faker()->firstNameMale(),
+            'quote' => self::faker()->paragraph(),
+
+            'email' => self::faker()->email(),
+            'attendedAt' => self::faker()->city(),
+            'city' => self::faker()->city(),
+            'sharable' => 1,
+            'approved' => self::faker()->boolean(),
+        ];
     }
 }

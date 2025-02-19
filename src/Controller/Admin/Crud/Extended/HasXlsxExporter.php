@@ -28,14 +28,14 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 trait HasXlsxExporter
 {
-    /**
+    /*
      * This is not type hinted do to class using that has extention.
      *
      * @see AbstractController
      *
      * @var ContainerInterface
      */
-    protected $container;
+//    protected $container;
 
     abstract public function configureFields(string $pageName): iterable;
 

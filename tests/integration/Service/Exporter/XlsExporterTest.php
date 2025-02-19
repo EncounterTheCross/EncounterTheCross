@@ -6,7 +6,7 @@ use App\Entity\Event;
 use App\Entity\EventParticipant;
 use App\Service\Exporter\XlsExporter;
 use App\Tests\IntegrationTester;
-use Codeception\Module\Doctrine2;
+use Codeception\Module\Doctrine;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PHPUnit\Framework\MockObject\MockObject;
 use Yectep\PhpSpreadsheetBundle\Factory;
@@ -112,11 +112,11 @@ class XlsExporterTest extends \Codeception\Test\Unit
         return $spreadsheetFactory;
     }
 
-    protected function getDoctrine(): Doctrine2
+    protected function getDoctrine(): Doctrine
     {
-        $doctrine = $this->getModule('Doctrine2');
-        if (!$doctrine instanceof Doctrine2) {
-            $this->fail('Doctrine2 Module Not Returned!');
+        $doctrine = $this->getModule('Doctrine');
+        if (!$doctrine instanceof Doctrine) {
+            $this->fail('Doctrine Module Not Returned!');
         }
 
         return $doctrine;

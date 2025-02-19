@@ -67,7 +67,6 @@
       <path value="$PROJECT_DIR$/vendor/sebastian/version" />
       <path value="$PROJECT_DIR$/vendor/sebastian/complexity" />
       <path value="$PROJECT_DIR$/vendor/sebastian/recursion-context" />
-      <path value="$PROJECT_DIR$/vendor/sebastian/resource-operations" />
       <path value="$PROJECT_DIR$/vendor/sebastian/code-unit-reverse-lookup" />
       <path value="$PROJECT_DIR$/vendor/sebastian/type" />
       <path value="$PROJECT_DIR$/vendor/sebastian/diff" />
@@ -104,7 +103,6 @@
       <path value="$PROJECT_DIR$/vendor/monolog/monolog" />
       <path value="$PROJECT_DIR$/vendor/scienta/doctrine-json-functions" />
       <path value="$PROJECT_DIR$/vendor/doctrine/collections" />
-      <path value="$PROJECT_DIR$/vendor/ezyang/htmlpurifier" />
       <path value="$PROJECT_DIR$/vendor/theseer/tokenizer" />
       <path value="$PROJECT_DIR$/vendor/symfony/expression-language" />
       <path value="$PROJECT_DIR$/vendor/symfony/clock" />
@@ -209,7 +207,6 @@
       <path value="$PROJECT_DIR$/vendor/stof/doctrine-extensions-bundle" />
       <path value="$PROJECT_DIR$/vendor/enlightn/security-checker" />
       <path value="$PROJECT_DIR$/vendor/pdepend/pdepend" />
-      <path value="$PROJECT_DIR$/vendor/doctrine/annotations" />
       <path value="$PROJECT_DIR$/vendor/fakerphp/faker" />
       <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-bundle" />
       <path value="$PROJECT_DIR$/vendor/doctrine/persistence" />
@@ -230,7 +227,6 @@
       <path value="$PROJECT_DIR$/vendor/markbaker/matrix" />
       <path value="$PROJECT_DIR$/vendor/markbaker/complex" />
       <path value="$PROJECT_DIR$/vendor/twig/cssinliner-extra" />
-      <path value="$PROJECT_DIR$/vendor/doctrine/common" />
       <path value="$PROJECT_DIR$/vendor/tavoniievez/module-foundry" />
       <path value="$PROJECT_DIR$/vendor/endroid/installer" />
       <path value="$PROJECT_DIR$/vendor/endroid/qr-code-bundle" />
@@ -240,7 +236,6 @@
       <path value="$PROJECT_DIR$/vendor/twig/inky-extra" />
       <path value="$PROJECT_DIR$/vendor/twig/twig" />
       <path value="$PROJECT_DIR$/vendor/codeception/module-db" />
-      <path value="$PROJECT_DIR$/vendor/codeception/module-doctrine2" />
       <path value="$PROJECT_DIR$/vendor/codeception/module-phpbrowser" />
       <path value="$PROJECT_DIR$/vendor/codeception/module-filesystem" />
       <path value="$PROJECT_DIR$/vendor/codeception/lib-web" />
@@ -258,7 +253,6 @@
       <path value="$PROJECT_DIR$/vendor/easycorp/easyadmin-bundle" />
       <path value="$PROJECT_DIR$/vendor/yosymfony/toml" />
       <path value="$PROJECT_DIR$/vendor/zenstruck/foundry" />
-      <path value="$PROJECT_DIR$/vendor/zenstruck/callback" />
       <path value="$PROJECT_DIR$/vendor/react/stream" />
       <path value="$PROJECT_DIR$/vendor/react/promise" />
       <path value="$PROJECT_DIR$/vendor/react/socket" />
@@ -309,6 +303,12 @@
       <path value="$PROJECT_DIR$/vendor/symfony/psr-http-message-bridge" />
       <path value="$PROJECT_DIR$/vendor/sentry/sentry-symfony" />
       <path value="$PROJECT_DIR$/vendor/sentry/sentry" />
+      <path value="$PROJECT_DIR$/vendor/symfony/apache-pack" />
+      <path value="$PROJECT_DIR$/vendor/twig/html-extra" />
+      <path value="$PROJECT_DIR$/vendor/codeception/module-doctrine" />
+      <path value="$PROJECT_DIR$/vendor/staabm/side-effects-detector" />
+      <path value="$PROJECT_DIR$/vendor/symfony/type-info" />
+      <path value="$PROJECT_DIR$/vendor/zenstruck/callback" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1">

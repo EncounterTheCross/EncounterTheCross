@@ -8,7 +8,7 @@ namespace App\Tests\Helper;
 use App\DataFixtures\AppFixtures;
 use Codeception\Configuration;
 use Codeception\Exception\ModuleException;
-use Codeception\Module\Doctrine2;
+use Codeception\Module\Doctrine;
 use Codeception\Module\Filesystem;
 use Codeception\Module\Symfony;
 use Codeception\TestInterface;
@@ -52,8 +52,8 @@ class Functional extends \Codeception\Module
     {
         parent::_beforeSuite($settings);
 
-        /** @var Doctrine2 $doctrine */
-        $doctrine = $this->getModule('Doctrine2');
+        /** @var Doctrine $doctrine */
+        $doctrine = $this->getModule('Doctrine');
         $doctrine->loadFixtures(AppFixtures::class, false);
     }
 

@@ -29,7 +29,7 @@ class LeaderAuthenticator extends AbstractLoginFormAuthenticator
     {
         $email = $request->request->get('email', '');
 
-        $request->getSession()->set(Security::LAST_USERNAME, $email);
+        $request->getSession()->set('_security.last_username', $email);
 
         return new Passport(
             new UserBadge($email),
