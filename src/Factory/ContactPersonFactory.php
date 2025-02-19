@@ -15,7 +15,7 @@ final class ContactPersonFactory extends PersistentProxyObjectFactory
         parent::__construct();
     }
 
-    public static function findByPersonDetailsOrCreate($email, $phone)
+    public static function findByPersonDetailsOrCreate($email, $phone): ContactPersonFactory
     {
         return self::new(['details' => PersonFactory::findByEmailOrPhoneOrCreate($email, $phone)]);
     }
@@ -23,7 +23,7 @@ final class ContactPersonFactory extends PersistentProxyObjectFactory
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
      */
-    protected function initialize(): self
+    protected function initialize(): static
     {
         return $this
             // ->afterInstantiate(function(ContactPerson $contactPerson): void {})

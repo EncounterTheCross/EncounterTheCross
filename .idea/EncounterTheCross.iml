@@ -80,13 +80,11 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/cache" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/event-dispatcher" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/link" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/annotations" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/inflector" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/webmozart/assert" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/monolog/monolog" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpstan/phpdoc-parser" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/egulias/email-validator" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/common" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/doctrine-messenger" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/doctrine-bridge" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/messenger" />
@@ -153,7 +151,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/object-enumerator" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/object-reflector" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/recursion-context" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/resource-operations" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/type" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/version" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/browser-kit" />
@@ -165,7 +162,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/web-profiler-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/theseer/tokenizer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/zenstruck/assert" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/zenstruck/callback" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/zenstruck/foundry" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/html-to-markdown" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/lorenzo/pinky" />
@@ -263,6 +259,10 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/ux-chartjs" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/codeception/module-doctrine" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/twig/html-extra" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/dama/doctrine-test-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/staabm/side-effects-detector" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/type-info" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/zenstruck/callback" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

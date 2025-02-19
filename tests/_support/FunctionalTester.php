@@ -60,7 +60,7 @@ class FunctionalTester extends \Codeception\Actor
     /**
      * @Given /^I am logged in as a Leader$/
      */
-    public function iAmLoggedInAsALeader()
+    public function iAmLoggedInAsALeader(): void
     {
         $this->amOnPage('/login');
         $this->seeElement('form');
@@ -89,7 +89,7 @@ class FunctionalTester extends \Codeception\Actor
      *
      * @Then /^I should see a[n]? "([^"]*)" action?$/
      */
-    public function iSeeAction($action)
+    public function iSeeAction($action): void
     {
         $this->seeElement($this->getActionSelector(
             self::createActionClass($action)
@@ -101,7 +101,7 @@ class FunctionalTester extends \Codeception\Actor
      *
      * Use this method to navigate to new data generated in the test
      */
-    public function iAmOnTheNewAdminDetailPage($objectType)
+    public function iAmOnTheNewAdminDetailPage($objectType): void
     {
         $subEntity = [
             'Attendee' => EventParticipant::class,
@@ -132,7 +132,7 @@ class FunctionalTester extends \Codeception\Actor
      *
      * Use this method for data that was generated in DoctrineFixtures
      */
-    public function iAmOnTheAdminPage($objectType, $page)
+    public function iAmOnTheAdminPage($objectType, $page): void
     {
         // TODO: This will need adjusted for the other admin pages as well
 
@@ -144,7 +144,7 @@ class FunctionalTester extends \Codeception\Actor
         }
     }
 
-    protected function iAmOnTheListPage($objectType)
+    protected function iAmOnTheListPage($objectType): void
     {
         match ($objectType) {
             'Events' => $this->amOnAdminIndexPageFor(
@@ -180,7 +180,7 @@ class FunctionalTester extends \Codeception\Actor
      *
      * @When /^I click on the action row menu$/
      */
-    public function iClickOnTheActionMenuForAn($objectType = null)
+    public function iClickOnTheActionMenuForAn($objectType = null): void
     {
         $locator = Locator::combine('tbody', Locator::firstElement('tr'));
         //        if (null !== $objectType) {
@@ -220,7 +220,7 @@ class FunctionalTester extends \Codeception\Actor
         $this->click($locator);
     }
 
-    protected function iAmOnTheDetailPage($objectType, $id = null)
+    protected function iAmOnTheDetailPage($objectType, $id = null): void
     {
         match ($objectType) {
             'Events' => $this->amOnAdminDetailPageFor(
@@ -262,7 +262,7 @@ class FunctionalTester extends \Codeception\Actor
     /**
      * @When /^I click and download the "([^"]*)" action$/
      */
-    public function iClickAndDownloadTheAction($action)
+    public function iClickAndDownloadTheAction($action): void
     {
         $this->receiveFileResponse($this->getActionSelector(
             self::createActionClass($action)
@@ -272,7 +272,7 @@ class FunctionalTester extends \Codeception\Actor
     /**
      * @When /^I click and download the global "([^"]*)" action$/
      */
-    public function iClickAndDownloadTheGlobalAction($action)
+    public function iClickAndDownloadTheGlobalAction($action): void
     {
         $this->receiveFileResponse($this->getGlobalActionSelector(
             self::createCamelCaseActionClass($action)
@@ -292,7 +292,7 @@ class FunctionalTester extends \Codeception\Actor
     /**
      * @When /^I click the "([^"]*)" action$/
      */
-    public function iClickTheAction($action)
+    public function iClickTheAction($action): void
     {
         $this->click($this->getActionSelector(
             self::createActionClass($action)
@@ -302,7 +302,7 @@ class FunctionalTester extends \Codeception\Actor
     /**
      * @Then /^I receive the xlsx file$/
      */
-    public function iReceiveTheXlsxFile()
+    public function iReceiveTheXlsxFile(): void
     {
         $this->seeFileFound('Export.xlsx', Configuration::outputDir());
     }
@@ -310,7 +310,7 @@ class FunctionalTester extends \Codeception\Actor
     /**
      * @Given /^I verify there are tabs$/
      */
-    public function iVerifyThereAreTabs()
+    public function iVerifyThereAreTabs(): void
     {
         $sheetCount = $this->getSpreedSheetTabCount('Export.xlsx');
 
@@ -321,7 +321,7 @@ class FunctionalTester extends \Codeception\Actor
     /**
      * @Given /^I verify there are not tabs$/
      */
-    public function iVerifyThereAreNotTabs()
+    public function iVerifyThereAreNotTabs(): void
     {
         $sheetCount = $this->getSpreedSheetTabCount('Export.xlsx');
 
@@ -329,7 +329,7 @@ class FunctionalTester extends \Codeception\Actor
         $this->deleteExportFile('Export.xlsx');
     }
 
-    private static function createActionClass($action)
+    private static function createActionClass($action): string
     {
         return strtolower(str_replace(' ', '_', $action));
     }
@@ -348,7 +348,7 @@ class FunctionalTester extends \Codeception\Actor
     /**
      * @Then /^I should see Form Field label of "([^"]*)"$/
      */
-    public function iShouldSeeFormFieldDisplayOf($fieldLabel)
+    public function iShouldSeeFormFieldDisplayOf($fieldLabel): void
     {
         $this->see($fieldLabel);
     }
@@ -356,7 +356,7 @@ class FunctionalTester extends \Codeception\Actor
     /**
      * @Then /^I should be on "([^"]*)" "([^"]*)" Page$/
      */
-    public function iShouldBeOnPage($entityCrud, $page)
+    public function iShouldBeOnPage($entityCrud, $page): void
     {
         $crudActionPart = 'crudAction=';
         $crudActionPart .= match (strtolower($page)) {
@@ -387,7 +387,7 @@ class FunctionalTester extends \Codeception\Actor
      * @Given /^I have a new "([^"]*)"$/
      * @Given /^I have a new "([^"]*)" with email "([^"]*)"$/
      */
-    public function iHaveInDatabase($entity, $email = null)
+    public function iHaveInDatabase($entity, $email = null): void
     {
         $subEntity = [
             'Attendee' => EventParticipant::class,
@@ -452,7 +452,7 @@ class FunctionalTester extends \Codeception\Actor
     /**
      * @Given /^I am on an Event "([^"]*)" registration$/
      */
-    public function iAmOnRegistration($attendeeType)
+    public function iAmOnRegistration($attendeeType): void
     {
         if (
             !array_key_exists(Event::class, $this->entities)
@@ -478,7 +478,7 @@ class FunctionalTester extends \Codeception\Actor
     /**
      * @Given /^I fill out registration with "([^"]*)" info$/
      */
-    public function iFillOutRegistrationWithInfo($attendeeType)
+    public function iFillOutRegistrationWithInfo($attendeeType): void
     {
         if (!in_array(strtolower($attendeeType), ['attendee', 'server'])) {
             throw new FunctionalTestLogicException(sprintf('Expected "attendee" or "server" as the event type, recieved %s', $attendeeType));
@@ -543,7 +543,7 @@ class FunctionalTester extends \Codeception\Actor
     /**
      * @Given /^I fill out registration attendee email with "([^"]*)"$/
      */
-    public function iFillOutRegistrationAttendeeEmailWith($email)
+    public function iFillOutRegistrationAttendeeEmailWith($email): void
     {
         // email
         $this->fillField(['name' => 'attendee_event_participant[person][email]'], $email);
@@ -552,7 +552,7 @@ class FunctionalTester extends \Codeception\Actor
     /**
      * @When /^I submit registration$/
      */
-    public function iSubmitRegistration()
+    public function iSubmitRegistration(): void
     {
         $this->click('Register!');
     }
@@ -560,7 +560,7 @@ class FunctionalTester extends \Codeception\Actor
     /**
      * @Then /^I should see "([^"]*)" page$/
      */
-    public function iShouldSeePage($arg1)
+    public function iShouldSeePage($arg1): void
     {
         $this->see('Thank You! Registration Completed.');
     }
@@ -568,7 +568,7 @@ class FunctionalTester extends \Codeception\Actor
     /**
      * @Given /^I should have (\d+) "([^"]*)" in database with different "([^"]*)"$/
      */
-    public function iShouldHaveInDatabaseWithDifferent($quantity, $entityType, $uniqueField)
+    public function iShouldHaveInDatabaseWithDifferent($quantity, $entityType, $uniqueField): void
     {
         if (
             !array_key_exists(Event::class, $this->entities)
