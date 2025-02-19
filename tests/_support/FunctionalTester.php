@@ -430,7 +430,7 @@ class FunctionalTester extends \Codeception\Actor
             );
         }
 
-        $entityObject = $this->make($baseEntityPath.$entity, $attributes);
+        $entityObject = $this->have($baseEntityPath.$entity, $attributes);
 
 
         $this->entities[$baseEntityPath.$entity.$subEntityPath][] = $entityObject;
