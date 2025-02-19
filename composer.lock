@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "83b6678a4744defb893dee1902ef9ab0",
+    "content-hash": "8c57e33f03515d3e26967a4320553e5d",
     "packages": [
         {
             "name": "babdev/pagerfanta-bundle",
@@ -11578,7 +11578,7 @@
         },
         {
             "name": "yectep/phpspreadsheet-bundle",
-            "version": "dev-master",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/redpandacoding/phpspreadsheet-bundle.git",
@@ -11595,7 +11595,6 @@
                 "phpoffice/phpspreadsheet": "~1.16|^2.0",
                 "symfony/framework-bundle": "^4.0|^5.0|^6.0|^7.0"
             },
-            "default-branch": true,
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
@@ -11613,7 +11612,7 @@
             ],
             "description": "A Symfony bundle to integrate with PHPOffice's PhpSpreadsheet library",
             "support": {
-                "source": "https://github.com/redpandacoding/phpspreadsheet-bundle/tree/master"
+                "source": "https://github.com/redpandacoding/phpspreadsheet-bundle/tree/v1.2.0"
             },
             "time": "2025-02-04T02:48:14+00:00"
         }
@@ -16649,7 +16648,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "tavoniievez/module-foundry": 20,
-        "yectep/phpspreadsheet-bundle": 20,
         "zeek/zeek-build-process": 20
     },
     "prefer-stable": true,
