@@ -38,6 +38,7 @@
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Controller/RegistrationController.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/ResetPasswordController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\IfStatementAssignment" file="src/Controller/ResetPasswordController.php" method="checkEmail"/>
+  <violation rule="PHPMD\Rule\CleanCode\MissingImport" file="src/Controller/SecurityLeaderController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/DataFixtures/AppFixtures.php"/>
   <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="src/Entity/Event.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Entity/Event.php"/>
