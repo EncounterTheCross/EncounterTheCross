@@ -1,0 +1,21 @@
+services:
+  stress-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./results:/app/results
+    # Use host network to access services running on the host
+    network_mode: "host"
+    # Add host entries to ensure DNS resolution
+    extra_hosts:
+      - "encounterthecross.test:127.0.0.1"
+    environment:
+      - BASE_URL=https://encounterthecross.test
+    command: >
+      --token YOUR_ACTUAL_TOKEN
+      --browsers 2
+      --checkinsPerBrowser 1
+      --delay 500
+      --output /app/results/stress-test-results.json
+      --debug true
