@@ -45,7 +45,7 @@ final class CheckInForm
     {
         $this->dispatchBrowserEvent('close-modal');
         $this->emit('server-checked-in', [
-            'participant' => $this->participant->getId(),
+            'participantId' => $this->participant->getId(), // Send ID instead of full entity
         ]);
     }
 

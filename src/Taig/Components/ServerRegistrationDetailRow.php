@@ -21,8 +21,11 @@ final class ServerRegistrationDetailRow
 
     #[LiveListener('server-checked-in')]
     public function serverCheckedIn(
-        #[LiveArg] EventParticipant $participant,
+        #[LiveArg] int $participantId,
     ): void {
-        // component will update. nothing to do here
+        // Only re-render if this is the relevant participant
+        if ($participantId === $this->participant->getId()) {
+            // Refresh only the necessary component
+        }
     }
 }
