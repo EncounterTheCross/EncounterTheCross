@@ -43,9 +43,14 @@ final class CheckInForm
     #[LiveAction]
     public function closeModal(): void
     {
-        $this->dispatchBrowserEvent('close-modal');
-        $this->emit('server-checked-in', [
-            'participantId' => $this->participant->getId(), // Send ID instead of full entity
+        // Include the participant ID in the event to target specific modals
+        $this->dispatchBrowserEvent('close-modal', [
+            'participantId' => $this->participant->getId()
+        ]);
+
+        // Use emitUp instead of emit to limit the scope of the event
+        $this->emitUp('server-checked-in', [
+            'participantId' => $this->participant->getId()
         ]);
     }
 

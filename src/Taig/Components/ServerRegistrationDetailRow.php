@@ -3,6 +3,7 @@
 namespace App\Taig\Components;
 
 use App\Entity\EventParticipant;
+use App\Repository\EventParticipantRepository;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\Attribute\LiveListener;
@@ -16,6 +17,11 @@ final class ServerRegistrationDetailRow
     use DefaultActionTrait;
     use ComponentToolsTrait;
 
+    public function __construct(
+        protected EventParticipantRepository $eventParticipantRepository,
+    ) {
+    }
+
     #[LiveProp]
     public EventParticipant $participant;
 
@@ -25,7 +31,11 @@ final class ServerRegistrationDetailRow
     ): void {
         // Only re-render if this is the relevant participant
         if ($participantId === $this->participant->getId()) {
-            // Refresh only the necessary component
+            // Instead of requesting a full re-render,
+            $participantUpdate = $this->eventParticipantRepository->findOneBy(['id' => $participantId]);
+            if (null !== $participantUpdate) {
+                $this->participant = $participantUpdate;
+            }
         }
     }
 }

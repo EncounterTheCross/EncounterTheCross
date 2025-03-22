@@ -1,6 +1,9 @@
 import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
     static targets = ['dialog', 'dynamicContent'];
+    static values = {
+        participantId: String
+    }
 
     observer = null;
     connect() {
@@ -21,15 +24,29 @@ export default class extends Controller {
             });
         }
 
-        this.element.addEventListener('close-modal', () => {
-            console.log('CLOSE WINDOW CALLED')
-            this.close();
-        });
+        // Use a bound method to properly handle event filtering
+        this.boundCloseHandler = this.handleCloseModal.bind(this);
+        document.addEventListener('close-modal', this.boundCloseHandler);
     }
+
+    handleCloseModal(event) {
+        console.log('close-modal event received', event.detail);
+
+        // Only close if this event is meant for this modal
+        // or if no specific participantId was provided
+        if (!event.detail.participantId ||
+            (this.hasParticipantIdValue && event.detail.participantId == this.participantIdValue)) {
+            console.log('Closing modal for participant', this.participantIdValue);
+            this.close();
+        }
+    }
+
     disconnect() {
         if (this.observer) {
             this.observer.disconnect();
         }
+        document.removeEventListener('close-modal', this.boundCloseHandler);
+
         if (this.dialogTarget.open) {
             this.close();
         }
