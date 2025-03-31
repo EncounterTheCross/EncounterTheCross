@@ -2,74 +2,38 @@
 
 namespace App\Controller;
 
-use App\Entity\Event;
-use App\Entity\EventParticipant;
-use App\Form\EventServersType;
-use App\Repository\EventParticipantRepository;
-use App\Repository\EventRepository;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 
 class DevelopmentController extends AbstractController
 {
-    #[Route('/dev/ep')]
-    public function prayerTeams(
-        EventParticipantRepository $eventParticipantRepository,
-        EventRepository $eventRepository,
-        Request $request,
-    ) {
-        $currentEvent = $eventRepository->findUpcomingEvent();
-        $launchPoints = $currentEvent->getLaunchPoints();
-        $launchPointServers = $launchPoints->map(function ($launchPoint) use ($currentEvent) {
-            $servers = $currentEvent->getEventParticipants()->map(function (EventParticipant $eventParticipant) {
-                if ($eventParticipant->isAttendee()) {
-                    return null;
-                }
-
-                return $eventParticipant;
-            });
-
-            return array_values($servers->toArray());
-        });
-
-        $currentEvent->clearEventParticipants();
-        $serverTrainting = new Event();
-        foreach ($launchPointServers as $launchPoint) {
-            foreach ($launchPoint as $server) {
-                if (null === $server) {
-                    continue;
-                }
-                $currentEvent->addEventParticipant($server);
-            }
-        }
-
-        $form = $this->createForm(EventServersType::class, $currentEvent);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            // ... do your form processing, like saving the Task and Tag entities
-            dd($form->getData());
-        }
-
-        return $this->render('admin/crud/PrayerTeamAssignments/server-assignments.html.twig', [
-            'form' => $form,
+    #[Route('/mercure-test', name: 'app_mercure_test', env: 'dev',)]
+    public function index(): Response
+    {
+        return $this->render('tests/mercure.html.twig', [
+            'mercure_public_url' => $_ENV['MERCURE_PUBLIC_URL'] ?? 'https://mercure.encounterthecross.test/.well-known/mercure',
         ]);
     }
 
-    #[Route(
-        '/dev',
-        name: 'app_dev',
-        env: 'dev',
-    )]
-    public function index(EventRepository $repo, KernelInterface $app)
+    #[Route('/mercure-publish', name: 'app_mercure_publish', env: 'dev',)]
+    public function publish(HubInterface $hub): Response
     {
-        dd($app->getBuildDir(), $app->getProjectDir());
-        dd($repo->findUpcomingEvent()?->getPrice());
+        $update = new Update(
+            'https://encounterthecross.test/messages',
+            json_encode([
+                'message' => 'Hello from ' . $_SERVER['HTTP_HOST'] . ' at ' . date('H:i:s'),
+                'from' => $_SERVER['HTTP_HOST'],
+            ])
+        );
 
-        dd($this->container->get('tzunghaor_settings.settings_service.global'));
-        dump($repo->findAllLeadersWithNotificationOnAndActive());
-        dd('test');
+        $hub->publish($update);
+
+        return $this->json([
+            'status' => 'published',
+            'message' => 'Message published from ' . $_SERVER['HTTP_HOST'],
+        ]);
     }
 }
