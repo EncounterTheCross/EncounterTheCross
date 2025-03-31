@@ -1,0 +1,9 @@
+<!-- Debug: participant ID is {{ participant.id }} -->
+<turbo-stream action="replace" target="participant-{{ participant.id }}">
+    <template>
+        <twig:Taig:ServerRegistrationDetailRow
+                :participant="participant"
+                key="{{ participant.id }}"
+        />
+    </template>
+</turbo-stream>

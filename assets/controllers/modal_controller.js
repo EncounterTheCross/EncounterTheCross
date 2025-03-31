@@ -30,7 +30,7 @@ export default class extends Controller {
     }
 
     handleCloseModal(event) {
-        console.log('close-modal event received', event.detail);
+        // console.log('close-modal event received', event.detail);
 
         // Only close if this event is meant for this modal
         // or if no specific participantId was provided

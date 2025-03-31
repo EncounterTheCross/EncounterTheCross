@@ -7,8 +7,10 @@ use App\Entity\EventParticipant;
 use App\Form\ServerTrainingCheckInType;
 use App\Repository\EventRepository;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\UX\Turbo\TurboBundle;
 
 #[Route('/checkin')]
 class CheckInController extends AbstractController
@@ -24,12 +26,4 @@ class CheckInController extends AbstractController
         ]);
     }
 
-    private function createServerCheckinForm(?EventParticipant $participant = null): FormInterface
-    {
-        $participant = $participant ?? new EventParticipant();
-
-        return $this->createForm(ServerTrainingCheckInType::class, $participant, [
-            //            'action' => $participant->getId() ? $this->generateUrl('app_voyage_edit', ['id' => $participant->getId()]) : $this->generateUrl('app_voyage_new'),
-        ]);
-    }
 }
