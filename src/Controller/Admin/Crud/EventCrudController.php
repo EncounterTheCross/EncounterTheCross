@@ -12,19 +12,22 @@ use App\Enum\EventParticipantStatusEnum;
 use App\Field\QrField;
 use App\Repository\LocationRepository;
 use App\Service\Exporter\XlsExporter;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\DateTimeFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Form\Type\ComparisonType;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
-use LogicException;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -58,6 +61,18 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
         $entity->setCheckInToken(bin2hex(random_bytes(32)));
 
         return $entity;
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add(DateTimeFilter::new('createdAt')
+                ->setFormTypeOption('mapped', true)
+                ->setFormTypeOption('data', [
+                    'comparison' => ComparisonType::GTE,
+                    'value' => (new \DateTime('now'))->setTime(0, 0),
+                ])
+            );
     }
 
     public function configureFields(string $pageName): iterable
@@ -110,6 +125,14 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
             ->setCurrency('USD')
             ->hideOnIndex()
         ;
+        yield BooleanField::new('active')
+            ->hideOnDetail()
+            ->hideOnIndex()
+        ;
+        yield BooleanField::new('registration_open')
+            ->hideOnDetail()
+            ->hideOnIndex()
+        ;
         yield Field::new('TotalServers')
             ->hideOnForm();
         yield Field::new('TotalAttendees')
@@ -146,7 +169,7 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
                     return false;
                 }
 
-                return new DateTime() < $event->getStart();
+                return new \DateTime() < $event->getStart();
             })
         ;
 
@@ -161,7 +184,7 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
                     return false;
                 }
 
-                return new DateTime() < $event->getStart();
+                return new \DateTime() < $event->getStart();
             })
         ;
 
@@ -203,7 +226,7 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
         $event = $adminContext->getEntity()->getInstance();
 
         if (!$event instanceof Event) {
-            throw new LogicException(sprintf('Trying to edit something other than an Event!'));
+            throw new \LogicException(sprintf('Trying to edit something other than an Event!'));
         }
 
         $event->setRegistrationOpen(!$event->isRegistrationOpen());
@@ -222,7 +245,7 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
     {
         $event = $adminContext->getEntity()->getInstance();
         if (!$event instanceof Event) {
-            throw new LogicException('Entity is missing or not an Event');
+            throw new \LogicException('Entity is missing or not an Event');
         }
 
         $spreadsheet = $exporter->createEventReport(
@@ -238,7 +261,7 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
     {
         $event = $adminContext->getEntity()->getInstance();
         if (!$event instanceof Event) {
-            throw new LogicException('Entity is missing or not an Event');
+            throw new \LogicException('Entity is missing or not an Event');
         }
 
         $spreadsheet = $exporter->createEventReportByLaunchPoint(

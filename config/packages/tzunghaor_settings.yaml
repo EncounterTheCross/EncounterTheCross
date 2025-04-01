@@ -11,8 +11,7 @@ tzunghaor_settings:
           dir: '%kernel.project_dir%/src/Settings/Global'
           prefix: App\Settings\Global\
 
-framework:
-  # the form is not saving, due to default symfony configuration
-  # https://github.com/tzunghaor/settings-bundle/issues/3
-  # https://github.com/symfony/symfony/issues/45278
-#  http_method_override: true
+when@prod:
+  tzunghaor_settings:
+    global:
+      cache: 'cache.app'

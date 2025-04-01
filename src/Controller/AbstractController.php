@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Settings\Global\MercureSettings;
 use App\Settings\Global\SystemSettings;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as CoreAbstractController;
@@ -21,10 +22,20 @@ class AbstractController extends CoreAbstractController
 
     protected function getGlobalSettings(): SystemSettings
     {
+        return $this->getSettingsService()->getSection(SystemSettings::class);
+    }
+
+    protected function getMercureSettings(): MercureSettings
+    {
+        return $this->getSettingsService()->getSection(MercureSettings::class);
+    }
+
+    private function getSettingsService(): SettingsService
+    {
         if (!$this->container->has('tzunghaor_settings.settings_service.global')) {
             throw new LogicException('The SettingsBundle is not registered in your application. Try running "composer require tzunghaor/settings-bundle".');
         }
 
-        return $this->container->get('tzunghaor_settings.settings_service.global')->getSection(SystemSettings::class);
+        return $this->container->get('tzunghaor_settings.settings_service.global');
     }
 }

@@ -1,0 +1,13 @@
+{
+  "name": "symfony-checkin-stress-test",
+  "version": "1.0.0",
+  "description": "Stress test for Symfony Live Component check-in functionality",
+  "main": "stress-test.js",
+  "scripts": {
+    "test": "node stress-test.js"
+  },
+  "dependencies": {
+    "puppeteer": "^19.7.5",
+    "yargs": "^17.7.2"
+  }
+}

@@ -1,0 +1,83 @@
+{# templates/mercure_test/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Mercure Test{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Mercure Real-time Test</h1>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Send Message</h5>
+                    </div>
+                    <div class="card-body">
+                        <button id="publish-btn" class="btn btn-primary">Publish Message</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Received Messages</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul id="messages" class="list-group">
+                            <li class="list-group-item text-muted">No messages yet</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Connect to the Mercure hub
+            const url = new URL('{{ mercure_public_url }}');
+            url.searchParams.append('topic', 'https://encounterthecross.test/messages');
+
+            const eventSource = new EventSource(url);
+            const messagesList = document.getElementById('messages');
+
+            // Listen for messages
+            eventSource.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                console.log(data);
+                const li = document.createElement('li');
+                li.classList.add('list-group-item');
+
+                if (data.from === window.location.host) {
+                    li.classList.add('list-group-item-success');
+                } else {
+                    li.classList.add('list-group-item-info');
+                }
+
+                li.textContent = `${data.message}`;
+
+                // Remove "No messages yet" if it's there
+                if (messagesList.children.length === 1 &&
+                    messagesList.children[0].textContent === 'No messages yet') {
+                    messagesList.innerHTML = '';
+                }
+
+                messagesList.prepend(li);
+            };
+
+            // Handle publish button click
+            const publishBtn = document.getElementById('publish-btn');
+            publishBtn.addEventListener('click', async () => {
+                try {
+                    const response = await fetch('/mercure-publish', {
+                        method: 'POST'
+                    });
+                    const result = await response.json();
+                    console.log('Published:', result);
+                } catch (error) {
+                    console.error('Error publishing message:', error);
+                }
+            });
+        });
+    </script>
+{% endblock %}

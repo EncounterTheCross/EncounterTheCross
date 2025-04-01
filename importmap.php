@@ -97,4 +97,7 @@ return [
     'chart.js' => [
         'version' => '3.9.1',
     ],
+    'stimulus-use' => [
+        'version' => '0.52.3',
+    ],
 ];

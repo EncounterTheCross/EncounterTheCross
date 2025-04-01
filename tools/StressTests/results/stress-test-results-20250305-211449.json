@@ -1,0 +1,67 @@
+{
+  "config": {
+    "eventToken": "7fa189d12ed431c6c3d17bdd39f9c778db08015e8ba991c55ce2b392559809b8",
+    "concurrentBrowsers": 2,
+    "checkinsPerBrowser": 1,
+    "operationDelay": 500,
+    "operationTimeout": 30000,
+    "headless": true,
+    "outputFile": "/app/results/stress-test-results-20250305-211449.json",
+    "baseUrl": "https://encounterthecross.test",
+    "debug": true
+  },
+  "testDate": "2025-03-06T03:14:54.682Z",
+  "totalDuration": 5031,
+  "totalBrowsers": 2,
+  "totalCheckIns": 2,
+  "successfulCheckIns": 1,
+  "failedCheckIns": 1,
+  "successRate": "50.00",
+  "checkInTimes": {
+    "average": "1.72",
+    "min": "1.72",
+    "max": "1.72"
+  },
+  "detailedResults": [
+    {
+      "instanceId": 1,
+      "checkIns": [
+        {
+          "checkInId": 1,
+          "startTime": 1741230892923,
+          "endTime": 1741230893924,
+          "duration": 1001,
+          "success": false,
+          "participantName": "Unknown-1-0",
+          "paymentOption": "Already Paid",
+          "error": "Node is either not clickable or not an HTMLElement"
+        }
+      ],
+      "startTime": 1741230889651,
+      "endTime": 1741230893962,
+      "totalDuration": 4311,
+      "success": false,
+      "error": null
+    },
+    {
+      "instanceId": 2,
+      "checkIns": [
+        {
+          "checkInId": 1,
+          "startTime": 1741230892920,
+          "endTime": 1741230894644,
+          "duration": 1724,
+          "success": true,
+          "participantName": "Unknown-2-0",
+          "paymentOption": "Already Paid",
+          "error": null
+        }
+      ],
+      "startTime": 1741230889653,
+      "endTime": 1741230894682,
+      "totalDuration": 5029,
+      "success": true,
+      "error": null
+    }
+  ]
+}

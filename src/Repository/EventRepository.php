@@ -3,8 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Event;
+use App\Entity\EventParticipant;
 use App\Repository\Traits\UuidFinderTrait;
-use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -59,8 +59,6 @@ class EventRepository extends ServiceEntityRepository
     public function findAllUpcomingEventsInOrder()
     {
         $qb = $this->findAllUpcomingEventsInOrderQueryBuilder();
-        dump(new DateTime());
-        dd($qb->getQuery()->getResult());
 
         return $qb->getQuery()->getResult();
     }
@@ -88,10 +86,49 @@ class EventRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('e')
             ->where('e.start < :today')
-            ->setParameter('today', new DateTime('today'))
+            ->setParameter('today', new \DateTime('today'))
             ->orderBy('e.start', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function findByServerCheckInToken(string $token): ?Event
+    {
+        $qb = $this->findByServerCheckInTokenQueryBuilder($token);
+
+        $results = $qb->getQuery()
+            ->getResult()
+        ;
+
+        if (0 === count($results) || count($results) > 1) {
+            // TODO: add logging for more than one found
+            return null;
+        }
+
+        return $results[0];
+    }
+
+    public function findByServerCheckInTokenQueryBuilder(string $token): QueryBuilder
+    {
+        return $this->createQueryBuilder('e')
+            ->select('e, l, lp, ep, person, eppt, lpc') // Explicitly select needed entities
+//            ->select('partial e.{id, name, start, end}, partial lp.{id, name}, partial ep.{id, type}, partial person.{id, firstName, lastName}, l, eppt')
+            ->leftJoin('e.location', 'l')  // leftJoin to main event location
+            ->leftJoin('e.launchPoints', 'lp')  // leftJoin to launch points
+            ->leftJoin('lp.eventAttendees', 'ep', 'WITH', 'ep.type = :type AND ep.status = :status AND ep.event = e')
+            ->leftJoin('ep.person', 'person')
+            ->leftJoin('ep.eventPrayerTeamServers', 'eppt')
+            ->leftJoin('lp.launchPointContacts','lpc')
+            ->where('e.checkInToken = :token')
+            ->andWhere('e.active = :active')
+            ->setParameter('token', $token)
+            ->setParameter('type', EventParticipant::TYPE_SERVER)
+            ->setParameter('status', \App\Enum\EventParticipantStatusEnum::ATTENDING->value)
+            ->setParameter('active', true)
+            ->orderBy('person.lastName', 'ASC')
+            ->addOrderBy('person.firstName', 'ASC')
+            ->addOrderBy('lp.name', 'ASC')
+        ;
     }
 }
