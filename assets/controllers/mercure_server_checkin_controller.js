@@ -22,6 +22,7 @@ export default class extends Controller {
     // }
 
     connect() {
+        console.log('connecting...');
         this.eventSource = new EventSource(this.mercureUrlValue);
         this.eventSource.onmessage = event => {
             let data = JSON.parse(event.data);
@@ -61,6 +62,7 @@ export default class extends Controller {
                     '                        </div>';
             }
         }
+        console.log('Listening...');
     }
 
     disconnect() {
