@@ -3,14 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Controller\AbstractController;
-use App\Entity\EventParticipant;
-use App\Form\ServerTrainingCheckInType;
 use App\Repository\EventRepository;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\UX\Turbo\TurboBundle;
 
 #[Route('/checkin')]
 class CheckInController extends AbstractController
@@ -23,7 +18,7 @@ class CheckInController extends AbstractController
         return $this->render('tailwind/checkin.html.twig', [
             'launches' => $event->getLaunchPoints(),
             'event' => $event,
+            'useMercure' => $this->getMercureSettings()->isActive(),
         ]);
     }
-
 }

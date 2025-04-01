@@ -1,10 +1,11 @@
 {% extends 'tailwind.base.html.twig' %}
 
 {% block content %}
-    <div {{ stimulus_controller('mercure-server-checkin', {
-        mercureUrl: mercure('server-training-checkin'),
-    }) }}></div>
-{#    <div {{ turbo_stream_listen(mercure('server-training-checkin')) }}></div>#}
+    {% if useMercure %}
+        <div {{ stimulus_controller('mercure-server-checkin', {
+            mercureUrl: mercure('server-training-checkin'),
+        }) }}></div>
+    {% endif %}
     <div class="px-4 sm:px-6 lg:px-8 mx-auto px-4 py-8">
         <div class="sm:flex sm:items-center  overflow-hidden">
             <div class="sm:flex-auto mb-3">
@@ -50,24 +51,3 @@
 
 
 {% endblock %}
-
-{#{% block javascripts %}#}
-{#    {{ parent() }}#}
-{#    <script>#}
-{#        document.addEventListener('DOMContentLoaded', () => {#}
-{#            // Connect to the Mercure hub#}
-{#            const url = new URL('{{ mercure_public_url }}');#}
-{#            url.searchParams.append('topic', 'server-training-checkin');#}
-
-{#            const eventSource = new EventSource(url);#}
-
-{#            // Listen for messages#}
-{#            eventSource.onmessage = (event) => {#}
-{#                const data = JSON.parse(event.data);#}
-{#                console.log(data);#}
-{#            };#}
-
-
-{#        });#}
-{#    </script>#}
-{#{% endblock %}#}
