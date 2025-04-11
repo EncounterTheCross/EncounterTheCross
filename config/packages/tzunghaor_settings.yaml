@@ -10,8 +10,3 @@ tzunghaor_settings:
         default:
           dir: '%kernel.project_dir%/src/Settings/Global'
           prefix: App\Settings\Global\
-
-when@prod:
-  tzunghaor_settings:
-    global:
-      cache: 'cache.app'
