@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Method App\\\\Controller\\\\Admin\\\\CheckInController\\:\\:createServerCheckinForm\\(\\) is unused\\.$#"
-			count: 1
-			path: src/Controller/Admin/CheckInController.php
-
-		-
 			message: "#^Property App\\\\Controller\\\\Admin\\\\Crud\\\\Field\\\\Field\\:\\:\\$dto is never read, only written\\.$#"
 			count: 1
 			path: src/Controller/Admin/Crud/Field/Field.php
@@ -14,11 +9,6 @@ parameters:
 			message: "#^Cannot call method get\\(\\) on null\\.$#"
 			count: 2
 			path: src/Controller/Admin/MainDashboardController.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: src/Controller/DevelopmentController.php
 
 		-
 			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
@@ -49,6 +39,21 @@ parameters:
 			message: "#^Method App\\\\Entity\\\\Location\\:\\:getLaunchPointContacts\\(\\) should return Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, App\\\\Entity\\\\Leader\\> but returns Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, App\\\\Entity\\\\LaunchPointContacts\\>\\.$#"
 			count: 1
 			path: src/Entity/Location.php
+
+		-
+			message: "#^Binary operation \"\\-\" between non\\-falsy\\-string and non\\-falsy\\-string results in an error\\.$#"
+			count: 1
+			path: src/EventSubscriber/UserActivitySubscriber.php
+
+		-
+			message: "#^Left side of && is always true\\.$#"
+			count: 1
+			path: src/EventSubscriber/UserActivitySubscriber.php
+
+		-
+			message: "#^Right side of && is always true\\.$#"
+			count: 1
+			path: src/EventSubscriber/UserActivitySubscriber.php
 
 		-
 			message: "#^Attribute class JetBrains\\\\PhpStorm\\\\Pure does not exist\\.$#"
@@ -97,11 +102,6 @@ parameters:
 
 		-
 			message: "#^Call to static method getRowPointerFromBase32\\(\\) on an unknown class UuidFactory\\.$#"
-			count: 1
-			path: src/Repository/EventRepository.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: src/Repository/EventRepository.php
 

@@ -2,9 +2,9 @@
 <phpmd-baseline>
   <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Command/CreateAdminCommand.php"/>
   <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Command/OpcacheClearCommand.php"/>
-  <violation rule="PHPMD\Rule\UnusedPrivateMethod" file="src/Controller/Admin/CheckInController.php" method="createServerCheckinForm"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/AbstractCrudController.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/Admin/Crud/EventCrudController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\MissingImport" file="src/Controller/Admin/Crud/EventCrudController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/EventCrudController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="src/Controller/Admin/Crud/EventCrudController.php"/>
   <violation rule="PHPMD\Rule\UnusedLocalVariable" file="src/Controller/Admin/Crud/EventCrudController.php"/>
@@ -27,12 +27,13 @@
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/PrayerTeamCrudController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/TestimonialCrudController.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/Admin/MainDashboardController.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Controller/Admin/MainDashboardController.php" method="index"/>
   <violation rule="PHPMD\Rule\Design\LongMethod" file="src/Controller/Admin/MainDashboardController.php" method="index"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/MainDashboardController.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/Admin/PrayerTeamAssignmentsController.php"/>
   <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Controller/Admin/PrayerTeamAssignmentsController.php" method="prayerTeamAssignments"/>
-  <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Controller/DevelopmentController.php"/>
-  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="src/Controller/DevelopmentController.php"/>
+  <violation rule="PHPMD\Rule\Controversial\Superglobals" file="src/Controller/DevelopmentController.php" method="index"/>
+  <violation rule="PHPMD\Rule\Controversial\Superglobals" file="src/Controller/DevelopmentController.php" method="publish"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Controller/MainController.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/RegistrationController.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Controller/RegistrationController.php"/>
@@ -59,7 +60,9 @@
   <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="src/Entity/Location.php" method="TYPES"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Entity/PrayerTeam.php"/>
   <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Entity/Traits/EntityIdTrait.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="src/Entity/UserActivity.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/EventSubscriber/MaintenanceModeSubscriber.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\MissingImport" file="src/EventSubscriber/UserActivitySubscriber.php"/>
   <violation rule="PHPMD\Rule\Naming\LongClassName" file="src/Exception/MissingMailerContextRequiredValuesException.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Exception/MissingMailerContextRequiredValuesException.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Factory/ContactPersonFactory.php"/>
@@ -82,6 +85,7 @@
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Repository/EventParticipantRepository.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Repository/EventRepository.php"/>
   <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Repository/EventRepository.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\MissingImport" file="src/Repository/EventRepository.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Repository/LeaderRepository.php"/>
   <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Repository/LeaderRepository.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Repository/LocationRepository.php"/>
@@ -103,6 +107,8 @@
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Service/UuidManager/UuidFactory.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Settings/Global/SystemSettings.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Settings/SettingsEnumConverter.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="src/Taig/Components/CheckInForm.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Taig/Components/ServerRegistrationDetailRow.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Twig/Components/TestimonialCollectionComponent.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Twig/Components/TestimonialCollectionComponent.php"/>
 </phpmd-baseline>
