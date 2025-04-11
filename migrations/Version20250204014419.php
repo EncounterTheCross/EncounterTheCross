@@ -19,48 +19,37 @@ final class Version20250204014419 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE nglayouts_block DROP FOREIGN KEY fk_ngl_block_layout');
-        $this->addSql('ALTER TABLE nglayouts_block_collection DROP FOREIGN KEY fk_ngl_block_collection_collection');
-        $this->addSql('ALTER TABLE nglayouts_block_collection DROP FOREIGN KEY fk_ngl_block_collection_block');
-        $this->addSql('ALTER TABLE nglayouts_block_translation DROP FOREIGN KEY fk_ngl_block_translation_block');
-        $this->addSql('ALTER TABLE nglayouts_collection_item DROP FOREIGN KEY fk_ngl_item_collection');
-        $this->addSql('ALTER TABLE nglayouts_collection_query DROP FOREIGN KEY fk_ngl_query_collection');
-        $this->addSql('ALTER TABLE nglayouts_collection_query_translation DROP FOREIGN KEY fk_ngl_query_translation_query');
-        $this->addSql('ALTER TABLE nglayouts_collection_slot DROP FOREIGN KEY fk_ngl_slot_collection');
-        $this->addSql('ALTER TABLE nglayouts_collection_translation DROP FOREIGN KEY fk_ngl_collection_translation_collection');
-        $this->addSql('ALTER TABLE nglayouts_layout_translation DROP FOREIGN KEY fk_ngl_layout_translation_layout');
-        $this->addSql('ALTER TABLE nglayouts_role_policy DROP FOREIGN KEY fk_ngl_policy_role');
-        $this->addSql('ALTER TABLE nglayouts_rule_condition_rule DROP FOREIGN KEY fk_ngl_rule_condition_rule_rule_condition');
-        $this->addSql('ALTER TABLE nglayouts_rule_condition_rule DROP FOREIGN KEY fk_ngl_rule_condition_rule_rule');
-        $this->addSql('ALTER TABLE nglayouts_rule_condition_rule_group DROP FOREIGN KEY fk_ngl_rule_condition_rule_group_rule_group');
-        $this->addSql('ALTER TABLE nglayouts_rule_condition_rule_group DROP FOREIGN KEY fk_ngl_rule_condition_rule_group_rule_condition');
-        $this->addSql('ALTER TABLE nglayouts_rule_target DROP FOREIGN KEY fk_ngl_target_rule');
-        $this->addSql('ALTER TABLE nglayouts_zone DROP FOREIGN KEY fk_ngl_zone_layout');
-        $this->addSql('ALTER TABLE nglayouts_zone DROP FOREIGN KEY fk_ngl_zone_block');
-        $this->addSql('DROP TABLE nglayouts_block');
-        $this->addSql('DROP TABLE nglayouts_block_collection');
-        $this->addSql('DROP TABLE nglayouts_block_translation');
-        $this->addSql('DROP TABLE nglayouts_collection');
-        $this->addSql('DROP TABLE nglayouts_collection_item');
-        $this->addSql('DROP TABLE nglayouts_collection_query');
-        $this->addSql('DROP TABLE nglayouts_collection_query_translation');
-        $this->addSql('DROP TABLE nglayouts_collection_slot');
-        $this->addSql('DROP TABLE nglayouts_collection_translation');
-        $this->addSql('DROP TABLE nglayouts_layout');
-        $this->addSql('DROP TABLE nglayouts_layout_translation');
-        $this->addSql('DROP TABLE nglayouts_migration_versions');
-        $this->addSql('DROP TABLE nglayouts_role');
-        $this->addSql('DROP TABLE nglayouts_role_policy');
-        $this->addSql('DROP TABLE nglayouts_rule');
-        $this->addSql('DROP TABLE nglayouts_rule_condition');
-        $this->addSql('DROP TABLE nglayouts_rule_condition_rule');
-        $this->addSql('DROP TABLE nglayouts_rule_condition_rule_group');
-        $this->addSql('DROP TABLE nglayouts_rule_data');
-        $this->addSql('DROP TABLE nglayouts_rule_group');
-        $this->addSql('DROP TABLE nglayouts_rule_group_data');
-        $this->addSql('DROP TABLE nglayouts_rule_target');
-        $this->addSql('DROP TABLE nglayouts_zone');
+        // First check if the foreign keys exist before attempting to drop them
+        $this->addSql('SET FOREIGN_KEY_CHECKS=0');
+        // Drop tables with IF EXISTS
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_block');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_block_collection');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_block_translation');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_collection');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_collection_item');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_collection_query');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_collection_query_translation');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_collection_slot');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_collection_translation');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_layout');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_layout_translation');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_migration_versions');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_role');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_role_policy');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_rule');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_rule_condition');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_rule_condition_rule');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_rule_condition_rule_group');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_rule_data');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_rule_group');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_rule_group_data');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_rule_target');
+        $this->addSql('DROP TABLE IF EXISTS nglayouts_zone');
+
+        // Reset foreign key checks
+        $this->addSql('SET FOREIGN_KEY_CHECKS=1');
+
+        // Drop indexes and columns on other tables
         $this->addSql('DROP INDEX UNIQ_A44EE6F75A89FD83 ON contact_person');
         $this->addSql('ALTER TABLE contact_person DROP row_pointer');
         $this->addSql('DROP INDEX UNIQ_3BAE0AA75A89FD83 ON event');
@@ -82,6 +71,7 @@ final class Version20250204014419 extends AbstractMigration
         $this->addSql('DROP INDEX UNIQ_E6BDCDF75A89FD83 ON testimonial');
         $this->addSql('ALTER TABLE testimonial DROP row_pointer');
     }
+
 
     public function down(Schema $schema): void
     {

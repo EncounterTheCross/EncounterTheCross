@@ -1,0 +1,67 @@
+{
+  "config": {
+    "eventToken": "7fa189d12ed431c6c3d17bdd39f9c778db08015e8ba991c55ce2b392559809b8",
+    "concurrentBrowsers": 2,
+    "checkinsPerBrowser": 1,
+    "operationDelay": 500,
+    "operationTimeout": 30000,
+    "headless": true,
+    "outputFile": "/app/results/stress-test-results-20250305-211740.json",
+    "baseUrl": "https://encounterthecross.test",
+    "debug": true
+  },
+  "testDate": "2025-03-06T03:18:15.293Z",
+  "totalDuration": 34152,
+  "totalBrowsers": 2,
+  "totalCheckIns": 2,
+  "successfulCheckIns": 0,
+  "failedCheckIns": 2,
+  "successRate": "0.00",
+  "checkInTimes": {
+    "average": "0.00",
+    "min": "0.00",
+    "max": "0.00"
+  },
+  "detailedResults": [
+    {
+      "instanceId": 1,
+      "checkIns": [
+        {
+          "checkInId": 1,
+          "startTime": 1741231064413,
+          "endTime": 1741231095250,
+          "duration": 30837,
+          "success": false,
+          "participantName": "Unknown-1-0",
+          "paymentOption": null,
+          "error": "Waiting for selector `dialog[open]` failed: Waiting failed: 30000ms exceeded"
+        }
+      ],
+      "startTime": 1741231061141,
+      "endTime": 1741231095293,
+      "totalDuration": 34152,
+      "success": false,
+      "error": null
+    },
+    {
+      "instanceId": 2,
+      "checkIns": [
+        {
+          "checkInId": 1,
+          "startTime": 1741231064411,
+          "endTime": 1741231065937,
+          "duration": 1526,
+          "success": false,
+          "participantName": "Unknown-2-0",
+          "paymentOption": "Pay at Encounter",
+          "error": "Node is either not clickable or not an HTMLElement"
+        }
+      ],
+      "startTime": 1741231061142,
+      "endTime": 1741231065971,
+      "totalDuration": 4829,
+      "success": false,
+      "error": null
+    }
+  ]
+}

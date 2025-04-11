@@ -5,8 +5,10 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     tzunghaor_settings.default_collection: 'global'
-    public_domain_core: '.encounterthecross.com|encounterthecross.com'
-    public_domains_allowed: 'www.encounterthecross.com|encounterthecross.com'
+    domain.tld: 'com'
+    domain.sld: 'encounterthecross'
+    public_domain_core: '.%domain.sld%.%domain.tld%|%domain.sld%.%domain.tld%'
+    public_domains_allowed: 'www.%domain.sld%.%domain.tld%|%domain.sld%.%domain.tld%'
     app.log_path: '%env(default:kernel.logs_dir:LOG_PATH)%'
 
 services:
@@ -46,6 +48,8 @@ services:
     App\Security\Voter\EventRegistrationVoter:
         arguments:
             $settingsService: '@tzunghaor_settings.settings_service.global'
+
+
 
 #    App\Settings\SettingsEnumConverter:
 #        tags:

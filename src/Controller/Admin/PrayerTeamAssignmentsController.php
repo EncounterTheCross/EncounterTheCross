@@ -174,33 +174,38 @@ class PrayerTeamAssignmentsController extends AbstractController
             'requiresIntersession' => true,
         ]);
 
-        // actions
-        $leaderCrudLink = $adminUrlGenerator
-            ->setController(EventPrayerTeamServerCrudController::class)
-            ->setAction(Crud::PAGE_INDEX)
-            ->set('event', $event->getId())
-            ->set('filters', [
-                'PrayerTeam' => [
-                    'comparison' => '=',
-                    'value' => $prayerTeam->getId(),
-                ],
-                'event' => [
-                    'comparison' => '=',
-                    'value' => $event->getId(),
-                ],
-            ])
-        ;
-
-        $action = Action::new('assign_leadership_intersessions')
-            ->linkToUrl($leaderCrudLink)
+        if (null !== $prayerTeam) {
+            // actions
+            $leaderCrudLink = $adminUrlGenerator
+                ->setController(EventPrayerTeamServerCrudController::class)
+                ->setAction(Crud::PAGE_INDEX)
+                ->set('event', $event->getId())
+                ->set('filters', [
+                    'PrayerTeam' => [
+                        'comparison' => '=',
+                        'value' => $prayerTeam->getId(),
+                    ],
+                    'event' => [
+                        'comparison' => '=',
+                        'value' => $event->getId(),
+                    ],
+                ])
+            ;
+            $action = Action::new('assign_leadership_intersessions')
+                ->linkToUrl($leaderCrudLink)
 //            ->displayAsButton()
-            ->setIcon('fa fa-pencil')
-            ->getAsDto();
-        $action->setLinkUrl($leaderCrudLink); // hmm this is weird but needed
+                ->setIcon('fa fa-pencil')
+                ->getAsDto();
+            $action->setLinkUrl($leaderCrudLink); // hmm this is weird but needed
+        }
+
+
+
+
 
         return $this->render('admin/page/server_assignment_report.html.twig', [
             'teams' => $teams,
-            'action' => $action,
+            'action' => $action ?? null,
         ]);
     }
 }
