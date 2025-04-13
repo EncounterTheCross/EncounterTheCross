@@ -4,6 +4,7 @@ namespace App\Taig\Components;
 
 use App\Entity\EventParticipant;
 use App\Entity\EventPrayerTeamServer;
+use App\Settings\Global\MercureSettings;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
@@ -27,6 +28,7 @@ final class CheckInForm
         private EntityManagerInterface $entityManager,
         private HubInterface $hub,
         private Environment $twig,
+        private MercureSettings $mercureSettings,
     ) {
     }
 
@@ -100,7 +102,10 @@ final class CheckInForm
             ]),
         );
 
-        $this->hub->publish($update);
+        //TODO if the setting if off dont do this
+        if ($this->mercureSettings->isActive()) {
+            $this->hub->publish($update);
+        }
 
         $this->closeModal();
     }
