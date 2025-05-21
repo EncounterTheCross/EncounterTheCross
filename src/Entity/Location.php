@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Traits\AddressTrait;
 use App\Entity\Traits\CoreEntityTrait;
+use App\Entity\VenueBooking\Area;
 use App\Enum\EventParticipantStatusEnum;
 use App\Repository\LocationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -54,12 +55,19 @@ class Location
     #[ORM\OneToMany(mappedBy: 'launchPoint', targetEntity: LaunchPointContacts::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $launchPointContacts;
 
+    /**
+     * @var Collection<int, Area>
+     */
+    #[ORM\OneToMany(targetEntity: Area::class, mappedBy: 'venue')]
+    private Collection $buildings;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
         $this->eventAttendees = new ArrayCollection();
         $this->launchPointEvents = new ArrayCollection();
         $this->launchPointContacts = new ArrayCollection();
+        $this->buildings = new ArrayCollection();
     }
 
     public function getShortAddress(): string
@@ -338,5 +346,35 @@ class Location
             'attendees' => $this->getEventAttendees(),
             'servers' => 15,
         ];
+    }
+
+    /**
+     * @return Collection<int, Area>
+     */
+    public function getBuildings(): Collection
+    {
+        return $this->buildings;
+    }
+
+    public function addBuilding(Area $building): static
+    {
+        if (!$this->buildings->contains($building)) {
+            $this->buildings->add($building);
+            $building->setVenue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBuilding(Area $building): static
+    {
+        if ($this->buildings->removeElement($building)) {
+            // set the owning side to null (unless already changed)
+            if ($building->getVenue() === $this) {
+                $building->setVenue(null);
+            }
+        }
+
+        return $this;
     }
 }
