@@ -11,6 +11,9 @@ use App\Entity\Leader;
 use App\Entity\Location;
 use App\Entity\PrayerTeam;
 use App\Entity\Testimonial;
+use App\Entity\VenueBooking\Area;
+use App\Entity\VenueBooking\Room;
+use App\Entity\VenueBooking\RoomConfiguration;
 use App\Enum\EventParticipantStatusEnum;
 use App\Repository\EventRepository;
 use App\Repository\PrayerTeamRepository;
@@ -234,6 +237,31 @@ class MainDashboardController extends AbstractDashboardController
 
         yield MenuItem::section('Leadership');
         yield MenuItem::linkToCrud('Leaders', 'fas fa-list', Leader::class);
+
+        yield MenuItem::section('Venue Configuration')
+            ->setPermission('ROLE_SUPER_ADMIN')
+        ;
+        yield MenuItem::linkToCrud(
+            'Areas',
+            '',
+            Area::class
+        )
+            ->setPermission('ROLE_SUPER_ADMIN')
+        ;
+        yield MenuItem::linkToCrud(
+            'Rooms',
+            '',
+            Room::class
+        )
+            ->setPermission('ROLE_SUPER_ADMIN')
+        ;
+        yield MenuItem::linkToCrud(
+            'Room Configurations',
+            '',
+            RoomConfiguration::class
+        )
+            ->setPermission('ROLE_SUPER_ADMIN')
+        ;
     }
 
     public function configureActions(): Actions

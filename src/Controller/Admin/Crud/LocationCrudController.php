@@ -88,6 +88,10 @@ class LocationCrudController extends AbstractCrudController
             // use for Event Location CRUD
             yield CollectionField::new('events')
                 ->hideOnForm();
+
+            yield CollectionField::new('buildings')
+                ->hideWhenCreating()
+            ;
         }
 
         // address fields

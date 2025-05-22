@@ -13,29 +13,29 @@ class Room
 {
     use CoreEntityTrait;
 
-    #[ORM\Column(type: 'boolean')]
-    private $disabled;
+    // #[ORM\Column(type: 'boolean')]
+    // private $disabled;
 
     #[ORM\Column(type: 'string', length: 25)]
     private $roomName;
 
-    #[ORM\Column(type: 'string', length: 25)]
-    private $sortKey;
+    // #[ORM\Column(type: 'string', length: 25)]
+    // private $sortKey;
 
-    #[ORM\Column(type: 'string', length: 60, nullable: true)]
-    private $description;
+    // #[ORM\Column(type: 'string', length: 60, nullable: true)]
+    // private $description;
 
-    #[ORM\Column(type: 'integer')]
-    private $capacity;
+    // #[ORM\Column(type: 'integer')]
+    // private $capacity;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
-    private $roomAdminEmail;
+    // #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    // private $roomAdminEmail;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $invalidTypes;
+    // #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    // private $invalidTypes;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
-    private $customHtml;
+    // #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    // private $customHtml;
 
     #[ORM\ManyToOne(inversedBy: 'rooms')]
     #[ORM\JoinColumn(nullable: false)]
@@ -56,17 +56,17 @@ class Room
     // #[ORM\JoinColumn(name: 'area_id', referencedColumnName: 'id')]
     // private $area;
 
-    public function isDisabled(): ?bool
-    {
-        return $this->disabled;
-    }
+    // public function isDisabled(): ?bool
+    // {
+    //     return $this->disabled;
+    // }
 
-    public function setDisabled(bool $disabled): static
-    {
-        $this->disabled = $disabled;
+    // public function setDisabled(bool $disabled): static
+    // {
+    //     $this->disabled = $disabled;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getRoomName(): ?string
     {
@@ -80,77 +80,77 @@ class Room
         return $this;
     }
 
-    public function getSortKey(): ?string
-    {
-        return $this->sortKey;
-    }
+    // public function getSortKey(): ?string
+    // {
+    //     return $this->sortKey;
+    // }
 
-    public function setSortKey(string $sortKey): static
-    {
-        $this->sortKey = $sortKey;
+    // public function setSortKey(string $sortKey): static
+    // {
+    //     $this->sortKey = $sortKey;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
+    // public function getDescription(): ?string
+    // {
+    //     return $this->description;
+    // }
 
-    public function setDescription(?string $description): static
-    {
-        $this->description = $description;
+    // public function setDescription(?string $description): static
+    // {
+    //     $this->description = $description;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function getCapacity(): ?int
-    {
-        return $this->capacity;
-    }
+    // public function getCapacity(): ?int
+    // {
+    //     return $this->capacity;
+    // }
 
-    public function setCapacity(int $capacity): static
-    {
-        $this->capacity = $capacity;
+    // public function setCapacity(int $capacity): static
+    // {
+    //     $this->capacity = $capacity;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function getRoomAdminEmail(): ?string
-    {
-        return $this->roomAdminEmail;
-    }
+    // public function getRoomAdminEmail(): ?string
+    // {
+    //     return $this->roomAdminEmail;
+    // }
 
-    public function setRoomAdminEmail(?string $roomAdminEmail): static
-    {
-        $this->roomAdminEmail = $roomAdminEmail;
+    // public function setRoomAdminEmail(?string $roomAdminEmail): static
+    // {
+    //     $this->roomAdminEmail = $roomAdminEmail;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function getInvalidTypes(): ?string
-    {
-        return $this->invalidTypes;
-    }
+    // public function getInvalidTypes(): ?string
+    // {
+    //     return $this->invalidTypes;
+    // }
 
-    public function setInvalidTypes(?string $invalidTypes): static
-    {
-        $this->invalidTypes = $invalidTypes;
+    // public function setInvalidTypes(?string $invalidTypes): static
+    // {
+    //     $this->invalidTypes = $invalidTypes;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function getCustomHtml(): ?string
-    {
-        return $this->customHtml;
-    }
+    // public function getCustomHtml(): ?string
+    // {
+    //     return $this->customHtml;
+    // }
 
-    public function setCustomHtml(?string $customHtml): static
-    {
-        $this->customHtml = $customHtml;
+    // public function setCustomHtml(?string $customHtml): static
+    // {
+    //     $this->customHtml = $customHtml;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getArea(): ?Area
     {
@@ -192,5 +192,10 @@ class Room
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->roomName;
     }
 }

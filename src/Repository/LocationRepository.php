@@ -62,7 +62,7 @@ class LocationRepository extends ServiceEntityRepository
 
     public function getAllActiveLaunchPoints(array $sort = []): array
     {
-        $qb = $this->findActiveLoctionsQueryBuilderByType(Location::TYPE_LAUNCH_POINT);
+        $qb = $this->findByActiveLoctionsQueryBuilderByType(Location::TYPE_LAUNCH_POINT);
 
         $alias = $qb->getRootAliases();
 
@@ -77,12 +77,13 @@ class LocationRepository extends ServiceEntityRepository
 
     public function getAllActiveEventLocations(): array
     {
-        return $this->findActiveLoctionsQueryBuilderByType(Location::TYPE_EVENT)
+        return $this->findByActiveLoctionsQueryBuilderByType(Location::TYPE_EVENT)
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
 
-    private function findActiveLoctionsQueryBuilderByType(string $type): QueryBuilder
+    public function findByActiveLoctionsQueryBuilderByType(string $type): QueryBuilder
     {
         $qb = $this->createQueryBuilder('lp');
         $qb
