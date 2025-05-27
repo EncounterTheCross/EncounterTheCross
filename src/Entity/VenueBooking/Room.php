@@ -44,7 +44,7 @@ class Room
     /**
      * @var Collection<int, RoomConfiguration>
      */
-    #[ORM\OneToMany(targetEntity: RoomConfiguration::class, mappedBy: 'room', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: RoomConfiguration::class, mappedBy: 'room', orphanRemoval: true, cascade: ['persist'])]
     private Collection $roomConfigurations;
 
     public function __construct()

@@ -10,6 +10,7 @@ use App\Entity\Event;
 use App\Entity\Location;
 use App\Enum\EventParticipantStatusEnum;
 use App\Field\QrField;
+use App\Form\EventRoomBookingSetupType;
 use App\Repository\LocationRepository;
 use App\Service\Exporter\XlsExporter;
 use Doctrine\ORM\EntityManagerInterface;
@@ -199,6 +200,16 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
                 return $entity->isActive();
             });
 
+        $assignLaunchRooms = Action::new('assignLaunchRooms', 'Assign Launch Rooms')
+            ->linkToCrudAction('assignLaunchRooms')
+            ->addCssClass('btn btn-primary')
+            ->displayIf(static function ($entity) {
+                if (null === $entity->getPrayerTeamAssignmentsDeadline()) {
+                    return false;
+                }
+                return $entity->isActive();
+            });
+
         $serverAssignments = Action::new('server_assignments')
             ->linkToRoute('event_launch_prayer_team_assignments_report', static function ($entity) {
                 //                return $entity;
@@ -213,12 +224,29 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
             ->add(Crud::PAGE_DETAIL, $registrations)
             ->add(Crud::PAGE_INDEX, $closeRegistration)
             ->add(Crud::PAGE_INDEX, $openRegistration)
+            ->add(Crud::PAGE_INDEX, $assignLaunchRooms)
+            ->add(Crud::PAGE_DETAIL, $assignLaunchRooms)
             ->disable(Action::DELETE, Action::BATCH_DELETE)
             ->setPermissions([
                 Action::EDIT => 'ROLE_DATA_EDITOR_OVERWRITE',
                 Action::NEW => 'ROLE_DATA_EDITOR_OVERWRITE',
             ])
         ;
+    }
+
+    public function assignLaunchRooms(AdminContext $adminContext)
+    {
+        $event = $adminContext->getEntity()->getInstance();
+        if (!$event instanceof Event) {
+            throw new \LogicException(sprintf('Trying to edit something other than an Event!'));
+        }
+
+        $form =$this->createForm(EventRoomBookingSetupType::class,$event);
+
+        return $this->render('admin/crud/venueRooms/event_rooms.html.twig', [
+            'event' => $event,
+            'form' => $form,
+        ]);
     }
 
     public function toggleRegistration(AdminContext $adminContext, EntityManagerInterface $entityManager, AdminUrlGenerator $urlGenerator): RedirectResponse

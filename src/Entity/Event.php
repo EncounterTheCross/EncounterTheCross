@@ -71,12 +71,19 @@ class Event
     #[ORM\OneToMany(targetEntity: EventRoomBooking::class, mappedBy: 'event', orphanRemoval: true)]
     private Collection $roomBookings;
 
+    /**
+     * @var Collection<int, EventBookedRooms>
+     */
+    #[ORM\OneToMany(targetEntity: EventBookedRooms::class, mappedBy: 'event', orphanRemoval: true)]
+    private Collection $eventBookedRooms;
+
     public function __construct()
     {
         $this->launchPoints = new ArrayCollection();
         $this->eventParticipants = new ArrayCollection();
         $this->prayerTeamServers = new ArrayCollection();
         $this->roomBookings = new ArrayCollection();
+        $this->eventBookedRooms = new ArrayCollection();
     }
 
     public function getStart(): ?DateTimeInterface
@@ -401,6 +408,36 @@ class Event
             // set the owning side to null (unless already changed)
             if ($roomBooking->getEvent() === $this) {
                 $roomBooking->setEvent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EventBookedRooms>
+     */
+    public function getEventBookedRooms(): Collection
+    {
+        return $this->eventBookedRooms;
+    }
+
+    public function addEventBookedRoom(EventBookedRooms $eventBookedRoom): static
+    {
+        if (!$this->eventBookedRooms->contains($eventBookedRoom)) {
+            $this->eventBookedRooms->add($eventBookedRoom);
+            $eventBookedRoom->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEventBookedRoom(EventBookedRooms $eventBookedRoom): static
+    {
+        if ($this->eventBookedRooms->removeElement($eventBookedRoom)) {
+            // set the owning side to null (unless already changed)
+            if ($eventBookedRoom->getEvent() === $this) {
+                $eventBookedRoom->setEvent(null);
             }
         }
 
