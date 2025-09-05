@@ -13,6 +13,7 @@ services:
 ##            - '3306:3306'
   hostgatordatabase:
     image: 'mysql:5.7'
+    platform: linux/amd64  # Add this line
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: main

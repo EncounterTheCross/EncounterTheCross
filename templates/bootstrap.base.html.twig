@@ -32,32 +32,32 @@
 {% endblock %}
 
 {% block footer %}
+{% include('frontend/footer/_footer.html.twig') %}
     <!-- Contact-->
-    {% block contact %}
+    {% block contact %}<!--
         <section class="contact-section bg-black">
             {% if app.request.get('_route') != 'app_launchpoints' %}
+                
                 <div class="container px-4 px-lg-5">
+                    <div class="row mb-3 gx-4 gx-lg-5">
+                        
+                    </div>
                     <div class="row mb-3 gx-4 gx-lg-5">
                         <div class="col">
                             <p class="text-center text-white display-6">Event Contacts</p>
                         </div>
                     </div>
-                </div>
-            {% endif %}
-
-            <div class="container px-4 px-lg-5 text-center">
-                {% if app.request.get('_route') != 'app_launchpoints' %}
-                    {{ component('contact_event_leaders') }}
-                    <div class="d-flex mt-4 justify-content-center">
-                        <a role="button" href="{{ path('app_launchpoints') }}" class="btn btn-outline-light">Launch Points <i class="fa-solid fa-angles-right fa-fade fa-sm"></i></a>
+                    {% if app.request.get('_route') != 'app_launchpoints' %}
+                        {{ component('contact_event_leaders') }}
+                        
+                    {% endif %}
+                    <div class="social d-flex justify-content-center">
+                        <a class="mx-2" href="https://www.facebook.com/encounterthecross/"><i class="fab fa-facebook-f"></i></a>
                     </div>
-                {% endif %}
-                <div class="social d-flex justify-content-center">
-                    <a class="mx-2" href="https://www.facebook.com/encounterthecross/"><i class="fab fa-facebook-f"></i></a>
-                </div>
-            </div>
+                </div>-->
+            {% endif %}
         </section>
 
     {% endblock %}
-    <footer class="footer bg-black small text-center text-white-50"><div class="container px-4 px-lg-5">Copyright &copy; Encounter the Cross {{ 'now' | date('Y') }}</div></footer>
+    
 {% endblock %}
