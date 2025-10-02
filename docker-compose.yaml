@@ -11,8 +11,21 @@ services:
 #      # "3306" to "3306:3306". Where the first port is exposed to the host and the second is the container port.
 #      # See https://docs.docker.com/compose/compose-file/compose-file-v3/#ports for more information.
 ##            - '3306:3306'
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    platform: linux/amd64  # Add this if you're on ARM64 architecture
+    environment:
+      PMA_HOST: hostgatordatabase
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - '8080:80'
+    depends_on:
+      - hostgatordatabase
+    restart: unless-stopped
   hostgatordatabase:
     image: 'mysql:5.7'
+    platform: linux/amd64  # Add this line
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: main
