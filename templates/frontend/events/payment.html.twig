@@ -1,0 +1,253 @@
+{% extends 'frontend/blank_content_container.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://js.stripe.com/v3/"></script>
+    <script type="text/javascript">
+    // Use turbo:load instead of DOMContentLoaded for Turbo compatibility
+    document.addEventListener('turbo:load', async () => {
+      // Check if we're on the payment page
+      const form = document.getElementById('payment-form');
+      if (!form) return; // Exit if not on payment page
+      
+      const submitButton = document.getElementById('submit-button');
+      const errorMessage = document.getElementById('error-message');
+      const spinner = document.getElementById('spinner');
+      const buttonText = document.getElementById('button-text');
+
+      console.log('Initializing Stripe...');
+
+      // Get values from data attributes instead of template variables
+      const stripeKey = form.dataset.stripeKey;
+      const clientSecret = form.dataset.clientSecret;
+
+      console.log('Stripe Key:', stripeKey ? 'Present' : 'Missing');
+      console.log('Client Secret:', clientSecret ? 'Present' : 'Missing');
+
+      // Show error message
+      function showError(message) {
+        console.error('Error:', message);
+        errorMessage.textContent = message;
+        errorMessage.style.display = 'block';
+      }
+
+      if (!stripeKey || !clientSecret) {
+        showError('Payment initialization failed. Please go back and try again.');
+        return;
+      }
+
+      const stripe = Stripe(stripeKey);
+
+      try {
+        // Create Elements instance
+        const appearance = {
+          theme: 'stripe',
+          variables: {
+            colorPrimary: '#d72323',
+          }
+        };
+        
+        console.log('Creating Elements...');
+        const elements = stripe.elements({
+          clientSecret: clientSecret,
+          appearance: appearance,
+        });
+
+        // Create and mount Payment Element
+        console.log('Creating Payment Element...');
+        const paymentElement = elements.create('payment');
+        
+        console.log('Mounting Payment Element...');
+        paymentElement.mount('#payment-element');
+
+        // Enable submit button after loading
+        paymentElement.on('ready', () => {
+          console.log('Payment Element ready');
+          submitButton.disabled = false;
+        });
+
+        paymentElement.on('loaderstart', () => {
+          console.log('Payment Element loader started');
+        });
+
+        paymentElement.on('loaderror', (event) => {
+          console.error('Payment Element load error:', event);
+          showError('Failed to load payment form. Please refresh the page.');
+        });
+
+        // Handle form submission
+        form.addEventListener('submit', async (event) => {
+          event.preventDefault();
+
+          submitButton.disabled = true;
+          spinner.style.display = 'inline-block';
+          buttonText.textContent = 'Processing...';
+
+          const { error, paymentIntent } = await stripe.confirmPayment({
+            elements,
+            confirmParams: {
+              return_url: window.location.origin + form.dataset.returnUrl,
+            },
+            redirect: 'if_required',
+          });
+
+          if (error) {
+            // Show error to customer (immediate validation errors only)
+            showError(error.message);
+            submitButton.disabled = false;
+            spinner.style.display = 'none';
+            buttonText.textContent = 'Complete Payment';
+          } else if (paymentIntent) {
+            // Payment submitted - save registration immediately
+            // Don't wait for final status, webhooks will handle it
+            try {
+                if (typeof Turbo !== 'undefined') {
+                  Turbo.visit(form.dataset.completeUrl);
+                } else {
+                  window.location.href = form.dataset.completeUrl;
+                }
+            //   const response = await fetch(form.dataset.completeUrl, {
+            //     method: 'POST',
+            //     headers: {
+            //       'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({
+            //       payment_intent_id: paymentIntent.id
+            //     }),
+            //   });
+
+            //   const result = await response.json();
+
+            //   if (result.success) {
+            //     // Use Turbo.visit if available, otherwise regular redirect
+            //     if (typeof Turbo !== 'undefined') {
+            //       Turbo.visit(result.redirect_url);
+            //     } else {
+            //       window.location.href = result.redirect_url;
+            //     }
+            //   } else {
+            //     showError(result.error || 'Failed to complete registration');
+            //     submitButton.disabled = false;
+            //     spinner.style.display = 'none';
+            //     buttonText.textContent = 'Complete Payment';
+            //   }
+            } catch (err) {
+              showError('Failed to complete registration: ' + err.message);
+              submitButton.disabled = false;
+              spinner.style.display = 'none';
+              buttonText.textContent = 'Complete Payment';
+            }
+          }
+        });
+      } catch (error) {
+        console.error('Stripe initialization error:', error);
+        showError('Failed to initialize payment form: ' + error.message);
+      }
+    });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <div class="row justify-content-center">
+                <div class="col-1">
+                    <i class="fa-solid fa-church fa-2xl mb-2 text-dark text-center"></i>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h1 class="text-dark display-1 mb-5 text-center">Payment</h1>
+                    <p class="text-center text-muted">Step 2 of 2: Complete Your Registration</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            {# Registration Summary #}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Registration Summary</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Event:</dt>
+                        <dd class="col-sm-8">{{ event.name }}</dd>
+                        
+                        <dt class="col-sm-4">Name:</dt>
+                        <dd class="col-sm-8">{{ registration.person.firstName }} {{ registration.person.lastName }}</dd>
+                        
+                        <dt class="col-sm-4">Email:</dt>
+                        <dd class="col-sm-8">{{ registration.person.email }}</dd>
+                        
+                        <dt class="col-sm-4">Amount:</dt>
+                        <dd class="col-sm-8">${{ (event_amount / 100)|number_format(2) }}</dd>
+                    </dl>
+                </div>
+            </div>
+
+            {# Payment Form #}
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Payment Details</h5>
+                </div>
+                <div class="card-body">
+                    <form id="payment-form" 
+                          data-turbo="false"
+                          data-stripe-key="{{ stripe_public_key }}"
+                          data-client-secret="{{ client_secret }}"
+                          data-complete-url="{{ path('app_registration_registrationthankyou', {event: event.id}) }}"
+                          data-return-url="{{ path('app_registration_registrationthankyou') }}">
+                        <div id="payment-element" class="mb-3">
+                            <!-- Stripe Payment Element will be inserted here -->
+                            <div class="text-center py-4">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading payment form...</span>
+                                </div>
+                                <p class="mt-2 text-muted">Loading payment form...</p>
+                            </div>
+                        </div>
+                        
+                        <div id="error-message" class="alert alert-danger" role="alert" style="display: none;"></div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" id="submit-button" class="btn btn-primary btn-lg" disabled>
+                                <span id="spinner" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" style="display: none;"></span>
+                                <span id="button-text">Complete Payment</span>
+                            </button>
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <small class="text-muted">
+                                <i class="fa-solid fa-lock me-1"></i>
+                                Your payment is secure and encrypted
+                            </small>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="text-center mt-3">
+                <a href="{{ path('app_registration_attendee_formentry', {event: event.id}) }}" class="text-muted">
+                    <i class="fa-solid fa-arrow-left me-1"></i> Back to registration
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        #error-message:empty {
+            display: none !important;
+        }
+        
+        #error-message:not(:empty) {
+            display: block !important;
+        }
+        
+        #payment-element {
+            margin-bottom: 24px;
+        }
+    </style>
+{% endblock %}

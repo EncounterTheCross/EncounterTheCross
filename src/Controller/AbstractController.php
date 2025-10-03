@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Settings\Global\MercureSettings;
 use App\Settings\Global\SystemSettings;
+use App\Settings\Global\StripeSettings;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as CoreAbstractController;
 use Tzunghaor\SettingsBundle\Service\SettingsService;
@@ -18,6 +19,11 @@ class AbstractController extends CoreAbstractController
                 'tzunghaor_settings.settings_service.global' => '?'.SettingsService::class,
             ]
         );
+    }
+
+    protected function getStripeSettings(): StripeSettings
+    {
+        return $this->getSettingsService()->getSection(StripeSettings::class);
     }
 
     protected function getGlobalSettings(): SystemSettings

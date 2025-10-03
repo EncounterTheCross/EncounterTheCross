@@ -25,6 +25,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Form;
+use Stripe\Stripe;
+use Stripe\PaymentIntent;
 
 #[Route(
     '/men'
@@ -87,12 +90,13 @@ class RegistrationController extends AbstractController
             // send email notification and thank you
             $this->sendEmails($eventRegistration);
 
-            return $this->redirectToRoute('app_registration_registrationthankyou');
+            return $this->processPayment($form, $eventRegistration, $request);
         }
 
         return $this->render('frontend/events/attendee.regestration.html.twig', [
             'event' => $event,
             'form' => $form->createView(),
+            'stripe_public_key' => 'pk_test_51SDs5pK2q4IHjfeAsmi6s7hmn4fo0wSpDFyzaCZP7VF2G7o7vhpJHXUbp9uwrSAjrQuU3H5oP9BVL8uRoxM1UgRO00x8fqsjmX',
         ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
 
@@ -123,12 +127,13 @@ class RegistrationController extends AbstractController
             // send email notification and thank you
             $this->sendEmails($eventRegistration);
 
-            return $this->redirectToRoute('app_registration_registrationthankyou');
+            return $this->processPayment($form, $eventRegistration, $request);
         }
 
         return $this->render('frontend/events/server.regestration.html.twig', [
             'event' => $event,
             'form' => $form->createView(),
+            'stripe_public_key' => 'test',
         ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
 
@@ -136,6 +141,50 @@ class RegistrationController extends AbstractController
     public function registrationThankYou()
     {
         return $this->render('frontend/events/submitted.regestration.html.twig', []);
+    }
+
+    #[Route('/register/{event}/payment', name: 'app_registration_payment')]
+    public function payment(Event $event, Request $request)
+    {
+        // Get registration data from session
+        $registrationData = $request->getSession()->get('registration_data');
+        
+        if (!$registrationData || $registrationData['event_id'] !== $event->getId()) {
+            $this->addFlash('error', 'Registration session expired. Please start over.');
+            return $this->redirectToRoute('app_registration_attendee_formentry', ['event' => $event->getId()]);
+        }
+
+        // Create PaymentIntent
+        Stripe::setApiKey($this->getStripeSettings()->getSecretKey());
+        
+        try {
+            $paymentIntent = PaymentIntent::create([
+                // TODO: add % of stripe fees as well
+                'amount' => 900, //$event->getPrice() * 100, // Convert to cents
+                'currency' => 'usd',
+                'automatic_payment_methods' => [
+                    'enabled' => true,
+                ],
+                'metadata' => [
+                    'event_id' => $event->getId(),
+                    'event_name' => $event->getName(),
+                    'registration_id' => $registrationData['registration']->getId(),
+                ],
+            ]);
+
+            return $this->render('frontend/events/payment.html.twig', [
+                'event' => $event,
+                'registration' => $registrationData['registration'],
+                'stripe_public_key' => $this->getStripeSettings()->getPublicKey(),
+                'client_secret' => $paymentIntent->client_secret,
+                'event_amount' => $event->getPrice() * 100,
+            ], new Response(null, 200));
+        } catch (\Exception $e) {
+            // if we have made it this far we should have samed the registration data.
+            // now we just need to collect payment.
+            $this->addFlash('error', 'Failed to initialize payment: ' . $e->getMessage());
+            return $this->redirectToRoute('app_registration_registrationthankyou');
+        }
     }
 
     protected function sendEmails(EventParticipant $registration): void
@@ -151,5 +200,27 @@ class RegistrationController extends AbstractController
         $this->registrationNotificationMailer->send(
             context: ['registration' => $registration]
         );
+    }
+
+    private function processPayment(Form $form,EventParticipant $registration, Request $request)
+    {
+        $paymentMethod = $form->get('paymentMethod')->getData();
+
+        // If payment method is card, store data in session and redirect to payment page
+        if ($paymentMethod !== 'card') {
+            return $this->redirectToRoute('app_registration_registrationthankyou');
+        }
+
+        $event = $registration->getEvent();
+
+        // Store registration data in session
+        $request->getSession()->set('registration_data', [
+            'event_id' => $event->getId(),
+            'registration' => $registration,
+        ]);
+        
+        return $this->redirectToRoute('app_registration_payment', [
+            'event' => $event->getId()
+        ]);
     }
 }

@@ -145,8 +145,8 @@
 {#            {% for testimony in testimonies %}#}
             {# : 'HalfLeft', #}
                 {{ component('TestimonialCollectionComponent',{
-                    layout: 'HalfRight',
-                    limit: 2,
+                    layout: 'Grid',
+                    limit: 4,
                     request: app.request,
                 }) }}
 {#            {% endfor %}#}
