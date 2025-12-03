@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5f8a49a939d7563cd601d4de1b70ce00",
+    "content-hash": "23136a9221b48ddca74c16e895907ac4",
     "packages": [
         {
             "name": "babdev/pagerfanta-bundle",
@@ -3423,6 +3423,98 @@
                 "source": "https://github.com/nelmio/NelmioCorsBundle/tree/2.5.0"
             },
             "time": "2024-06-24T21:25:28+00:00"
+        },
+        {
+            "name": "omines/antispam-bundle",
+            "version": "0.1.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/omines/antispam-bundle.git",
+                "reference": "646c4a4eb3b9b2b47714ba0ff53c851aa981a988"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/omines/antispam-bundle/zipball/646c4a4eb3b9b2b47714ba0ff53c851aa981a988",
+                "reference": "646c4a4eb3b9b2b47714ba0ff53c851aa981a988",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=8.2",
+                "psr/log": "^2.0|^3.0",
+                "symfony/clock": "^6.4|^7.1",
+                "symfony/form": "^6.4|^7.1",
+                "symfony/framework-bundle": "^6.4|^7.1",
+                "symfony/translation": "^6.4|^7.1",
+                "symfony/twig-bridge": "^6.4|^7.1",
+                "symfony/validator": "^6.4|^7.1",
+                "symfony/yaml": "^6.4|^7.1"
+            },
+            "conflict": {
+                "monolog/monolog": "<3",
+                "twig/twig": "<3.1"
+            },
+            "require-dev": {
+                "ekino/phpstan-banned-code": "^3.0",
+                "friendsofphp/php-cs-fixer": "^3.75.0",
+                "infection/infection": "^0.29.14",
+                "phpstan/extension-installer": "^1.4.3",
+                "phpstan/phpstan": "^2.1.17",
+                "phpstan/phpstan-phpunit": "^2.0.6",
+                "phpstan/phpstan-symfony": "^2.0.6",
+                "phpunit/phpunit": "^11.5.8|^12.2.2",
+                "symfony/browser-kit": "^6.4|^7.3.0",
+                "symfony/css-selector": "^6.4|^7.3.0",
+                "symfony/debug-bundle": "^6.4|^7.3.0",
+                "symfony/dotenv": "^6.4|^7.3.0",
+                "symfony/monolog-bundle": "^3.10",
+                "symfony/routing": "^6.4|^7.3.0",
+                "symfony/runtime": "^6.4|^7.3.0",
+                "symfony/twig-bundle": "^6.4|^7.3.0",
+                "symfony/web-profiler-bundle": "^6.4|^7.3.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Omines\\AntiSpamBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Niels Keurentjes",
+                    "email": "niels.keurentjes@omines.com",
+                    "homepage": "https://www.omines.nl/"
+                }
+            ],
+            "description": "The Swiss Army Knife for protecting your Symfony forms from all kinds of spam",
+            "keywords": [
+                "Honeypot",
+                "antispam",
+                "cyrillic",
+                "spam",
+                "spam timer",
+                "symfony"
+            ],
+            "support": {
+                "issues": "https://github.com/omines/antispam-bundle/issues",
+                "source": "https://github.com/omines/antispam-bundle/tree/0.1.12"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/curry684",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-06-19T18:46:25+00:00"
         },
         {
             "name": "pagerfanta/core",
@@ -16957,5 +17049,5 @@
         "ext-zip": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

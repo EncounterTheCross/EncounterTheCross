@@ -66,7 +66,9 @@ class RegistrationController extends AbstractController
 
         $eventRegistration = new EventParticipant();
         $eventRegistration->setEvent($event);
-        $form = $this->createForm(AttendeeEventParticipantType::class, $eventRegistration);
+        $form = $this->createForm(AttendeeEventParticipantType::class, $eventRegistration, [
+            'antispam_profile' => 'default',
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /* @var EventParticipant $eventRegistration */
@@ -105,7 +107,9 @@ class RegistrationController extends AbstractController
 
         $eventRegistration = new EventParticipant();
         $eventRegistration->setEvent($event);
-        $form = $this->createForm(ServerEventParticipantType::class, $eventRegistration);
+        $form = $this->createForm(ServerEventParticipantType::class, $eventRegistration, [
+            'antispam_profile' => 'default',
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /* @var EventParticipant $eventRegistration */

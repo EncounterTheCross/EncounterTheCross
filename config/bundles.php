@@ -34,4 +34,5 @@ return [
     Sentry\SentryBundle\SentryBundle::class => ['prod' => true],
     Symfony\Bundle\MercureBundle\MercureBundle::class => ['all' => true],
     Nelmio\CorsBundle\NelmioCorsBundle::class => ['all' => true],
+    Omines\AntiSpamBundle\AntiSpamBundle::class => ['all' => true],
 ];
