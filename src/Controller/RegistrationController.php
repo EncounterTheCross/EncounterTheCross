@@ -158,9 +158,10 @@ class RegistrationController extends AbstractController
         Stripe::setApiKey($this->getStripeSettings()->getSecretKey());
         
         try {
+            $eventAmount = $event->getPrice() * 100; // Convert to cents
             $paymentIntent = PaymentIntent::create([
                 // TODO: add % of stripe fees as well
-                'amount' => 900, //$event->getPrice() * 100, // Convert to cents
+                'amount' => $eventAmount, // Convert to cents
                 'currency' => 'usd',
                 'automatic_payment_methods' => [
                     'enabled' => true,
@@ -177,7 +178,7 @@ class RegistrationController extends AbstractController
                 'registration' => $registrationData['registration'],
                 'stripe_public_key' => $this->getStripeSettings()->getPublicKey(),
                 'client_secret' => $paymentIntent->client_secret,
-                'event_amount' => $event->getPrice() * 100,
+                'event_amount' => $eventAmount, // Convert to cents
             ], new Response(null, 200));
         } catch (\Exception $e) {
             // if we have made it this far we should have samed the registration data.
