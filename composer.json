@@ -21,6 +21,7 @@
         "league/html-to-markdown": "^5.1",
         "liip/monitor-bundle": "^2.22",
         "nelmio/cors-bundle": "^2.5",
+        "omines/antispam-bundle": "^0.1.12",
         "pagerfanta/doctrine-orm-adapter": "^3.8.0|^4.0",
         "pagerfanta/twig": "^4.7",
         "phpdocumentor/reflection-docblock": "^5.3",

@@ -156,6 +156,7 @@ class ServerEventParticipantType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => EventParticipant::class,
+            'antispam_profile', 'default',
         ]);
     }
 }
