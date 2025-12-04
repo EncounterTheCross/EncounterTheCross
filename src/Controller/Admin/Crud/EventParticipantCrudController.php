@@ -506,6 +506,11 @@ class EventParticipantCrudController extends AbstractCrudController implements S
                 ->hideOnIndex()
             ;
         }
+
+        yield FormField::addFieldset('Spam Detection');
+        yield Field::new('rawSpamDetails')
+            ->setPermission('ROLE_DATA_EDITOR_OVERWRITE')
+            ->hideOnIndex();
     }
 
     private function updateParticipantStatus(AdminContext $context, EventParticipantStatusEnum $status): ?Response

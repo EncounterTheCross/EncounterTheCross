@@ -11,6 +11,7 @@ use App\Service\Exporter\EntityExportableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -89,6 +90,9 @@ class EventParticipant implements EntityExportableInterface
      */
     #[ORM\OneToMany(mappedBy: 'EventParticipant', targetEntity: EventPrayerTeamServer::class, cascade: ['persist'])]
     private Collection $eventPrayerTeamServers;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $rawSpamDetails = null;
 
     public function __construct()
     {
@@ -217,6 +221,17 @@ class EventParticipant implements EntityExportableInterface
         $this->event = $event;
 
         return $this;
+    }
+
+    public function getSpamSerialization(): array
+    {
+        $spamInformation = $this->getExtendedSerialization();
+        $spamInformation['line1'] = $this->getLine1();
+        $spamInformation['city'] = $this->getCity();
+        $spamInformation['state'] = $this->getState();
+        $spamInformation['zipcode'] = $this->getZipcode();
+
+        return $spamInformation;
     }
 
     public function getExtendedSerialization(): array
@@ -375,5 +390,26 @@ class EventParticipant implements EntityExportableInterface
         }
 
         return $this;
+    }
+
+    public function getRawSpamDetails(): ?array
+    {
+        return $this->rawSpamDetails;
+    }
+
+    public function setRawSpamDetails(?array $rawSpamDetails): static
+    {
+        $this->rawSpamDetails = $rawSpamDetails;
+
+        return $this;
+    }
+
+    public function isSpam(): bool
+    {
+        if (null === $this->rawSpamDetails) {
+            return false;
+        }
+
+        return $this->rawSpamDetails['totalScore'] >= SpamDetectionService::SPAM_THRESHOLD;
     }
 }
