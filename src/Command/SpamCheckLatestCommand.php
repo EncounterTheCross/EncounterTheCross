@@ -52,6 +52,8 @@ class SpamCheckLatestCommand extends Command
                 $spamDetails
             );
 
+            $spamScore = $spamDetails['score'] ?? 0;
+
             $this->eventParticipantRepository->save($participant, true);
 
             if ($participant->isSpam()) {
