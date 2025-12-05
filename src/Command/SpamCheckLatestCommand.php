@@ -20,9 +20,9 @@ use App\Repository\EventParticipantRepository;
 class SpamCheckLatestCommand extends Command
 {
     public function __construct(
-        EventParticipantRepository $eventParticipantRepository,
-        SpamDetectionService $spamDetectionService,
-        EventRepository $eventRepository,
+        private EventParticipantRepository $eventParticipantRepository,
+        private SpamDetectionService $spamDetectionService,
+        private EventRepository $eventRepository,
     )
     {
         parent::__construct();
