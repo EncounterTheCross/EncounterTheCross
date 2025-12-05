@@ -2,6 +2,8 @@
 <phpmd-baseline>
   <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Command/CreateAdminCommand.php"/>
   <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Command/OpcacheClearCommand.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Command/SpamCheckLatestCommand.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Command/SpamCheckLatestCommand.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/AbstractCrudController.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/Admin/Crud/EventCrudController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\MissingImport" file="src/Controller/Admin/Crud/EventCrudController.php"/>
