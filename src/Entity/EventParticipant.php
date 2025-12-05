@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Service\SpamDetection\SpamDetectionService;
 
 #[ORM\Entity(repositoryClass: EventParticipantRepository::class)]
 class EventParticipant implements EntityExportableInterface
@@ -410,6 +411,23 @@ class EventParticipant implements EntityExportableInterface
             return false;
         }
 
-        return $this->rawSpamDetails['totalScore'] >= SpamDetectionService::SPAM_THRESHOLD;
+        if (!isset($this->rawSpamDetails['is_spam'])) {
+            return false;
+        }
+
+        return $this->rawSpamDetails['is_spam'] >= SpamDetectionService::SPAM_THRESHOLD;
+    }
+
+    public function getSpamScore(): int
+    {
+        if (null === $this->rawSpamDetails) {
+            return 0;
+        }
+
+        if (!isset($this->rawSpamDetails['is_spam'])) {
+            return 0;
+        }
+
+        return $this->rawSpamDetails['total_score'] ?? 0;
     }
 }

@@ -3,7 +3,7 @@ namespace App\Service\SpamDetection;
 
 class SpamDetectionService
 {
-    private const SPAM_THRESHOLD = 50; // Adjust based on your needs
+    public const SPAM_THRESHOLD = 50; // Adjust based on your needs
     
     public function calculateSpamScore(array $formData): int
     {
