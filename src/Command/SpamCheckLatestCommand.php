@@ -46,15 +46,15 @@ class SpamCheckLatestCommand extends Command
             }
             
             $spamDetails = $this->spamDetectionService->getSpamDetails(
-                $eventRegistration->getSpamSerialization()
+                $participant->getSpamSerialization()
             );
-            $eventRegistration->setRawSpamDetails(
+            $participant->setRawSpamDetails(
                 $spamDetails
             );
 
-            $this->eventParticipantRepository->save($eventRegistration, true);
+            $this->eventParticipantRepository->save($participant, true);
 
-            if ($eventRegistration->isSpam()) {
+            if ($participant->isSpam()) {
                 $io->warning(sprintf('Participant ID %d flagged as spam with score %d', $participant->getId(), $spamScore));
             } 
             return true; // continue iteration
