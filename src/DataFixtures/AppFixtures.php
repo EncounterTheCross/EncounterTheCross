@@ -9,7 +9,7 @@ use App\Factory\LocationFactory;
 use App\Factory\TestimonialFactory;
 use App\Service\RoleManager\Role;
 use DateTime;
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
 class AppFixtures extends Fixture
