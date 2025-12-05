@@ -53,12 +53,11 @@ jobs:
 
             - name: Install assets
               run: |
-                export APP_ENV=prod
-                php bin/console assets:install
-                php bin/console importmap:install
-                php bin/console sass:build
-                php bin/console tailwind:build -m
-                php bin/console asset-map:compile
+                APP_ENV=prod php bin/console assets:install
+                APP_ENV=prod php bin/console importmap:install
+                APP_ENV=prod php bin/console sass:build
+                APP_ENV=prod php bin/console tailwind:build -m
+                APP_ENV=prod php bin/console asset-map:compile
                 
 
             #       No Private Repos are being used
@@ -77,7 +76,7 @@ jobs:
 #              run: yarn && yarn build
 
             - name: Compile the Release Manager
-              run: composer install --no-interaction --no-progress --ansi --prefer-dist -d ./tools/ReleaseManager
+              run: APP_ENV=prod composer install --no-interaction --no-progress --ansi --prefer-dist -d ./tools/ReleaseManager
 
             - name: Release with MagePHP
               run: ./bin/mage deploy release -vvv
