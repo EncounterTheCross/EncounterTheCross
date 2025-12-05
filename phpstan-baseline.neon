@@ -1,9 +1,34 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^PHPDoc tag @param for parameter \\$config with type mixed is not subtype of native type array\\.$#"
+			count: 1
+			path: config/reference.php
+
+		-
+			message: "#^PHPDoc tag @return with type mixed is not subtype of native type array\\.$#"
+			count: 1
+			path: config/reference.php
+
+		-
+			message: "#^Call to an undefined method EasyCorp\\\\Bundle\\\\EasyAdminBundle\\\\Contracts\\\\Field\\\\FieldInterface\\:\\:hideOnForm\\(\\)\\.$#"
+			count: 2
+			path: src/Controller/Admin/Crud/EventCrudController.php
+
+		-
 			message: "#^Property App\\\\Controller\\\\Admin\\\\Crud\\\\Field\\\\Field\\:\\:\\$dto is never read, only written\\.$#"
 			count: 1
 			path: src/Controller/Admin/Crud/Field/Field.php
+
+		-
+			message: "#^Call to an undefined method EasyCorp\\\\Bundle\\\\EasyAdminBundle\\\\Contracts\\\\Field\\\\FieldInterface\\:\\:hideOnIndex\\(\\)\\.$#"
+			count: 6
+			path: src/Controller/Admin/Crud/LocationCrudController.php
+
+		-
+			message: "#^Call to an undefined method EasyCorp\\\\Bundle\\\\EasyAdminBundle\\\\Contracts\\\\Field\\\\FieldInterface\\:\\:onlyOnIndex\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/Admin/Crud/LocationCrudController.php
 
 		-
 			message: "#^Cannot call method get\\(\\) on null\\.$#"
@@ -39,11 +64,6 @@ parameters:
 			message: "#^Method App\\\\Entity\\\\Location\\:\\:getLaunchPointContacts\\(\\) should return Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, App\\\\Entity\\\\Leader\\> but returns Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, App\\\\Entity\\\\LaunchPointContacts\\>\\.$#"
 			count: 1
 			path: src/Entity/Location.php
-
-		-
-			message: "#^Binary operation \"\\-\" between non\\-falsy\\-string and non\\-falsy\\-string results in an error\\.$#"
-			count: 1
-			path: src/EventSubscriber/UserActivitySubscriber.php
 
 		-
 			message: "#^Left side of && is always true\\.$#"
@@ -159,6 +179,11 @@ parameters:
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: src/Service/RoleManager/RoleFormatter.php
+
+		-
+			message: "#^Call to an undefined method App\\\\Service\\\\SpamDetection\\\\SpamDetectionService\\:\\:checkPaymentIssues\\(\\)\\.$#"
+			count: 1
+			path: src/Service/SpamDetection/SpamDetectionService.php
 
 		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
