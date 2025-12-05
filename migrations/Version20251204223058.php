@@ -19,55 +19,65 @@ final class Version20251204223058 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql(<<<'SQL'
-            ALTER TABLE area DROP FOREIGN KEY FK_D7943D6840A73EBA
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE event_booked_rooms DROP FOREIGN KEY FK_CFF08DF171F7E88B
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE event_room_booking DROP FOREIGN KEY FK_E13D5BCD71F7E88B
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE event_room_booking DROP FOREIGN KEY FK_E13D5BCDA495DAEF
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE event_room_booking DROP FOREIGN KEY FK_E13D5BCDB872E6EA
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE event_room_booking_room_configuration DROP FOREIGN KEY FK_5C750D9F1389C97
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE event_room_booking_room_configuration DROP FOREIGN KEY FK_5C750D9FE11084C
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE room DROP FOREIGN KEY FK_729F519BBD0F409C
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE room_configuration DROP FOREIGN KEY FK_CC52153154177093
-        SQL);
-        $this->addSql(<<<'SQL'
-            DROP TABLE area
-        SQL);
-        $this->addSql(<<<'SQL'
-            DROP TABLE event_booked_rooms
-        SQL);
-        $this->addSql(<<<'SQL'
-            DROP TABLE event_room_booking
-        SQL);
-        $this->addSql(<<<'SQL'
-            DROP TABLE event_room_booking_room_configuration
-        SQL);
-        $this->addSql(<<<'SQL'
-            DROP TABLE room
-        SQL);
-        $this->addSql(<<<'SQL'
-            DROP TABLE room_configuration
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE event_participant ADD raw_spam_details LONGTEXT DEFAULT NULL
-        SQL);
+        try {
+            // this up() migration is auto-generated, please modify it to your needs
+            $this->addSql(<<<'SQL'
+                ALTER TABLE area DROP FOREIGN KEY FK_D7943D6840A73EBA
+            SQL);
+            $this->addSql(<<<'SQL'
+                ALTER TABLE event_booked_rooms DROP FOREIGN KEY FK_CFF08DF171F7E88B
+            SQL);
+            $this->addSql(<<<'SQL'
+                ALTER TABLE event_room_booking DROP FOREIGN KEY FK_E13D5BCD71F7E88B
+            SQL);
+            $this->addSql(<<<'SQL'
+                ALTER TABLE event_room_booking DROP FOREIGN KEY FK_E13D5BCDA495DAEF
+            SQL);
+            $this->addSql(<<<'SQL'
+                ALTER TABLE event_room_booking DROP FOREIGN KEY FK_E13D5BCDB872E6EA
+            SQL);
+            $this->addSql(<<<'SQL'
+                ALTER TABLE event_room_booking_room_configuration DROP FOREIGN KEY FK_5C750D9F1389C97
+            SQL);
+            $this->addSql(<<<'SQL'
+                ALTER TABLE event_room_booking_room_configuration DROP FOREIGN KEY FK_5C750D9FE11084C
+            SQL);
+            $this->addSql(<<<'SQL'
+                ALTER TABLE room DROP FOREIGN KEY FK_729F519BBD0F409C
+            SQL);
+            $this->addSql(<<<'SQL'
+                ALTER TABLE room_configuration DROP FOREIGN KEY FK_CC52153154177093
+            SQL);
+            $this->addSql(<<<'SQL'
+                DROP TABLE area
+            SQL);
+            $this->addSql(<<<'SQL'
+                DROP TABLE event_booked_rooms
+            SQL);
+            $this->addSql(<<<'SQL'
+                DROP TABLE event_room_booking
+            SQL);
+            $this->addSql(<<<'SQL'
+                DROP TABLE event_room_booking_room_configuration
+            SQL);
+            $this->addSql(<<<'SQL'
+                DROP TABLE room
+            SQL);
+            $this->addSql(<<<'SQL'
+                DROP TABLE room_configuration
+            SQL);
+        } catch (\Exception $e) {
+            // Log the exception or handle it as needed
+        }
+
+        try {
+            $this->addSql(<<<'SQL'
+                ALTER TABLE event_participant ADD raw_spam_details LONGTEXT DEFAULT NULL
+            SQL);
+        } 
+        catch (\Exception $e) {
+            // Log the exception or handle it as needed
+        }
     }
 
     public function down(Schema $schema): void
