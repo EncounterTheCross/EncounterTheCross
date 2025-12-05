@@ -43,6 +43,7 @@
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/DataFixtures/AppFixtures.php"/>
   <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="src/Entity/Event.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Entity/Event.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="src/Entity/EventParticipant.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Entity/EventParticipant.php"/>
   <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="src/Entity/EventParticipant.php" method="TYPES"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Entity/EventParticipant.php"/>
@@ -104,6 +105,11 @@
   <violation rule="PHPMD\Rule\UnusedLocalVariable" file="src/Service/Mailer/RegistrationThankYouContextAwareMailer.php"/>
   <violation rule="PHPMD\Rule\UnusedPrivateMethod" file="src/Service/RoleManager/RoleFormatter.php" method="formatUserReadableArray"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Service/RoleManager/RoleFormatter.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="src/Service/SpamDetection/SpamDetectionService.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Service/SpamDetection/SpamDetectionService.php" method="checkAddressIssues"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="src/Service/SpamDetection/SpamDetectionService.php" method="checkAddressIssues"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Service/SpamDetection/SpamDetectionService.php" method="getAddressReasons"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="src/Service/SpamDetection/SpamDetectionService.php" method="getAddressReasons"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Service/UuidManager/UuidFactory.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Settings/Global/SystemSettings.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Settings/SettingsEnumConverter.php"/>

@@ -1,0 +1,135 @@
+<?php
+
+declare(strict_types=1);
+
+namespace DoctrineMigrations;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+final class Version20251204223058 extends AbstractMigration
+{
+    public function getDescription(): string
+    {
+        return '';
+    }
+
+    public function up(Schema $schema): void
+    {
+        try {
+            // this up() migration is auto-generated, please modify it to your needs
+            $this->addSql(<<<'SQL'
+                ALTER TABLE area DROP FOREIGN KEY FK_D7943D6840A73EBA
+            SQL);
+            $this->addSql(<<<'SQL'
+                ALTER TABLE event_booked_rooms DROP FOREIGN KEY FK_CFF08DF171F7E88B
+            SQL);
+            $this->addSql(<<<'SQL'
+                ALTER TABLE event_room_booking DROP FOREIGN KEY FK_E13D5BCD71F7E88B
+            SQL);
+            $this->addSql(<<<'SQL'
+                ALTER TABLE event_room_booking DROP FOREIGN KEY FK_E13D5BCDA495DAEF
+            SQL);
+            $this->addSql(<<<'SQL'
+                ALTER TABLE event_room_booking DROP FOREIGN KEY FK_E13D5BCDB872E6EA
+            SQL);
+            $this->addSql(<<<'SQL'
+                ALTER TABLE event_room_booking_room_configuration DROP FOREIGN KEY FK_5C750D9F1389C97
+            SQL);
+            $this->addSql(<<<'SQL'
+                ALTER TABLE event_room_booking_room_configuration DROP FOREIGN KEY FK_5C750D9FE11084C
+            SQL);
+            $this->addSql(<<<'SQL'
+                ALTER TABLE room DROP FOREIGN KEY FK_729F519BBD0F409C
+            SQL);
+            $this->addSql(<<<'SQL'
+                ALTER TABLE room_configuration DROP FOREIGN KEY FK_CC52153154177093
+            SQL);
+            $this->addSql(<<<'SQL'
+                DROP TABLE area
+            SQL);
+            $this->addSql(<<<'SQL'
+                DROP TABLE event_booked_rooms
+            SQL);
+            $this->addSql(<<<'SQL'
+                DROP TABLE event_room_booking
+            SQL);
+            $this->addSql(<<<'SQL'
+                DROP TABLE event_room_booking_room_configuration
+            SQL);
+            $this->addSql(<<<'SQL'
+                DROP TABLE room
+            SQL);
+            $this->addSql(<<<'SQL'
+                DROP TABLE room_configuration
+            SQL);
+        } catch (\Exception $e) {
+            // Log the exception or handle it as needed
+        }
+
+        try {
+            $this->addSql(<<<'SQL'
+                ALTER TABLE event_participant ADD raw_spam_details LONGTEXT DEFAULT NULL
+            SQL);
+        } 
+        catch (\Exception $e) {
+            // Log the exception or handle it as needed
+        }
+    }
+
+    public function down(Schema $schema): void
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql(<<<'SQL'
+            CREATE TABLE area (area_name VARCHAR(30) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, id INT UNSIGNED AUTO_INCREMENT NOT NULL, deleted_at DATETIME DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, venue_id INT UNSIGNED NOT NULL, INDEX IDX_D7943D6840A73EBA (venue_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = '' 
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE TABLE event_booked_rooms (name VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, capacity INT NOT NULL, id INT UNSIGNED AUTO_INCREMENT NOT NULL, deleted_at DATETIME DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, event_id INT UNSIGNED NOT NULL, INDEX IDX_CFF08DF171F7E88B (event_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = '' 
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE TABLE event_room_booking (id INT AUTO_INCREMENT NOT NULL, status VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, event_id INT UNSIGNED NOT NULL, room_config_id INT UNSIGNED NOT NULL, launch_point_id INT UNSIGNED NOT NULL, INDEX IDX_E13D5BCDB872E6EA (room_config_id), INDEX IDX_E13D5BCD71F7E88B (event_id), INDEX IDX_E13D5BCDA495DAEF (launch_point_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = '' 
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE TABLE event_room_booking_room_configuration (event_room_booking_id INT NOT NULL, room_configuration_id INT UNSIGNED NOT NULL, INDEX IDX_5C750D9FE11084C (event_room_booking_id), INDEX IDX_5C750D9F1389C97 (room_configuration_id), PRIMARY KEY(event_room_booking_id, room_configuration_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = '' 
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE TABLE room (room_name VARCHAR(25) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, id INT UNSIGNED AUTO_INCREMENT NOT NULL, deleted_at DATETIME DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, area_id INT UNSIGNED NOT NULL, INDEX IDX_729F519BBD0F409C (area_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = '' 
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE TABLE room_configuration (name VARCHAR(50) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, description VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, capacity INT NOT NULL, is_default TINYINT(1) NOT NULL, is_active TINYINT(1) NOT NULL, valid_from_month INT DEFAULT NULL, valid_until_month INT DEFAULT NULL, id INT UNSIGNED AUTO_INCREMENT NOT NULL, room_id INT UNSIGNED NOT NULL, INDEX IDX_CC52153154177093 (room_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = '' 
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE area ADD CONSTRAINT FK_D7943D6840A73EBA FOREIGN KEY (venue_id) REFERENCES location (id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE event_booked_rooms ADD CONSTRAINT FK_CFF08DF171F7E88B FOREIGN KEY (event_id) REFERENCES event (id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE event_room_booking ADD CONSTRAINT FK_E13D5BCD71F7E88B FOREIGN KEY (event_id) REFERENCES event (id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE event_room_booking ADD CONSTRAINT FK_E13D5BCDA495DAEF FOREIGN KEY (launch_point_id) REFERENCES location (id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE event_room_booking ADD CONSTRAINT FK_E13D5BCDB872E6EA FOREIGN KEY (room_config_id) REFERENCES room_configuration (id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE event_room_booking_room_configuration ADD CONSTRAINT FK_5C750D9F1389C97 FOREIGN KEY (room_configuration_id) REFERENCES room_configuration (id) ON DELETE CASCADE
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE event_room_booking_room_configuration ADD CONSTRAINT FK_5C750D9FE11084C FOREIGN KEY (event_room_booking_id) REFERENCES event_room_booking (id) ON DELETE CASCADE
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE room ADD CONSTRAINT FK_729F519BBD0F409C FOREIGN KEY (area_id) REFERENCES area (id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE room_configuration ADD CONSTRAINT FK_CC52153154177093 FOREIGN KEY (room_id) REFERENCES room (id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE event_participant DROP raw_spam_details
+        SQL);
+    }
+}

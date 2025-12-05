@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\SpamDetection\SpamDetectionService;
 
 #[Route(
     '/men'
@@ -36,6 +37,7 @@ class RegistrationController extends AbstractController
         private EventParticipantRepository $eventParticipantRepository,
         private RegistrationLeaderNotificationContextAwareMailer $registrationNotificationMailer,
         private RegistrationThankYouContextAwareMailer $registrationThankYouMailer,
+        private SpamDetectionService $spamDetectionService,
     ) {
     }
 
@@ -79,6 +81,14 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            $spamDetails = $this->spamDetectionService->getSpamDetails(
+                $eventRegistration->getSpamSerialization()
+            );
+
+            $eventRegistration->setRawSpamDetails(
+                $spamDetails
+            );
+
             //            $eventRegistration->setEvent($event);
 
             $this->eventParticipantRepository->save(
@@ -117,6 +127,14 @@ class RegistrationController extends AbstractController
                 $this->personManager->exists(
                     $form->get('person')->getData()
                 )
+            );
+
+            $spamDetails = $this->spamDetectionService->getSpamDetails(
+                $eventRegistration->getSpamSerialization()
+            );
+
+            $eventRegistration->setRawSpamDetails(
+                $spamDetails
             );
 
             $this->eventParticipantRepository->save(

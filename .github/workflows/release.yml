@@ -11,7 +11,7 @@ jobs:
             extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
         strategy:
           matrix:
-            php-version: [ '8.2' ]
+            php-version: [ '8.3' ]
         steps:
             - name: Start SSH agent
               uses: webfactory/ssh-agent@v0.9.1

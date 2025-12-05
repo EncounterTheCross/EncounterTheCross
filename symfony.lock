@@ -76,13 +76,16 @@
         ]
     },
     "easycorp/easyadmin-bundle": {
-        "version": "4.6",
+        "version": "4.27",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
-            "version": "3.0",
-            "ref": "b131e6cbfe1b898a508987851963fff485986285"
-        }
+            "version": "4.14",
+            "ref": "13b3e524d1038a6861ad6c7fc64e31b644ba0c54"
+        },
+        "files": [
+            "config/routes/easyadmin.yaml"
+        ]
     },
     "endroid/qr-code-bundle": {
         "version": "5.0.2"
@@ -355,6 +358,18 @@
             "tests/bootstrap.php"
         ]
     },
+    "symfony/property-info": {
+        "version": "7.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "7.3",
+            "ref": "dae70df71978ae9226ae915ffd5fad817f5ca1f7"
+        },
+        "files": [
+            "config/packages/property_info.yaml"
+        ]
+    },
     "symfony/routing": {
         "version": "7.0",
         "recipe": {
@@ -382,12 +397,12 @@
         ]
     },
     "symfony/stimulus-bundle": {
-        "version": "2.22",
+        "version": "2.23",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
             "version": "2.20",
-            "ref": "3acc494b566816514a6873a89023a35440b6386d"
+            "ref": "a957c9023a4965306ed0033b70b6d0d432994ec9"
         },
         "files": [
             "assets/bootstrap.js",

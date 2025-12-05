@@ -41,6 +41,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 
 class EventParticipantCrudController extends AbstractCrudController implements SubCrudControllerInterface
 {
@@ -506,6 +507,21 @@ class EventParticipantCrudController extends AbstractCrudController implements S
                 ->hideOnIndex()
             ;
         }
+
+        yield FormField::addFieldset('Spam Detection')
+            ->setPermission('ROLE_DATA_EDITOR_OVERWRITE')
+        ;
+        yield BooleanField::new('isSpam')
+            ->setPermission('ROLE_DATA_EDITOR_OVERWRITE')
+            ->hideOnIndex()
+            ->hideOnForm()
+        ;
+        yield PercentField::new('spamScore')
+            ->setPermission('ROLE_DATA_EDITOR_OVERWRITE')
+            ->setStoredAsFractional(false)
+            ->hideOnIndex()
+            ->hideOnForm()
+        ;
     }
 
     private function updateParticipantStatus(AdminContext $context, EventParticipantStatusEnum $status): ?Response
