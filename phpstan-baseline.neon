@@ -36,6 +36,11 @@ parameters:
 			path: src/Controller/Admin/MainDashboardController.php
 
 		-
+			message: "#^Access to undefined constant App\\\\Entity\\\\EventParticipant\\:\\:STATUS_SPAM\\.$#"
+			count: 1
+			path: src/Controller/RegistrationController.php
+
+		-
 			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: src/Entity/ContactPerson.php
