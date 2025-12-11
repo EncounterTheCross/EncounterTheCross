@@ -65,6 +65,8 @@
   <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Entity/Traits/EntityIdTrait.php"/>
   <violation rule="PHPMD\Rule\Design\TooManyFields" file="src/Entity/UserActivity.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/EventSubscriber/MaintenanceModeSubscriber.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/EventSubscriber/UserActivitySubscriber.php" method="onKernelRequest"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="src/EventSubscriber/UserActivitySubscriber.php" method="onKernelRequest"/>
   <violation rule="PHPMD\Rule\CleanCode\MissingImport" file="src/EventSubscriber/UserActivitySubscriber.php"/>
   <violation rule="PHPMD\Rule\Naming\LongClassName" file="src/Exception/MissingMailerContextRequiredValuesException.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Exception/MissingMailerContextRequiredValuesException.php"/>

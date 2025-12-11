@@ -64,9 +64,18 @@ class UserActivitySubscriber implements EventSubscriberInterface
         $this->currentActivity->setRequestTime(new \DateTime());
 
         // Set request data
+        // Truncate if longer than 255 characters
+        $uri = $request->getRequestUri();
+        if (strlen($uri) > 255) {
+            $uri = substr($uri, 0, 255);
+            // Optional: log a warning that truncation occurred
+            // $this->logger->warning('Request URI truncated', [
+            //     'original_length' => strlen($request->getRequestUri())
+            // ]);
+        }
         $this->currentActivity->setIpAddress($request->getClientIp());
         $this->currentActivity->setRequestMethod($request->getMethod());
-        $this->currentActivity->setRequestUri($request->getRequestUri());
+        $this->currentActivity->setRequestUri($uri);
         $this->currentActivity->setRoute($request->attributes->get('_route'));
 
         // Set user agent info
@@ -99,6 +108,13 @@ class UserActivitySubscriber implements EventSubscriberInterface
         // Set referrer if available
         $referrer = $request->headers->get('referer');
         if ($referrer) {
+            if (strlen($referrer) > 255) {
+                $referrer = substr($referrer, 0, 255);
+                // Optional: log a warning that truncation occurred
+                // $this->logger->warning('Request URI truncated', [
+                //     'original_length' => strlen($request->getRequestUri())
+                // ]);
+            }
             $this->currentActivity->setReferrer($referrer);
         }
 
