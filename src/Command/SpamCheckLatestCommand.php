@@ -52,7 +52,7 @@ class SpamCheckLatestCommand extends Command
                 $spamDetails
             );
 
-            $spamScore = $spamDetails['score'] ?? 0;
+            $spamScore = $spamDetails['total_score'] ?? 0;
 
             $this->eventParticipantRepository->save($participant, true);
 

@@ -166,6 +166,15 @@ class RegistrationController extends AbstractController
             return;
         }
 
+        // Do not send if this is spam
+        if ($registration->isSpam()) {
+            //Update status to spam
+            $registration->setStatus(EventParticipant::STATUS_SPAM);
+            $this->eventParticipantRepository->save($registration, true);
+            
+            return;
+        }
+
         $toEmail = [new Address($registration->getPerson()->getEmail(), $registration->getFullName())];
         $this->registrationThankYouMailer->send(
             toEmails: $toEmail, context: ['registration' => $registration],

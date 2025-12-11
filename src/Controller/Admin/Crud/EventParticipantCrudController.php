@@ -42,6 +42,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
+use App\Repository\LocationRepository;
 
 class EventParticipantCrudController extends AbstractCrudController implements SubCrudControllerInterface
 {
@@ -53,6 +54,7 @@ class EventParticipantCrudController extends AbstractCrudController implements S
 
     public function __construct(
         private readonly PersonManager $personManager,
+        private readonly LocationRepository $locationRepository,
         XlsExporter $exporter,
     ) {
         $this->exporter = $exporter;
@@ -117,6 +119,27 @@ class EventParticipantCrudController extends AbstractCrudController implements S
         assert($entityInstance instanceof EventParticipant);
         if ($entityInstance->getStatus() !== EventParticipantStatusEnum::ATTENDING->value) {
             $response = $this->updateParticipantStatus($context, EventParticipantStatusEnum::ATTENDING);
+            if ($response) {
+                return $response;
+            }
+        }
+
+        $url = $this->getAdminUrlGenerator()
+            ->includeReferrer()
+            ->set(ParentCrudControllerInterface::PARENT_ID, $entityInstance->getEvent()->getId())
+            ->setController(EventParticipantCrudController::class)
+            ->setAction(Action::INDEX)
+        ;
+
+        return $this->redirect($url->generateUrl());
+    }
+
+    public function updateParticipantToSpam(AdminContext $context)
+    {
+        $entityInstance = $context->getEntity()->getInstance();
+        assert($entityInstance instanceof EventParticipant);
+        if ($entityInstance->getStatus() !== EventParticipantStatusEnum::SPAM->value) {
+            $response = $this->updateParticipantStatus($context, EventParticipantStatusEnum::SPAM);
             if ($response) {
                 return $response;
             }
@@ -199,12 +222,12 @@ class EventParticipantCrudController extends AbstractCrudController implements S
             ->add(Crud::PAGE_DETAIL, $detailIndexAction)
             ->disable(Action::DELETE, Action::BATCH_DELETE, Action::NEW)
             // Temp disable Edit, till we get the edit forms working correctly
-//            ->disable(Action::EDIT)
+
         ;
 
         $participantStatusDropped = Action::new('mark_drop')
             ->setLabel('Mark Dropped')
-//            ->linkToCrudAction('updateParticipantToDropped')
+
             ->linkToUrl(function (EventParticipant $eventParticipant) {
                 return $this->getAdminUrlGenerator()
                     ->includeReferrer()
@@ -251,6 +274,23 @@ class EventParticipantCrudController extends AbstractCrudController implements S
             })
             ->displayIf(function (EventParticipant $participant) {
                 return $participant->getStatus() !== EventParticipantStatusEnum::ATTENDING->value;
+            })
+        ;
+
+        $participantStatusSpam = Action::new('mark_spam')
+            ->setLabel('Mark Spam')
+            ->linkToUrl(function (EventParticipant $eventParticipant) {
+                return $this->getAdminUrlGenerator()
+                    ->includeReferrer()
+                    ->set('entityId', $eventParticipant->getId())
+                    ->set(ParentCrudControllerInterface::PARENT_ID, $eventParticipant->getEvent()->getId())
+                    ->setController(EventParticipantCrudController::class)
+                    ->setAction('updateParticipantToSpam')
+                    ->generateUrl()
+                ;
+            })
+            ->displayIf(function (EventParticipant $participant) {
+                return $participant->getStatus() !== EventParticipantStatusEnum::SPAM->value;
             })
         ;
 
@@ -341,6 +381,8 @@ class EventParticipantCrudController extends AbstractCrudController implements S
             ->add(Action::DETAIL, $participantStatusAttending)
             ->add(Action::INDEX, $participantStatusDropped)
             ->add(Action::DETAIL, $participantStatusDropped)
+            ->add(Action::INDEX, $participantStatusSpam)
+            ->add(Action::DETAIL, $participantStatusSpam)
         ;
 
         // setup permission to global actions
@@ -367,8 +409,30 @@ class EventParticipantCrudController extends AbstractCrudController implements S
             CASE_UPPER
         ));
 
+        $attendanceTypeFilter = ChoiceFilter::new('type');
+        $attendanceTypeFilter->setChoices(array_change_key_case(
+            array_combine(EventParticipant::TYPES(), EventParticipant::TYPES()),
+            CASE_UPPER
+        ));
+
+        $launchPointFilter = ChoiceFilter::new('launchPoint')
+            ->setFormTypeOption('value_type_options', [
+                'multiple' => true,
+            ])
+        ;
+        $launchPointChoices = $this->locationRepository->findAll();
+        
+        $launchPointFilter->setChoices(array_combine(
+            array_map(fn ($lp) => $lp->getName(), $launchPointChoices),
+            array_map(fn ($lp) => $lp->getId(), $launchPointChoices),
+        ));
+        $launchPointFilter->setLabel('Launch Point');
+        
+
         return parent::configureFilters($filters)
             ->add($statusFilter)
+            ->add($launchPointFilter)
+            ->add($attendanceTypeFilter)
         ;
     }
 
