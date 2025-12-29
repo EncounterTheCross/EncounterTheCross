@@ -54,11 +54,15 @@ class SpamCheckLatestCommand extends Command
 
             $spamScore = $spamDetails['total_score'] ?? 0;
 
-            $this->eventParticipantRepository->save($participant, true);
-
             if ($participant->isSpam()) {
+                //Update status to spam
+                $participant->setStatus(EventParticipantStatusEnum::STATUS_SPAM);
+                
                 $io->warning(sprintf('Participant ID %d flagged as spam with score %d', $participant->getId(), $spamScore));
             } 
+
+            $this->eventParticipantRepository->save($participant, true);
+
             return true; // continue iteration
         });
 

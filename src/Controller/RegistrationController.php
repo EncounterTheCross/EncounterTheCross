@@ -26,6 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\SpamDetection\SpamDetectionService;
+use App\Enum\EventParticipantStatusEnum;
 
 #[Route(
     '/men'
@@ -169,9 +170,9 @@ class RegistrationController extends AbstractController
         // Do not send if this is spam
         if ($registration->isSpam()) {
             //Update status to spam
-            $registration->setStatus(EventParticipant::STATUS_SPAM);
+            $registration->setStatus(EventParticipantStatusEnum::STATUS_SPAM);
             $this->eventParticipantRepository->save($registration, true);
-            
+
             return;
         }
 
