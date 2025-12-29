@@ -11,6 +11,11 @@ parameters:
 			path: config/reference.php
 
 		-
+			message: "#^Access to constant STATUS_SPAM on an unknown class App\\\\Command\\\\EventParticipantStatusEnum\\.$#"
+			count: 1
+			path: src/Command/SpamCheckLatestCommand.php
+
+		-
 			message: "#^Call to an undefined method EasyCorp\\\\Bundle\\\\EasyAdminBundle\\\\Contracts\\\\Field\\\\FieldInterface\\:\\:hideOnForm\\(\\)\\.$#"
 			count: 2
 			path: src/Controller/Admin/Crud/EventCrudController.php
@@ -36,7 +41,7 @@ parameters:
 			path: src/Controller/Admin/MainDashboardController.php
 
 		-
-			message: "#^Access to undefined constant App\\\\Entity\\\\EventParticipant\\:\\:STATUS_SPAM\\.$#"
+			message: "#^Access to undefined constant App\\\\Enum\\\\EventParticipantStatusEnum\\:\\:STATUS_SPAM\\.$#"
 			count: 1
 			path: src/Controller/RegistrationController.php
 
