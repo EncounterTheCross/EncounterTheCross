@@ -31,6 +31,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use EasyCorp\Bundle\EasyAdminBundle\Form\Filter\Type\DateFilterType;
 
 class EventCrudController extends AbstractCrudController implements ParentCrudControllerInterface
 {
@@ -72,7 +73,15 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
                     'comparison' => ComparisonType::GTE,
                     'value' => (new \DateTime('now'))->setTime(0, 0),
                 ])
-            );
+            )
+            ->add(DateTimeFilter::new('start')
+                ->setFormTypeOption('mapped', true)
+                ->setFormTypeOption('data', [
+                    'comparison' => ComparisonType::GTE,
+                    'value' => new \DateTime('today'),
+                ])
+            )   
+        ;
     }
 
     public function configureFields(string $pageName): iterable
