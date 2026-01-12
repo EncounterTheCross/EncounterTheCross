@@ -25,7 +25,7 @@ magephp:
         - 192.185.5.34:2222
 #      pre-deploy:
       on-deploy:
-        - exec: { cmd: '/home3/avbapt/releases/production/releases/%release%/bin/console cache:clear --no-warmup --env=prod --no-interaction', desc: 'Clear cache.'}
+        # - exec: { cmd: '/home3/avbapt/releases/production/releases/%release%/bin/console cache:clear --no-warmup --env=prod --no-interaction', desc: 'Clear cache.'}
         - exec: { cmd: '/home3/avbapt/releases/production/releases/%release%/bin/console cache:warmup --env=prod --no-interaction', desc: 'Warmup cache.'}
         - fs/copy: { from: '/home3/avbapt/releases/production/.env.local.php', to: '/home3/avbapt/releases/production/releases/%release%/.env.local.php' }
         - exec: { cmd: '/home3/avbapt/releases/production/releases/%release%/bin/console doctrine:migrations:migrate --env=prod --no-interaction', desc: 'Run Doctrine Migrations if needed.' }
