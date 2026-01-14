@@ -49,7 +49,20 @@
                                         <div>Stay tuned for registration details.</div>
                                     {% else %}
                                         <div class="d-grid gap-2">
-                                            <a href="{{ path('app_registration_attendee_formentry',{'event': event.id}) }}" class="btn btn-primary btn-sm btn-block">Attendee Registration</a>
+                                            {% if waitlist_enabled %}
+                                                <a href="{{ path('app_registration_attendee_formentry',{'event': event.id}) }}" 
+                                                    class="btn btn-primary btn-sm btn-block"
+                                                > 
+                                                    ATTENDEE WAITING LIST
+                                                </a>
+                                            {% else %}
+                                                <a href="{{ path('app_registration_attendee_formentry',{'event': event.id}) }}" 
+                                                    class="btn btn-primary btn-sm btn-block"
+                                                > 
+                                                    Attendee Registration
+                                                </a>
+                                            {% endif %}
+                                            
                                             <a href="{{ path('app_registration_server_formentry',{'event': event.id}) }}"
                                                     {% if strict_registration
                                                         and event.RegistrationDeadLineServers <= date('now') %}

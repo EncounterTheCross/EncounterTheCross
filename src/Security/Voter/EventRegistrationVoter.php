@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Tzunghaor\SettingsBundle\Service\SettingsService;
+use App\Settings\Global\RegistrationSettings;
 
 class EventRegistrationVoter extends Voter
 {
@@ -48,6 +49,22 @@ class EventRegistrationVoter extends Voter
             return false;
         }
 
+        $registrationSettings = $this->settingsService->getSection(RegistrationSettings::class);
+
+        // Manually Close Registration
+        if (
+            new DateTime() < $subject->getStart() 
+            && !$subject->isRegistrationOpen() 
+            && !$registrationSettings->isWaitlistEnabled()
+        ) {
+            // TODO: send redirect to new registration with message that registration has filled up.
+            //       display the date the next event registration will open.
+            // $this->getFlashBag()->add('error', 'This event has had a major increase in registration. To make sure all are able to attend please reach us via email or try again later.');
+            $this->getFlashBag()->add('error', 'This event has reached capacity and registration is currently closed.  Limited space may become available, so please be in contact with the man who invited you or save the date for the next Men’s Encounter.');
+
+            return false;
+        }
+
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case self::SERVER:
@@ -65,16 +82,6 @@ class EventRegistrationVoter extends Voter
             case self::ATTENDEE:
                 if (!$this->getGlobalSettings()->isRegistrationDeadlineInforced()) {
                     return true;
-                }
-
-                // Manually Close Registration
-                if (new DateTime() < $subject->getStart() && !$subject->isRegistrationOpen()) {
-                    // TODO: send redirect to new registration with message that registration has filled up.
-                    //       display the date the next event registration will open.
-                    // $this->getFlashBag()->add('error', 'This event has had a major increase in registration. To make sure all are able to attend please reach us via email or try again later.');
-                    $this->getFlashBag()->add('error', 'This event has reached capacity and registration is currently closed.  Limited space may become available, so please be in contact with the man who invited you or save the date for the next Men’s Encounter.');
-
-                    return false;
                 }
 
                 if (new DateTime() > $subject->getStart()) {

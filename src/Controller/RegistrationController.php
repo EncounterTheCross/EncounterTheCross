@@ -52,10 +52,14 @@ class RegistrationController extends AbstractController
         //        $events = $eventRepository->findAll();
 
         $strictRegistration = $this->getGlobalSettings()->isRegistrationDeadlineInforced();
+        $waitlistEnabled = $this->getRegistrationSettings()->isWaitlistEnabled()
+            && !$event?->isRegistrationOpen()
+        ;
 
         return $this->render('frontend/events/list.html.twig', [
             'events' => [$event],
             //            'events' => $events,
+            'waitlist_enabled' => $waitlistEnabled,
             'strict_registration' => $strictRegistration,
         ]);
     }
@@ -66,6 +70,8 @@ class RegistrationController extends AbstractController
         if (!$this->isGranted(EventRegistrationVoter::ATTENDEE, $event)) {
             return $this->redirectToRoute('app_registration_list');
         }
+        $waitlistEnabled = $this->getRegistrationSettings()->isWaitlistEnabled()
+            && !$event->isRegistrationOpen();
 
         $eventRegistration = new EventParticipant();
         $eventRegistration->setEvent($event);
@@ -90,6 +96,11 @@ class RegistrationController extends AbstractController
                 $spamDetails
             );
 
+            if($waitlistEnabled) {
+                //Update status to waitlisted
+                $eventRegistration->setStatus(EventParticipantStatusEnum::WAITLISTED->value);
+            }
+
             //            $eventRegistration->setEvent($event);
 
             $this->eventParticipantRepository->save(
@@ -100,11 +111,16 @@ class RegistrationController extends AbstractController
             // send email notification and thank you
             $this->sendEmails($eventRegistration);
 
+            if($waitlistEnabled) {
+                return $this->redirectToRoute('app_registration_registrationwaitingthankyou');
+            }
+
             return $this->redirectToRoute('app_registration_registrationthankyou');
         }
 
         return $this->render('frontend/events/attendee.regestration.html.twig', [
             'event' => $event,
+            'waitlist_enabled' => $waitlistEnabled,
             'form' => $form->createView(),
         ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
@@ -155,10 +171,20 @@ class RegistrationController extends AbstractController
         ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
 
-    #[Route('/register/thank-you', name: 'app_registration_registrationthankyou')]
-    public function registrationThankYou()
+    #[Route('/register/confirmation/thank-you', name: 'app_registration_registrationthankyou')]
+    public function registrationConfirmationThankYou()
     {
-        return $this->render('frontend/events/submitted.regestration.html.twig', []);
+        return $this->render('frontend/events/submitted.regestration.html.twig', [
+            'waitlist_enabled' => false,
+        ]);
+    }
+
+    #[Route('/register/waiting/thank-you', name: 'app_registration_registrationwaitingthankyou')]
+    public function registrationWaitingThankYou()
+    {
+        return $this->render('frontend/events/submitted.regestration.html.twig', [
+            'waitlist_enabled' => true,
+        ]);
     }
 
     protected function sendEmails(EventParticipant $registration): void
@@ -166,6 +192,9 @@ class RegistrationController extends AbstractController
         if (!$this->getGlobalSettings()->isEmailNotificationsTurnedOn()) {
             return;
         }
+
+        $waitlistEnabled = $this->getRegistrationSettings()->isWaitlistEnabled()
+            && !$registration->getEvent()->isRegistrationOpen();
 
         // Do not send if this is spam
         if ($registration->isSpam()) {
@@ -177,11 +206,14 @@ class RegistrationController extends AbstractController
         }
 
         $toEmail = [new Address($registration->getPerson()->getEmail(), $registration->getFullName())];
+        
         $this->registrationThankYouMailer->send(
-            toEmails: $toEmail, context: ['registration' => $registration],
+            toEmails: $toEmail, context: ['registration' => $registration, 'waitlist_enabled' => $waitlistEnabled],
         );
-        $this->registrationNotificationMailer->send(
-            context: ['registration' => $registration]
-        );
+        if(!$waitlistEnabled) {
+            $this->registrationNotificationMailer->send(
+                context: ['registration' => $registration]
+            );
+        }
     }
 }

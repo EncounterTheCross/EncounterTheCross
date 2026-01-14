@@ -29,7 +29,12 @@
             </div>
             {% if event is not null and event.start > date('now') and event.registrationStarted %}
                 <div class="d-flex flex-column flex-md-row justify-content-md-around">
-                    <a class="btn btn-primary m-2" href="{{ path('app_registration_attendee_formentry',{'event': event.id}) }}">Attendee Register</a>
+                    {% if waitlist_enabled %}
+                        <a class="btn btn-primary m-2" href="{{ path('app_registration_attendee_formentry',{'event': event.id}) }}">Attendee Waiting List</a>
+                    {% else %}
+                        <a class="btn btn-primary m-2" href="{{ path('app_registration_attendee_formentry',{'event': event.id}) }}">Attendee Register</a>
+                    {% endif %}
+                    
                     {% if event.canServerRegister %}
                         <a class="btn btn-outline-light m-2" href="{{ path('app_registration_server_formentry',{'event': event.id}) }}">Server Register</a>
                     {% endif %}

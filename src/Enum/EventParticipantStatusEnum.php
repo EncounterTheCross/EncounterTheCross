@@ -16,4 +16,5 @@ enum EventParticipantStatusEnum: string
     case DROPPED = 'dropped';
     case DUPLICATE = 'duplicate';
     case SPAM = 'spam';
+    case WAITLISTED = 'waitlisted';
 }
