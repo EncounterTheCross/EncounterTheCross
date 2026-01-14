@@ -41,6 +41,16 @@ parameters:
 			path: src/Controller/Admin/MainDashboardController.php
 
 		-
+			message: "#^Instantiated class App\\\\Controller\\\\LogicException not found\\.$#"
+			count: 1
+			path: src/Controller/MainController.php
+
+		-
+			message: "#^Throwing object of an unknown class App\\\\Controller\\\\LogicException\\.$#"
+			count: 1
+			path: src/Controller/MainController.php
+
+		-
 			message: "#^Access to undefined constant App\\\\Enum\\\\EventParticipantStatusEnum\\:\\:STATUS_SPAM\\.$#"
 			count: 1
 			path: src/Controller/RegistrationController.php
