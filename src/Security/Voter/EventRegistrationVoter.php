@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Tzunghaor\SettingsBundle\Service\SettingsService;
+use App\Settings\Global\RegistrationSettings;
 
 class EventRegistrationVoter extends Voter
 {
@@ -48,8 +49,14 @@ class EventRegistrationVoter extends Voter
             return false;
         }
 
+        $registrationSettings = $this->settingsService->getSection(RegistrationSettings::class);
+
         // Manually Close Registration
-        if (new DateTime() < $subject->getStart() && !$subject->isRegistrationOpen()) {
+        if (
+            new DateTime() < $subject->getStart() 
+            && !$subject->isRegistrationOpen() 
+            && !$registrationSettings->isWaitlistEnabled()
+        ) {
             // TODO: send redirect to new registration with message that registration has filled up.
             //       display the date the next event registration will open.
             // $this->getFlashBag()->add('error', 'This event has had a major increase in registration. To make sure all are able to attend please reach us via email or try again later.');

@@ -7,6 +7,7 @@ use App\Settings\Global\SystemSettings;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as CoreAbstractController;
 use Tzunghaor\SettingsBundle\Service\SettingsService;
+use App\Settings\Global\RegistrationSettings;
 
 class AbstractController extends CoreAbstractController
 {
@@ -28,6 +29,11 @@ class AbstractController extends CoreAbstractController
     protected function getMercureSettings(): MercureSettings
     {
         return $this->getSettingsService()->getSection(MercureSettings::class);
+    }
+
+    protected function getRegistrationSettings(): RegistrationSettings
+    {
+        return $this->getSettingsService()->getSection(RegistrationSettings::class);
     }
 
     private function getSettingsService(): SettingsService

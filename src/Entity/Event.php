@@ -170,6 +170,16 @@ class Event
         return $this->getEventParticipants(EventParticipantStatusEnum::DROPPED);
     }
 
+    public function getWaitlist(): Collection
+    {
+        return $this->getEventParticipants(EventParticipantStatusEnum::WAITLISTED);
+    }
+
+    public function getWaitlistTotal(): float
+    {
+        return $this->getWaitlist()->count();
+    }
+
     public function getDropTotal(): float
     {
         return $this->getDrops()->count();

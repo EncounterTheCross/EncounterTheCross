@@ -9,7 +9,12 @@
         </div>
         <div class="row">
             <div class="col">
-                <h2 class="text-dark display-1 mb-5 text-center">{{ event.name|default('Event') }}  Registration</h2>
+                {% if not waitlist_enabled|default(false) %}
+                    <h2 class="text-dark display-1 mb-5 text-center">{{ event.name|default('Event') }}  Registration</h2>
+                {% else %}
+                    <h2 class="text-dark display-1 mb-5 text-center">{{ event.name|default('Event') }} Waitlist Registration</h2>
+                {% endif %}
+                
             </div>
         </div>
     </div>
@@ -18,8 +23,18 @@
 
     <div class="card">
         <div class="card-body">
-            <h1>Thank You! Registration Completed.</h1>
-            <p>You will receive a confirmation email at the address entered on the registration page.  We look forward to seeing you at Encounter!</p>
+            {% if not waitlist_enabled|default(false) %}
+                <h1>Thank You! Registration Completed.</h1>
+            {% else %}
+                <h1>Thank You! You have been added to the waitlist.</h1>
+            {% endif %}
+            
+            <p>
+                You will receive a confirmation email at the address entered on the registration page.  
+                {% if not waitlist_enabled|default(false) %}
+                    We look forward to seeing you at Encounter!
+                {% endif %}
+            </p>
         </div>
     </div>
 

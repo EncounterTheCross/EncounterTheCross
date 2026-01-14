@@ -3,25 +3,38 @@
     {{ parent() }}
 {% endblock %}
 {% block body_wrapper %}
-    {% include('email/registration/header.thankyou.html.twig') %}
-    {% if registration.isServer %}
-        {% include('email/registration/types/server.information.html.twig') %}
-    {% else %}
-        {% include('email/registration/types/attendee.information.html.twig') %}
+    {% if waitlist_enabled %}
         <row>
             <columns>
                 <p>
-                    If you have any questions about Men’s Encounter, or if a situation arises and you are unable to attend, please contact the person who invited you or reach out to the representative(s) from your Launch Point right away.  Contact information is:
+                    Congratulations! You have been add to the waiting list for Men's Encounter.  Limited space may become available, in the case we have openings someone will contact you from the local launch point.
                 </p>
-                {% for contactJoin in registration.launchPoint.launchPointContacts %}
-                    {% set contact = contactJoin.leader %}
-                    <p>{{ contact.person.fullName }}<br/>
-                        {{ contact.person.phone }}<br/>
-                        {{ contact.person.email }}</p>
-                    <spacer size="20"></spacer>
-                {% endfor %}
             </columns>
         </row>
+    {% else %}
+        {% include('email/registration/header.thankyou.html.twig') %}
+        {% if registration.isServer %}
+            {% include('email/registration/types/server.information.html.twig') %}
+        {% else %}
+            {% include('email/registration/types/attendee.information.html.twig') %}
+            <row>
+                <columns>
+                    <p>
+                        If you have any questions about Men’s Encounter, or if a situation arises and you are unable to attend, please contact the person who invited you or reach out to the representative(s) from your Launch Point right away.  Contact information is:
+                    </p>
+                    {% for contactJoin in registration.launchPoint.launchPointContacts %}
+                        {% set contact = contactJoin.leader %}
+                        <p>{{ contact.person.fullName }}<br/>
+                            {{ contact.person.phone }}<br/>
+                            {{ contact.person.email }}</p>
+                        <spacer size="20"></spacer>
+                    {% endfor %}
+                </columns>
+            </row>
+        {% endif %}
+
+        {% include('email/registration/footer.thankyou.html.twig') %}
     {% endif %}
-    {% include('email/registration/footer.thankyou.html.twig') %}
+    
+    
 {% endblock %}
