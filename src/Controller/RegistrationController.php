@@ -199,7 +199,7 @@ class RegistrationController extends AbstractController
         // Do not send if this is spam
         if ($registration->isSpam()) {
             //Update status to spam
-            $registration->setStatus(EventParticipantStatusEnum::STATUS_SPAM);
+            $registration->setStatus(EventParticipantStatusEnum::SPAM);
             $this->eventParticipantRepository->save($registration, true);
 
             return;
