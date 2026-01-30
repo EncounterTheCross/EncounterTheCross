@@ -106,6 +106,7 @@
   <violation rule="PHPMD\Rule\Design\NpathComplexity" file="src/Security/Voter/DataManagementVoter.php" method="voteOnAttribute"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Security/Voter/EventRegistrationVoter.php"/>
   <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Security/Voter/EventRegistrationVoter.php" method="voteOnAttribute"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="src/Security/Voter/EventRegistrationVoter.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Service/Exporter/XlsExporter.php"/>
   <violation rule="PHPMD\Rule\Naming\LongClassName" file="src/Service/Mailer/RegistrationLeaderNotificationContextAwareMailer.php"/>
   <violation rule="PHPMD\Rule\UnusedLocalVariable" file="src/Service/Mailer/RegistrationThankYouContextAwareMailer.php"/>
