@@ -55,7 +55,7 @@ class EventRegistrationVoter extends Voter
         if (
             new DateTime() < $subject->getStart() 
             && !$subject->isRegistrationOpen() 
-            && !$registrationSettings->isWaitlistEnabled()
+            // && !$registrationSettings->isWaitlistEnabled()
         ) {
             // TODO: send redirect to new registration with message that registration has filled up.
             //       display the date the next event registration will open.
