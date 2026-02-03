@@ -32,6 +32,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use EasyCorp\Bundle\EasyAdminBundle\Form\Filter\Type\DateFilterType;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 
 class EventCrudController extends AbstractCrudController implements ParentCrudControllerInterface
 {
@@ -134,14 +135,25 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
             ->setCurrency('USD')
             ->hideOnIndex()
         ;
-        yield BooleanField::new('active')
-            ->hideOnDetail()
+
+        yield IntegerField::new('maxServers')
+            ->setLabel('Max Servers')
+            ->setHelp('This is the maximum number of servers that can register for this event. Registration team can override and allow more if needed.')
             ->hideOnIndex()
         ;
+
         yield BooleanField::new('registration_open')
+            ->setLabel('Attendee Waitlist Disabled')
+            ->setHelp('When unchecked, waitlist will be turned on for attendees. No more servers can register.')
             ->hideOnDetail()
             ->hideOnIndex()
         ;
+        yield BooleanField::new('registration_started')
+            ->setLabel('Registration Open')
+            ->setHelp('When unchecked, no one can register for this event. No waitlist either.')
+            ->hideOnDetail()
+            ->hideOnIndex();
+
         yield Field::new('TotalServers')
             ->hideOnForm();
         yield Field::new('TotalAttendees')
@@ -151,6 +163,12 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
             ->hideOnForm()
             ->hideOnIndex()
             ->setPermission('ROLE_DATA_EDITOR_OVERWRITE')
+        ;
+
+        yield BooleanField::new('active')
+            ->setHelp('Normally you will not need to touch this. Ask Jordan First.')
+            ->hideOnDetail()
+            ->hideOnIndex()
         ;
     }
 
