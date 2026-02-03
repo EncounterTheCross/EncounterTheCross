@@ -394,4 +394,13 @@ class Event
 
         return $this;
     }
+
+    public function isServerRegistrationFull():bool
+    {
+        if ($this->maxServers === null) {
+            return false;
+        }
+
+        return $this->getTotalServers() >= $this->maxServers;
+    }
 }

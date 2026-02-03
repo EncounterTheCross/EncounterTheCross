@@ -109,7 +109,7 @@ class RegistrationController extends AbstractController
             );
 
             // send email notification and thank you
-            $this->sendEmails($eventRegistration);
+            $this->sendEmails($eventRegistration, $waitlistEnabled);
 
             if($waitlistEnabled) {
                 return $this->redirectToRoute('app_registration_registrationwaitingthankyou');
@@ -131,6 +131,8 @@ class RegistrationController extends AbstractController
         if (!$this->isGranted(EventRegistrationVoter::SERVER, $event)) {
             return $this->redirectToRoute('app_registration_list');
         }
+        $waitlistEnabled = $this->getRegistrationSettings()->isWaitlistEnabled()
+            && $event->isServerRegistrationFull();
 
         $eventRegistration = new EventParticipant();
         $eventRegistration->setEvent($event);
@@ -154,13 +156,22 @@ class RegistrationController extends AbstractController
                 $spamDetails
             );
 
+            if($waitlistEnabled) {
+                //Update status to waitlisted
+                $eventRegistration->setStatus(EventParticipantStatusEnum::WAITLISTED->value);
+            }
+
             $this->eventParticipantRepository->save(
                 $eventRegistration,
                 true
             );
 
             // send email notification and thank you
-            $this->sendEmails($eventRegistration);
+            $this->sendEmails($eventRegistration, $waitlistEnabled);
+
+            if($waitlistEnabled) {
+                return $this->redirectToRoute('app_registration_registrationwaitingthankyou');
+            }
 
             return $this->redirectToRoute('app_registration_registrationthankyou');
         }
@@ -168,6 +179,7 @@ class RegistrationController extends AbstractController
         return $this->render('frontend/events/server.regestration.html.twig', [
             'event' => $event,
             'form' => $form->createView(),
+            'waitlist_enabled' => $waitlistEnabled,
         ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
 
@@ -187,19 +199,16 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    protected function sendEmails(EventParticipant $registration): void
+    protected function sendEmails(EventParticipant $registration, bool $waitlistEnabled = false): void
     {
         if (!$this->getGlobalSettings()->isEmailNotificationsTurnedOn()) {
             return;
         }
 
-        $waitlistEnabled = $this->getRegistrationSettings()->isWaitlistEnabled()
-            && !$registration->getEvent()->isRegistrationOpen();
-
         // Do not send if this is spam
         if ($registration->isSpam()) {
             //Update status to spam
-            $registration->setStatus(EventParticipantStatusEnum::SPAM);
+            $registration->setStatus(EventParticipantStatusEnum::SPAM->value);
             $this->eventParticipantRepository->save($registration, true);
 
             return;

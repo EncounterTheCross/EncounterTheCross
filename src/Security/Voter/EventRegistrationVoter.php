@@ -68,8 +68,9 @@ class EventRegistrationVoter extends Voter
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case self::SERVER:
+                
                 $totalServers = $subject->getServers()->count();
-                if ($subject->getMaxServers() !== null && $totalServers >= $subject->getMaxServers()) {
+                if ($subject->getMaxServers() !== null && $totalServers >= $subject->getMaxServers() && !$registrationSettings->isWaitlistEnabled()) {
                     $this->getFlashBag()->add('error', 'Server registration is full for this Encounter.');  
                     return false;
                 }
