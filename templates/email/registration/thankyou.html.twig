@@ -18,7 +18,7 @@
             {% include('email/registration/types/server.information.html.twig') %}
         {% else %}
             {% include('email/registration/types/attendee.information.html.twig') %}
-            {% if registration.launchPoint.shareLocationContactDetails|default(true) %}
+            {% if registration.launchPoint.isShareLocationContactDetails %}
                 <row>
                     <columns>
                         <p>

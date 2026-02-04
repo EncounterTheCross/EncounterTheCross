@@ -3,11 +3,15 @@
 namespace App\Settings\Global;
 
 use Tzunghaor\SettingsBundle\Attribute\Setting;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class RegistrationSettings
 {
     #[Setting]
     private bool $waitlistEnabled = false;
+
+    #[Setting(formType: TextareaType::class)]
+    private string $launchPointDescriptionText = '';
 
     public function isWaitlistEnabled(): bool
     {
@@ -17,6 +21,16 @@ class RegistrationSettings
     public function setWaitlistEnabled(bool $waitlistEnabled): void
     {
         $this->waitlistEnabled = $waitlistEnabled;
+    }
+
+    public function getLaunchPointDescriptionText(): string
+    {
+        return $this->launchPointDescriptionText;
+    }
+
+    public function setLaunchPointDescriptionText(string $launchPointDescriptionText): void
+    {
+        $this->launchPointDescriptionText = $launchPointDescriptionText;
     }
     
     /*

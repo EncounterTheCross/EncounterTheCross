@@ -12,9 +12,16 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Tzunghaor\SettingsBundle\Service\SettingsService;
+use App\Settings\Global\RegistrationSettings;
 
 class AttendeeEventParticipantType extends AbstractType
 {
+    public function __construct(
+        private SettingsService $settingsService,
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         /** @var EventParticipant $data */
@@ -129,9 +136,11 @@ class AttendeeEventParticipantType extends AbstractType
                 ],
                 'required' => false,
             ]);
+        $registrationSettings = $this->settingsService->getSection(RegistrationSettings::class);
+        $helpText = $registrationSettings->getLaunchPointDescriptionText() ?: 'The Launch Point is the location in the list below that is closest to you and where we will initially meet. If you are located more than 100 miles from one of these locations, please select "Venue" and we will contact you with more details.';
         $launchPointOptions = [
             'placeholder' => 'Please choose a Launch Point',
-            'help' => 'The Launch Point is the location in the list below that is closest to you and where we will initially meet. If you are located more than 100 miles from one of these locations, please select "Venue" and we will contact you with more details.',
+            'help' => $helpText,
             'class' => Location::class,
             'label' => 'Launch Point',
             'required' => true,
