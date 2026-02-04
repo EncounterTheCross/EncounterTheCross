@@ -18,20 +18,36 @@
             {% include('email/registration/types/server.information.html.twig') %}
         {% else %}
             {% include('email/registration/types/attendee.information.html.twig') %}
-            <row>
-                <columns>
-                    <p>
-                        If you have any questions about Men’s Encounter, or if a situation arises and you are unable to attend, please contact the person who invited you or reach out to the representative(s) from your Launch Point right away.  Contact information is:
-                    </p>
-                    {% for contactJoin in registration.launchPoint.launchPointContacts %}
-                        {% set contact = contactJoin.leader %}
-                        <p>{{ contact.person.fullName }}<br/>
-                            {{ contact.person.phone }}<br/>
-                            {{ contact.person.email }}</p>
-                        <spacer size="20"></spacer>
-                    {% endfor %}
-                </columns>
-            </row>
+            {% if registration.launchPoint.shareLocationContactDetails|default(true) %}
+                <row>
+                    <columns>
+                        <p>
+                            If you have any questions about Men’s Encounter, or if a situation arises and you are unable to attend, please contact the person who invited you or reach out to the representative(s) from your Launch Point right away.  Contact information is:
+                        </p>
+                        {% for contactJoin in registration.launchPoint.launchPointContacts %}
+                            {% set contact = contactJoin.leader %}
+                            <p>{{ contact.person.fullName }}<br/>
+                                {{ contact.person.phone }}<br/>
+                                {{ contact.person.email }}</p>
+                            <spacer size="20"></spacer>
+                        {% endfor %}
+                    </columns>
+                </row>
+            {% else %}
+                <row>
+                    <columns>
+                        <p>
+                            If you have any questions about Men’s Encounter, or if a situation arises and you are unable to attend, please contact the registration team.  Contact information is:
+                        </p>
+                        <p>
+                            Registration Team<br/>
+                            registration@encounterthecross.com
+                        </p>
+                            <spacer size="20"></spacer>
+                    </columns>
+                </row>
+            {% endif %}
+            
         {% endif %}
 
         {% include('email/registration/footer.thankyou.html.twig') %}

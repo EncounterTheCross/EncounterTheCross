@@ -65,6 +65,9 @@ class Event
     #[ORM\Column(options: ['default' => false])]
     private bool $registrationStarted = false;
 
+    #[ORM\Column(options: ['default' => 160])]
+    private ?int $maxServers = null;
+
     public function __construct()
     {
         $this->launchPoints = new ArrayCollection();
@@ -378,5 +381,26 @@ class Event
         $this->registrationStarted = $registrationStarted;
 
         return $this;
+    }
+
+    public function getMaxServers(): ?int
+    {
+        return $this->maxServers;
+    }
+
+    public function setMaxServers(int $maxServers): static
+    {
+        $this->maxServers = $maxServers;
+
+        return $this;
+    }
+
+    public function isServerRegistrationFull():bool
+    {
+        if ($this->maxServers === null) {
+            return false;
+        }
+
+        return $this->getTotalServers() >= $this->maxServers;
     }
 }
