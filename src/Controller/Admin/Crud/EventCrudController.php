@@ -138,7 +138,7 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
 
         yield IntegerField::new('maxServers')
             ->setLabel('Max Servers')
-            ->setHelp('This is the maximum number of servers that can register for this event. Registration team can override and allow more if needed.')
+            ->setHelp('This is the maximum number of servers that can register for this event. Once full, new servers will be waitlisted. Registration team will then move off waitlist if needed.')
             ->hideOnIndex()
         ;
 
