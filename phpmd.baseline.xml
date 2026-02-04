@@ -82,10 +82,12 @@
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Factory/LocationFactory.php"/>
   <violation rule="PHPMD\Rule\CleanCode\IfStatementAssignment" file="src/Factory/PersonFactory.php" method="findByEmailOrPhone"/>
   <violation rule="PHPMD\Rule\CleanCode\IfStatementAssignment" file="src/Factory/PersonFactory.php" method="findByEmailOrPhoneOrCreate"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Form/AttendeeEventParticipantType.php"/>
   <violation rule="PHPMD\Rule\Design\LongMethod" file="src/Form/AttendeeEventParticipantType.php" method="buildForm"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Form/AttendeeEventParticipantType.php"/>
   <violation rule="PHPMD\Rule\Naming\LongClassName" file="src/Form/DataTransformer/EventParticapentToEventPrayerTeamServerTransformer.php"/>
   <violation rule="PHPMD\Rule\Naming\LongClassName" file="src/Form/LaunchPointServerPrayerTeamAssignmentsType.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Form/ServerEventParticipantType.php"/>
   <violation rule="PHPMD\Rule\Design\LongMethod" file="src/Form/ServerEventParticipantType.php" method="buildForm"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Form/ServerEventParticipantType.php"/>
   <violation rule="PHPMD\Rule\Naming\LongClassName" file="src/Form/ServerPrayerTeamAssignmentEmbeddedFormType.php"/>
@@ -119,6 +121,7 @@
   <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Service/SpamDetection/SpamDetectionService.php" method="getAddressReasons"/>
   <violation rule="PHPMD\Rule\Design\NpathComplexity" file="src/Service/SpamDetection/SpamDetectionService.php" method="getAddressReasons"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Service/UuidManager/UuidFactory.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Settings/Global/RegistrationSettings.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Settings/Global/SystemSettings.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Settings/SettingsEnumConverter.php"/>
   <violation rule="PHPMD\Rule\UnusedLocalVariable" file="src/Taig/Components/CheckInForm.php"/>
