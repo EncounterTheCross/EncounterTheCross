@@ -48,6 +48,8 @@ class UserActivitySubscriber implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event): void
     {
+        return; // Temporarily disable user activity tracking
+        
         if (!$event->isMainRequest()) {
             return;
         }
