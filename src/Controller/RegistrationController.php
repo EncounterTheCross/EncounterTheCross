@@ -228,6 +228,14 @@ class RegistrationController extends AbstractController
                 ->setEvent($event)
                 ->setError($e->getMessage())
                 ->setErrorStatus($errorStatus);
+        } catch (Symfony\Component\Mailer\Exception\UnexpectedResponseException $e) {
+            $errorStatus = $this->resolveErrorStatus($e->getMessage());
+
+            $issue = (new EmailIssues())
+                ->setSentTo($recipientEmail)
+                ->setEvent($event)
+                ->setError($e->getMessage())
+                ->setErrorStatus($errorStatus);
         }
         
         try {
@@ -237,6 +245,14 @@ class RegistrationController extends AbstractController
                 );
             }
         } catch (TransportExceptionInterface $e) {
+            $errorStatus = $this->resolveErrorStatus($e->getMessage());
+
+            $issue = (new EmailIssues())
+                ->setSentTo($recipientEmail)
+                ->setEvent($event)
+                ->setError($e->getMessage())
+                ->setErrorStatus($errorStatus);
+        } catch (Symfony\Component\Mailer\Exception\UnexpectedResponseException $e) {
             $errorStatus = $this->resolveErrorStatus($e->getMessage());
 
             $issue = (new EmailIssues())

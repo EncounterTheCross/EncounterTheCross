@@ -52,7 +52,12 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method App\\\\Controller\\\\RegistrationController\\:\\:resolveErrorStatus\\(\\)\\.$#"
-			count: 2
+			count: 4
+			path: src/Controller/RegistrationController.php
+
+		-
+			message: "#^Call to method getMessage\\(\\) on an unknown class App\\\\Controller\\\\Symfony\\\\Component\\\\Mailer\\\\Exception\\\\UnexpectedResponseException\\.$#"
+			count: 4
 			path: src/Controller/RegistrationController.php
 
 		-
@@ -62,6 +67,11 @@ parameters:
 
 		-
 			message: "#^Call to method setSentTo\\(\\) on an unknown class App\\\\Controller\\\\EmailIssues\\.$#"
+			count: 4
+			path: src/Controller/RegistrationController.php
+
+		-
+			message: "#^Caught class App\\\\Controller\\\\Symfony\\\\Component\\\\Mailer\\\\Exception\\\\UnexpectedResponseException not found\\.$#"
 			count: 2
 			path: src/Controller/RegistrationController.php
 
@@ -72,17 +82,17 @@ parameters:
 
 		-
 			message: "#^Instantiated class App\\\\Controller\\\\EmailIssues not found\\.$#"
-			count: 2
+			count: 4
 			path: src/Controller/RegistrationController.php
 
 		-
 			message: "#^Undefined variable\\: \\$event$#"
-			count: 2
+			count: 4
 			path: src/Controller/RegistrationController.php
 
 		-
 			message: "#^Undefined variable\\: \\$recipientEmail$#"
-			count: 2
+			count: 4
 			path: src/Controller/RegistrationController.php
 
 		-
