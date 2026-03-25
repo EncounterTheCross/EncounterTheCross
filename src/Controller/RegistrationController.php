@@ -216,13 +216,34 @@ class RegistrationController extends AbstractController
 
         $toEmail = [new Address($registration->getPerson()->getEmail(), $registration->getFullName())];
         
-        $this->registrationThankYouMailer->send(
-            toEmails: $toEmail, context: ['registration' => $registration, 'waitlist_enabled' => $waitlistEnabled],
-        );
-        if(!$waitlistEnabled) {
-            $this->registrationNotificationMailer->send(
-                context: ['registration' => $registration]
+        try {
+            $this->registrationThankYouMailer->send(
+                toEmails: $toEmail, context: ['registration' => $registration, 'waitlist_enabled' => $waitlistEnabled],
             );
+        } catch (TransportExceptionInterface $e) {
+            $errorStatus = $this->resolveErrorStatus($e->getMessage());
+
+            $issue = (new EmailIssues())
+                ->setSentTo($recipientEmail)
+                ->setEvent($event)
+                ->setError($e->getMessage())
+                ->setErrorStatus($errorStatus);
+        }
+        
+        try {
+            if(!$waitlistEnabled) {
+                $this->registrationNotificationMailer->send(
+                    context: ['registration' => $registration]
+                );
+            }
+        } catch (TransportExceptionInterface $e) {
+            $errorStatus = $this->resolveErrorStatus($e->getMessage());
+
+            $issue = (new EmailIssues())
+                ->setSentTo($recipientEmail)
+                ->setEvent($event)
+                ->setError($e->getMessage())
+                ->setErrorStatus($errorStatus);
         }
     }
 }

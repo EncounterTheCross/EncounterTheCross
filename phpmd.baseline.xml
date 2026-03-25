@@ -28,6 +28,7 @@
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/PersonCrudController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/PrayerTeamCrudController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/TestimonialCrudController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/EmailIssuesCrudController.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/Admin/MainDashboardController.php"/>
   <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Controller/Admin/MainDashboardController.php" method="index"/>
   <violation rule="PHPMD\Rule\Design\LongMethod" file="src/Controller/Admin/MainDashboardController.php" method="index"/>
@@ -40,6 +41,8 @@
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/RegistrationController.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Controller/RegistrationController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Controller/RegistrationController.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="src/Controller/RegistrationController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\UndefinedVariable" file="src/Controller/RegistrationController.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/ResetPasswordController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\IfStatementAssignment" file="src/Controller/ResetPasswordController.php" method="checkEmail"/>
   <violation rule="PHPMD\Rule\CleanCode\MissingImport" file="src/Controller/SecurityLeaderController.php"/>

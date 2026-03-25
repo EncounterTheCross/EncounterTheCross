@@ -201,6 +201,22 @@ class Event
         });
     }
 
+    public function getWaitlistedAttendees(): Collection
+    {
+        return $this->getEventParticipants()->filter(function (EventParticipant $eventParticipant) {
+            return (EventParticipant::TYPE_ATTENDEE === $eventParticipant->getType())
+                && (EventParticipantStatusEnum::WAITLISTED->value === $eventParticipant->getStatus());
+        });
+    }
+
+    public function getWaitlistedServers(): Collection
+    {
+        return $this->getEventParticipants()->filter(function (EventParticipant $eventParticipant) {
+            return (EventParticipant::TYPE_SERVER === $eventParticipant->getType())
+                && (EventParticipantStatusEnum::WAITLISTED->value === $eventParticipant->getStatus());
+        });
+    }
+
     public function getTotalServers(): int
     {
         $servers = $this->getServers();
