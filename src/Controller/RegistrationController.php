@@ -11,6 +11,7 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Entity\EmailIssues;
 use App\Entity\EventParticipant;
 use App\Form\AttendeeEventParticipantType;
 use App\Form\ServerEventParticipantType;
