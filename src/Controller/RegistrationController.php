@@ -276,4 +276,16 @@ class RegistrationController extends AbstractController
             $this->entityManager->flush();
         }
     }
+
+    private function resolveErrorStatus(string $message): string
+    {
+        return match(true) {
+            str_contains($message, 'recipient is suppressed') => 'suppressed',
+            str_contains($message, '550')                     => 'hard_bounce',
+            str_contains($message, '421'), 
+            str_contains($message, '450')                     => 'soft_bounce',
+            str_contains($message, 'spam')                    => 'spam_block',
+            default                                           => 'unknown',
+        };
+    }
 }
