@@ -16,6 +16,15 @@ class EmailIssuesRepository extends ServiceEntityRepository
         parent::__construct($registry, EmailIssues::class);
     }
 
+    public function save(EmailIssues $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
     //    /**
     //     * @return EmailIssues[] Returns an array of EmailIssues objects
     //     */

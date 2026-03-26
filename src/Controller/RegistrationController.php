@@ -30,6 +30,7 @@ use App\Service\SpamDetection\SpamDetectionService;
 use App\Enum\EventParticipantStatusEnum;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\Exception\UnexpectedResponseException; // can remove catch, but good to have
+use App\Repository\EmailIssuesRepository;
 
 #[Route(
     '/men'
@@ -39,6 +40,7 @@ class RegistrationController extends AbstractController
     public function __construct(
         private PersonManager $personManager,
         private EventParticipantRepository $eventParticipantRepository,
+        private EmailIssuesRepository $emailIssuesRepository,
         private RegistrationLeaderNotificationContextAwareMailer $registrationNotificationMailer,
         private RegistrationThankYouContextAwareMailer $registrationThankYouMailer,
         private SpamDetectionService $spamDetectionService,
@@ -232,8 +234,7 @@ class RegistrationController extends AbstractController
                 ->setError($e->getMessage())
                 ->setErrorStatus($errorStatus);
 
-            $this->entityManager->persist($issue);
-            $this->entityManager->flush();
+            $this->emailIssuesRepository->save($issue, true);
         } catch (Symfony\Component\Mailer\Exception\UnexpectedResponseException $e) {
             $errorStatus = $this->resolveErrorStatus($e->getMessage());
 
@@ -243,8 +244,7 @@ class RegistrationController extends AbstractController
                 ->setError($e->getMessage())
                 ->setErrorStatus($errorStatus);
 
-            $this->entityManager->persist($issue);
-            $this->entityManager->flush();
+            $this->emailIssuesRepository->save($issue, true);
         }
         
         try {
@@ -262,8 +262,7 @@ class RegistrationController extends AbstractController
                 ->setError($e->getMessage())
                 ->setErrorStatus($errorStatus);
 
-            $this->entityManager->persist($issue);
-            $this->entityManager->flush();
+            $this->emailIssuesRepository->save($issue, true);
         } catch (Symfony\Component\Mailer\Exception\UnexpectedResponseException $e) {
             $errorStatus = $this->resolveErrorStatus($e->getMessage());
 
@@ -273,8 +272,7 @@ class RegistrationController extends AbstractController
                 ->setError($e->getMessage())
                 ->setErrorStatus($errorStatus);
 
-            $this->entityManager->persist($issue);
-            $this->entityManager->flush();
+            $this->emailIssuesRepository->save($issue, true);
         }
     }
 
