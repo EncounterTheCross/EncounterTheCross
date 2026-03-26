@@ -92,6 +92,7 @@
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Form/ServerEventParticipantType.php"/>
   <violation rule="PHPMD\Rule\Naming\LongClassName" file="src/Form/ServerPrayerTeamAssignmentEmbeddedFormType.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Repository/ContactPersonRepository.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Repository/EmailIssuesRepository.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Repository/EventParticipantRepository.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Repository/EventRepository.php"/>
   <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Repository/EventRepository.php"/>

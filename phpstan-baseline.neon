@@ -51,11 +51,6 @@ parameters:
 			path: src/Controller/MainController.php
 
 		-
-			message: "#^Access to an undefined property App\\\\Controller\\\\RegistrationController\\:\\:\\$entityManager\\.$#"
-			count: 4
-			path: src/Controller/RegistrationController.php
-
-		-
 			message: "#^Caught class App\\\\Controller\\\\Symfony\\\\Component\\\\Mailer\\\\Exception\\\\UnexpectedResponseException not found\\.$#"
 			count: 2
 			path: src/Controller/RegistrationController.php
