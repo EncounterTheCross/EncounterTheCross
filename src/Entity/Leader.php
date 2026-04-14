@@ -88,6 +88,11 @@ class Leader implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique(array_values($roles));
     }
 
+    public function isLeader(): bool
+    {
+        return in_array(Role::LEADER, $this->getRoles());
+    }
+
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
