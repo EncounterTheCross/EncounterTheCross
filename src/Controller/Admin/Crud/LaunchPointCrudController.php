@@ -54,14 +54,14 @@ class LaunchPointCrudController extends LocationCrudController
 
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        $this->findLatLonCordinates($entityInstance);
+        $entityInstance = $this->findLatLonCordinates($entityInstance);
 
         parent::updateEntity($entityManager, $entityInstance);
     }
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        $this->findLatLonCordinates($entityInstance);
+        $entityInstance = $this->findLatLonCordinates($entityInstance);
 
         // Persist the Entity Now
         parent::persistEntity($entityManager, $entityInstance);
@@ -80,7 +80,7 @@ class LaunchPointCrudController extends LocationCrudController
         return LocationRepository::queryBuilderFilterByLocationType(Location::TYPE_LAUNCH_POINT, $queryBuilder);
     }
 
-    private function findLatLonCordinates($entityInstance): void
+    private function findLatLonCordinates($entityInstance)
     {
         if ($entityInstance instanceof Location && $this->isLaunchPoint() && Location::TYPE_LAUNCH_POINT === $entityInstance->getType()) {
             if (
@@ -111,6 +111,10 @@ class LaunchPointCrudController extends LocationCrudController
                     ]);
                 }
             }
+
+            return $entityInstance;
         }
+
+        return $entityInstance;
     }
 }

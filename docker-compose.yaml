@@ -66,6 +66,16 @@ services:
       - mercure_config:/config
   ###< symfony/mercure-bundle ###
 
+  mailpit:
+    restart: unless-stopped
+    image: axllent/mailpit
+    ports:
+      - '8025:8025'
+      - '1025:1025'
+    expose:
+      - '8025'
+      - '1025'
+
 volumes:
   mysql_data:
 #    driver: local

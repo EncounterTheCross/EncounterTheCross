@@ -2,6 +2,8 @@
 <phpmd-baseline>
   <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Command/CreateAdminCommand.php"/>
   <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Command/OpcacheClearCommand.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Command/SpamCheckLatestCommand.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Command/SpamCheckLatestCommand.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/AbstractCrudController.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/Admin/Crud/EventCrudController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\MissingImport" file="src/Controller/Admin/Crud/EventCrudController.php"/>
@@ -26,6 +28,7 @@
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/PersonCrudController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/PrayerTeamCrudController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/Crud/TestimonialCrudController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/Admin/EmailIssuesCrudController.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/Admin/MainDashboardController.php"/>
   <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Controller/Admin/MainDashboardController.php" method="index"/>
   <violation rule="PHPMD\Rule\Design\LongMethod" file="src/Controller/Admin/MainDashboardController.php" method="index"/>
@@ -37,12 +40,15 @@
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Controller/MainController.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/RegistrationController.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Controller/RegistrationController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Controller/RegistrationController.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Controller/ResetPasswordController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\IfStatementAssignment" file="src/Controller/ResetPasswordController.php" method="checkEmail"/>
   <violation rule="PHPMD\Rule\CleanCode\MissingImport" file="src/Controller/SecurityLeaderController.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/DataFixtures/AppFixtures.php"/>
+  <violation rule="PHPMD\Rule\ExcessivePublicCount" file="src/Entity/Event.php"/>
   <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="src/Entity/Event.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Entity/Event.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="src/Entity/EventParticipant.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Entity/EventParticipant.php"/>
   <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="src/Entity/EventParticipant.php" method="TYPES"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Entity/EventParticipant.php"/>
@@ -56,12 +62,14 @@
   <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="src/Entity/Leader.php" method="DEFAULT_ROLES"/>
   <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="src/Entity/Location.php"/>
   <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="src/Entity/Location.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Entity/Location.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Entity/Location.php"/>
   <violation rule="PHPMD\Rule\Controversial\CamelCaseMethodName" file="src/Entity/Location.php" method="TYPES"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Entity/PrayerTeam.php"/>
   <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Entity/Traits/EntityIdTrait.php"/>
   <violation rule="PHPMD\Rule\Design\TooManyFields" file="src/Entity/UserActivity.php"/>
-  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/EventSubscriber/MaintenanceModeSubscriber.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/EventSubscriber/UserActivitySubscriber.php" method="onKernelRequest"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="src/EventSubscriber/UserActivitySubscriber.php" method="onKernelRequest"/>
   <violation rule="PHPMD\Rule\CleanCode\MissingImport" file="src/EventSubscriber/UserActivitySubscriber.php"/>
   <violation rule="PHPMD\Rule\Naming\LongClassName" file="src/Exception/MissingMailerContextRequiredValuesException.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Exception/MissingMailerContextRequiredValuesException.php"/>
@@ -74,14 +82,17 @@
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Factory/LocationFactory.php"/>
   <violation rule="PHPMD\Rule\CleanCode\IfStatementAssignment" file="src/Factory/PersonFactory.php" method="findByEmailOrPhone"/>
   <violation rule="PHPMD\Rule\CleanCode\IfStatementAssignment" file="src/Factory/PersonFactory.php" method="findByEmailOrPhoneOrCreate"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Form/AttendeeEventParticipantType.php"/>
   <violation rule="PHPMD\Rule\Design\LongMethod" file="src/Form/AttendeeEventParticipantType.php" method="buildForm"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Form/AttendeeEventParticipantType.php"/>
   <violation rule="PHPMD\Rule\Naming\LongClassName" file="src/Form/DataTransformer/EventParticapentToEventPrayerTeamServerTransformer.php"/>
   <violation rule="PHPMD\Rule\Naming\LongClassName" file="src/Form/LaunchPointServerPrayerTeamAssignmentsType.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Form/ServerEventParticipantType.php"/>
   <violation rule="PHPMD\Rule\Design\LongMethod" file="src/Form/ServerEventParticipantType.php" method="buildForm"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Form/ServerEventParticipantType.php"/>
   <violation rule="PHPMD\Rule\Naming\LongClassName" file="src/Form/ServerPrayerTeamAssignmentEmbeddedFormType.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Repository/ContactPersonRepository.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Repository/EmailIssuesRepository.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Repository/EventParticipantRepository.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Repository/EventRepository.php"/>
   <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Repository/EventRepository.php"/>
@@ -98,13 +109,20 @@
   <violation rule="PHPMD\Rule\CleanCode\IfStatementAssignment" file="src/Security/LeaderAuthenticator.php" method="onAuthenticationSuccess"/>
   <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Security/Voter/DataManagementVoter.php" method="voteOnAttribute"/>
   <violation rule="PHPMD\Rule\Design\NpathComplexity" file="src/Security/Voter/DataManagementVoter.php" method="voteOnAttribute"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Security/Voter/EventRegistrationVoter.php"/>
   <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Security/Voter/EventRegistrationVoter.php" method="voteOnAttribute"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Service/Exporter/XlsExporter.php"/>
   <violation rule="PHPMD\Rule\Naming\LongClassName" file="src/Service/Mailer/RegistrationLeaderNotificationContextAwareMailer.php"/>
   <violation rule="PHPMD\Rule\UnusedLocalVariable" file="src/Service/Mailer/RegistrationThankYouContextAwareMailer.php"/>
   <violation rule="PHPMD\Rule\UnusedPrivateMethod" file="src/Service/RoleManager/RoleFormatter.php" method="formatUserReadableArray"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Service/RoleManager/RoleFormatter.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="src/Service/SpamDetection/SpamDetectionService.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Service/SpamDetection/SpamDetectionService.php" method="checkAddressIssues"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="src/Service/SpamDetection/SpamDetectionService.php" method="checkAddressIssues"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Service/SpamDetection/SpamDetectionService.php" method="getAddressReasons"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="src/Service/SpamDetection/SpamDetectionService.php" method="getAddressReasons"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Service/UuidManager/UuidFactory.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Settings/Global/RegistrationSettings.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Settings/Global/SystemSettings.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Settings/SettingsEnumConverter.php"/>
   <violation rule="PHPMD\Rule\UnusedLocalVariable" file="src/Taig/Components/CheckInForm.php"/>

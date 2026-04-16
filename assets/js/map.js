@@ -1,4 +1,4 @@
-import '../scss/components/_map_open_layers.scss'
+// import '../scss/components/_map_open_layers.scss'
 // import Map from 'ol/Map';
 // import OSM from 'ol/source/OSM';
 // import TileLayer from 'ol/layer/Tile';

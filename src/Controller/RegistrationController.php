@@ -11,6 +11,7 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Entity\EmailIssues;
 use App\Entity\EventParticipant;
 use App\Form\AttendeeEventParticipantType;
 use App\Form\ServerEventParticipantType;
@@ -28,6 +29,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Form;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
+use App\Service\SpamDetection\SpamDetectionService;
+use App\Enum\EventParticipantStatusEnum;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\Exception\UnexpectedResponseException; // can remove catch, but good to have
+use App\Repository\EmailIssuesRepository;
 
 #[Route(
     '/men'
@@ -37,8 +43,10 @@ class RegistrationController extends AbstractController
     public function __construct(
         private PersonManager $personManager,
         private EventParticipantRepository $eventParticipantRepository,
+        private EmailIssuesRepository $emailIssuesRepository,
         private RegistrationLeaderNotificationContextAwareMailer $registrationNotificationMailer,
         private RegistrationThankYouContextAwareMailer $registrationThankYouMailer,
+        private SpamDetectionService $spamDetectionService,
     ) {
     }
 
@@ -52,10 +60,14 @@ class RegistrationController extends AbstractController
         //        $events = $eventRepository->findAll();
 
         $strictRegistration = $this->getGlobalSettings()->isRegistrationDeadlineInforced();
+        $waitlistEnabled = $this->getRegistrationSettings()->isWaitlistEnabled()
+            && !$event?->isRegistrationOpen()
+        ;
 
         return $this->render('frontend/events/list.html.twig', [
             'events' => [$event],
             //            'events' => $events,
+            'waitlist_enabled' => $waitlistEnabled,
             'strict_registration' => $strictRegistration,
         ]);
     }
@@ -66,10 +78,14 @@ class RegistrationController extends AbstractController
         if (!$this->isGranted(EventRegistrationVoter::ATTENDEE, $event)) {
             return $this->redirectToRoute('app_registration_list');
         }
+        $waitlistEnabled = $this->getRegistrationSettings()->isWaitlistEnabled()
+            && !$event->isRegistrationOpen();
 
         $eventRegistration = new EventParticipant();
         $eventRegistration->setEvent($event);
-        $form = $this->createForm(AttendeeEventParticipantType::class, $eventRegistration);
+        $form = $this->createForm(AttendeeEventParticipantType::class, $eventRegistration, [
+            'antispam_profile' => 'default',
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /* @var EventParticipant $eventRegistration */
@@ -80,6 +96,19 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            $spamDetails = $this->spamDetectionService->getSpamDetails(
+                $eventRegistration->getSpamSerialization()
+            );
+
+            $eventRegistration->setRawSpamDetails(
+                $spamDetails
+            );
+
+            if($waitlistEnabled) {
+                //Update status to waitlisted
+                $eventRegistration->setStatus(EventParticipantStatusEnum::WAITLISTED->value);
+            }
+
             //            $eventRegistration->setEvent($event);
 
             $this->eventParticipantRepository->save(
@@ -88,15 +117,20 @@ class RegistrationController extends AbstractController
             );
 
             // send email notification and thank you
-            $this->sendEmails($eventRegistration);
+            $this->sendEmails($eventRegistration, $waitlistEnabled);
 
+            if($waitlistEnabled) {
+                return $this->redirectToRoute('app_registration_registrationwaitingthankyou');
+            }
+
+            // return $this->redirectToRoute('app_registration_registrationthankyou');
             return $this->processPayment($form, $eventRegistration, $request);
         }
 
         return $this->render('frontend/events/attendee.regestration.html.twig', [
             'event' => $event,
+            'waitlist_enabled' => $waitlistEnabled,
             'form' => $form->createView(),
-            'stripe_public_key' => 'pk_test_51SDs5pK2q4IHjfeAsmi6s7hmn4fo0wSpDFyzaCZP7VF2G7o7vhpJHXUbp9uwrSAjrQuU3H5oP9BVL8uRoxM1UgRO00x8fqsjmX',
         ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
 
@@ -106,10 +140,14 @@ class RegistrationController extends AbstractController
         if (!$this->isGranted(EventRegistrationVoter::SERVER, $event)) {
             return $this->redirectToRoute('app_registration_list');
         }
+        $waitlistEnabled = $this->getRegistrationSettings()->isWaitlistEnabled()
+            && $event->isServerRegistrationFull();
 
         $eventRegistration = new EventParticipant();
         $eventRegistration->setEvent($event);
-        $form = $this->createForm(ServerEventParticipantType::class, $eventRegistration);
+        $form = $this->createForm(ServerEventParticipantType::class, $eventRegistration, [
+            'antispam_profile' => 'default',
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /* @var EventParticipant $eventRegistration */
@@ -119,13 +157,30 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            $spamDetails = $this->spamDetectionService->getSpamDetails(
+                $eventRegistration->getSpamSerialization()
+            );
+
+            $eventRegistration->setRawSpamDetails(
+                $spamDetails
+            );
+
+            if($waitlistEnabled) {
+                //Update status to waitlisted
+                $eventRegistration->setStatus(EventParticipantStatusEnum::WAITLISTED->value);
+            }
+
             $this->eventParticipantRepository->save(
                 $eventRegistration,
                 true
             );
 
             // send email notification and thank you
-            $this->sendEmails($eventRegistration);
+            $this->sendEmails($eventRegistration, $waitlistEnabled);
+
+            if($waitlistEnabled) {
+                return $this->redirectToRoute('app_registration_registrationwaitingthankyou');
+            }
 
             return $this->processPayment($form, $eventRegistration, $request);
         }
@@ -133,14 +188,24 @@ class RegistrationController extends AbstractController
         return $this->render('frontend/events/server.regestration.html.twig', [
             'event' => $event,
             'form' => $form->createView(),
-            'stripe_public_key' => 'test',
+            'waitlist_enabled' => $waitlistEnabled,
         ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
 
-    #[Route('/register/thank-you', name: 'app_registration_registrationthankyou')]
-    public function registrationThankYou()
+    #[Route('/register/confirmation/thank-you', name: 'app_registration_registrationthankyou')]
+    public function registrationConfirmationThankYou()
     {
-        return $this->render('frontend/events/submitted.regestration.html.twig', []);
+        return $this->render('frontend/events/submitted.regestration.html.twig', [
+            'waitlist_enabled' => false,
+        ]);
+    }
+
+    #[Route('/register/waiting/thank-you', name: 'app_registration_registrationwaitingthankyou')]
+    public function registrationWaitingThankYou()
+    {
+        return $this->render('frontend/events/submitted.regestration.html.twig', [
+            'waitlist_enabled' => true,
+        ]);
     }
 
     #[Route('/register/{event}/payment', name: 'app_registration_payment')]
@@ -163,13 +228,16 @@ class RegistrationController extends AbstractController
                 // TODO: add % of stripe fees as well
                 'amount' => $eventAmount, // Convert to cents
                 'currency' => 'usd',
+                'description' => 'Mens Encounter '.$event->getName() . ' - ' . $registrationData['registration']->getPerson()->getFirstName() . ' ' . $registrationData['registration']->getPerson()->getLastName(),
                 'automatic_payment_methods' => [
                     'enabled' => true,
                 ],
                 'metadata' => [
                     'event_id' => $event->getId(),
-                    'event_name' => $event->getName(),
+                    'event_name' => 'Mens Encounter '.$event->getName(),
                     'registration_id' => $registrationData['registration']->getId(),
+                    'customer_name' => $registrationData['registration']->getPerson()->getFirstName() . ' ' . $registrationData['registration']->getPerson()->getLastName(),
+                    'customer_email' => $registrationData['registration']->getPerson()->getEmail(),
                 ],
             ]);
 
@@ -184,23 +252,99 @@ class RegistrationController extends AbstractController
             // if we have made it this far we should have samed the registration data.
             // now we just need to collect payment.
             $this->addFlash('error', 'Failed to initialize payment: ' . $e->getMessage());
+            return $this->render('frontend/events/payment.html.twig', [
+                'event' => $event,
+                'registration' => $registrationData['registration'],
+                'stripe_public_key' => $this->getStripeSettings()->getPublicKey(),
+                'client_secret' => $paymentIntent->client_secret,
+                'event_amount' => $eventAmount, // Convert to cents
+            ], new Response(null, 402));
             return $this->redirectToRoute('app_registration_registrationthankyou');
         }
     }
 
-    protected function sendEmails(EventParticipant $registration): void
+    protected function sendEmails(EventParticipant $registration, bool $waitlistEnabled = false): void
     {
         if (!$this->getGlobalSettings()->isEmailNotificationsTurnedOn()) {
             return;
         }
 
+        // Do not send if this is spam
+        if ($registration->isSpam()) {
+            //Update status to spam
+            $registration->setStatus(EventParticipantStatusEnum::SPAM->value);
+            $this->eventParticipantRepository->save($registration, true);
+
+            return;
+        }
+
         $toEmail = [new Address($registration->getPerson()->getEmail(), $registration->getFullName())];
-        $this->registrationThankYouMailer->send(
-            toEmails: $toEmail, context: ['registration' => $registration],
-        );
-        $this->registrationNotificationMailer->send(
-            context: ['registration' => $registration]
-        );
+        
+        try {
+            $this->registrationThankYouMailer->send(
+                toEmails: $toEmail, context: ['registration' => $registration, 'waitlist_enabled' => $waitlistEnabled],
+            );
+        } catch (TransportExceptionInterface $e) {
+            $errorStatus = $this->resolveErrorStatus($e->getMessage());
+
+            $issue = (new EmailIssues())
+                ->setSentTo($registration->getPerson()->getEmail())
+                ->setEvent($registration->getEvent())
+                ->setError($e->getMessage())
+                ->setErrorStatus($errorStatus);
+
+            $this->emailIssuesRepository->save($issue, true);
+        } catch (Symfony\Component\Mailer\Exception\UnexpectedResponseException $e) {
+            $errorStatus = $this->resolveErrorStatus($e->getMessage());
+
+            $issue = (new EmailIssues())
+                ->setSentTo($registration->getPerson()->getEmail())
+                ->setEvent($registration->getEvent())
+                ->setError($e->getMessage())
+                ->setErrorStatus($errorStatus);
+
+            $this->emailIssuesRepository->save($issue, true);
+        }
+        
+        try {
+            if(!$waitlistEnabled) {
+                $this->registrationNotificationMailer->send(
+                    context: ['registration' => $registration]
+                );
+            }
+        } catch (TransportExceptionInterface $e) {
+            $errorStatus = $this->resolveErrorStatus($e->getMessage());
+
+            $issue = (new EmailIssues())
+                ->setSentTo($registration->getPerson()->getEmail())
+                ->setEvent($registration->getEvent())
+                ->setError($e->getMessage())
+                ->setErrorStatus($errorStatus);
+
+            $this->emailIssuesRepository->save($issue, true);
+        } catch (Symfony\Component\Mailer\Exception\UnexpectedResponseException $e) {
+            $errorStatus = $this->resolveErrorStatus($e->getMessage());
+
+            $issue = (new EmailIssues())
+                ->setSentTo($registration->getPerson()->getEmail())
+                ->setEvent($registration->getEvent())
+                ->setError($e->getMessage())
+                ->setErrorStatus($errorStatus);
+
+            $this->emailIssuesRepository->save($issue, true);
+        }
+    }
+
+    private function resolveErrorStatus(string $message): string
+    {
+        return match(true) {
+            str_contains($message, 'recipient is suppressed') => 'suppressed',
+            str_contains($message, '550')                     => 'hard_bounce',
+            str_contains($message, '421'), 
+            str_contains($message, '450')                     => 'soft_bounce',
+            str_contains($message, 'spam')                    => 'spam_block',
+            default                                           => 'unknown',
+        };
     }
 
     private function processPayment(Form $form,EventParticipant $registration, Request $request)

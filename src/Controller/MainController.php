@@ -6,6 +6,8 @@ use App\Repository\EventRepository;
 use App\Repository\LocationRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Tzunghaor\SettingsBundle\Service\SettingsService;
+use App\Settings\Global\RegistrationSettings;
 
 #[Route(
     '/{site}',
@@ -23,7 +25,12 @@ class MainController extends AbstractController
     ): Response {
         $nextEvent = $eventRepository->findUpcomingEvent();
 
+        $waitlistEnabled = $this->getRegistrationSettings()->isWaitlistEnabled()
+            && !$nextEvent?->isRegistrationOpen()
+        ;
+
         return $this->render('frontend/index.html.twig', [
+            'waitlist_enabled' => $waitlistEnabled,
             'event' => $nextEvent,
         ]);
     }
@@ -92,5 +99,29 @@ class MainController extends AbstractController
         return $this->render('frontend/testimonies.html.twig', [
             //            'pager' => $pagerfanta,
         ]);
+    }
+
+    protected function getRegistrationSettings(): RegistrationSettings
+    {
+        return $this->getSettingsService()->getSection(RegistrationSettings::class);
+    }
+
+    private function getSettingsService(): SettingsService
+    {
+        if (!$this->container->has('tzunghaor_settings.settings_service.global')) {
+            throw new LogicException('The SettingsBundle is not registered in your application. Try running "composer require tzunghaor/settings-bundle".');
+        }
+
+        return $this->container->get('tzunghaor_settings.settings_service.global');
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            [
+                'tzunghaor_settings.settings_service.global' => '?'.SettingsService::class,
+            ]
+        );
     }
 }

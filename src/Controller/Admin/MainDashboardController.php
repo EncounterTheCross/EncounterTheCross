@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Controller\Admin\Crud\EventLocationCrudController;
 use App\Controller\Admin\Crud\LaunchPointCrudController;
 use App\Entity\Event;
+use App\Entity\EmailIssues;
 use App\Entity\EventParticipant;
 use App\Entity\EventPrayerTeamServer;
 use App\Entity\Leader;
@@ -203,6 +204,8 @@ class MainDashboardController extends AbstractDashboardController
             ->setController(EventLocationCrudController::class)
             ->setPermission('ROLE_DATA_EDITOR_OVERWRITE')
         ;
+        yield MenuItem::linkToCrud('Email Issues', 'fas fa-list', EmailIssues::class)
+            ->setPermission('ROLE_DATA_EDITOR_OVERWRITE');
 
         yield MenuItem::section('Prayer Teams')
             ->setPermission('ROLE_DATA_EDITOR_OVERWRITE')

@@ -41,15 +41,17 @@ services:
             $fromEmail: '%env(MAILER_SENDER_EMAIL)%'
             $fromName: '%env(MAILER_SENDER_NAME)%'
 
-    App\EventSubscriber\MaintenanceModeSubscriber:
-        arguments:
-            $environment: '%kernel.environment%'
-
     App\Security\Voter\EventRegistrationVoter:
         arguments:
             $settingsService: '@tzunghaor_settings.settings_service.global'
 
+    App\Form\ServerEventParticipantType:
+        arguments:
+            $settingsService: '@tzunghaor_settings.settings_service.global'
 
+    App\Form\AttendeeEventParticipantType:
+        arguments:
+            $settingsService: '@tzunghaor_settings.settings_service.global'
 
 #    App\Settings\SettingsEnumConverter:
 #        tags:

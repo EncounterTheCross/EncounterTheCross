@@ -1,14 +1,64 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^PHPDoc tag @param for parameter \\$config with type mixed is not subtype of native type array\\.$#"
+			count: 1
+			path: config/reference.php
+
+		-
+			message: "#^PHPDoc tag @return with type mixed is not subtype of native type array\\.$#"
+			count: 1
+			path: config/reference.php
+
+		-
+			message: "#^Access to constant STATUS_SPAM on an unknown class App\\\\Command\\\\EventParticipantStatusEnum\\.$#"
+			count: 1
+			path: src/Command/SpamCheckLatestCommand.php
+
+		-
+			message: "#^Call to an undefined method EasyCorp\\\\Bundle\\\\EasyAdminBundle\\\\Contracts\\\\Field\\\\FieldInterface\\:\\:hideOnForm\\(\\)\\.$#"
+			count: 2
+			path: src/Controller/Admin/Crud/EventCrudController.php
+
+		-
 			message: "#^Property App\\\\Controller\\\\Admin\\\\Crud\\\\Field\\\\Field\\:\\:\\$dto is never read, only written\\.$#"
 			count: 1
 			path: src/Controller/Admin/Crud/Field/Field.php
 
 		-
+			message: "#^Call to an undefined method EasyCorp\\\\Bundle\\\\EasyAdminBundle\\\\Contracts\\\\Field\\\\FieldInterface\\:\\:hideOnIndex\\(\\)\\.$#"
+			count: 6
+			path: src/Controller/Admin/Crud/LocationCrudController.php
+
+		-
+			message: "#^Call to an undefined method EasyCorp\\\\Bundle\\\\EasyAdminBundle\\\\Contracts\\\\Field\\\\FieldInterface\\:\\:onlyOnIndex\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/Admin/Crud/LocationCrudController.php
+
+		-
 			message: "#^Cannot call method get\\(\\) on null\\.$#"
 			count: 2
 			path: src/Controller/Admin/MainDashboardController.php
+
+		-
+			message: "#^Instantiated class App\\\\Controller\\\\LogicException not found\\.$#"
+			count: 1
+			path: src/Controller/MainController.php
+
+		-
+			message: "#^Throwing object of an unknown class App\\\\Controller\\\\LogicException\\.$#"
+			count: 1
+			path: src/Controller/MainController.php
+
+		-
+			message: "#^Caught class App\\\\Controller\\\\Symfony\\\\Component\\\\Mailer\\\\Exception\\\\UnexpectedResponseException not found\\.$#"
+			count: 2
+			path: src/Controller/RegistrationController.php
+
+		-
+			message: "#^Dead catch \\- App\\\\Controller\\\\Symfony\\\\Component\\\\Mailer\\\\Exception\\\\UnexpectedResponseException is never thrown in the try block\\.$#"
+			count: 2
+			path: src/Controller/RegistrationController.php
 
 		-
 			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
@@ -41,17 +91,12 @@ parameters:
 			path: src/Entity/Location.php
 
 		-
-			message: "#^Binary operation \"\\-\" between non\\-falsy\\-string and non\\-falsy\\-string results in an error\\.$#"
+			message: "#^Property App\\\\EventSubscriber\\\\UserActivitySubscriber\\:\\:\\$security is never read, only written\\.$#"
 			count: 1
 			path: src/EventSubscriber/UserActivitySubscriber.php
 
 		-
-			message: "#^Left side of && is always true\\.$#"
-			count: 1
-			path: src/EventSubscriber/UserActivitySubscriber.php
-
-		-
-			message: "#^Right side of && is always true\\.$#"
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: src/EventSubscriber/UserActivitySubscriber.php
 
@@ -159,6 +204,11 @@ parameters:
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: src/Service/RoleManager/RoleFormatter.php
+
+		-
+			message: "#^Call to an undefined method App\\\\Service\\\\SpamDetection\\\\SpamDetectionService\\:\\:checkPaymentIssues\\(\\)\\.$#"
+			count: 1
+			path: src/Service/SpamDetection/SpamDetectionService.php
 
 		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"

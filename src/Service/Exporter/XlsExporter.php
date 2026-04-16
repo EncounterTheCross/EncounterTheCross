@@ -47,6 +47,11 @@ class XlsExporter implements ExporterContract
 
         /** @var EventParticipant $participant */
         foreach ($participants as $participant) {
+            // FIX ME: HARD CODE SPAM STATUS TO BE EXCLUDED
+            if ($participant->getStatus() === 'spam') {
+                continue;
+            }
+
             $worksheetName = $participant->getLaunchPoint()->getName();
 
             // Create all Worksheets we need, will add to these later
@@ -84,6 +89,11 @@ class XlsExporter implements ExporterContract
      */
     public function createEventReport(array $participants): Spreadsheet
     {
+        // FIX ME: HARD CODE SPAM STATUS TO BE EXCLUDED
+        $participants = array_filter($participants, function (EventParticipant $participant) {
+            return $participant->getStatus() !== 'spam';
+        });
+
         $spreadsheet = $this->spreadsheetFactory->createSpreadsheet();
         $worksheet = $spreadsheet->getSheetByName('Worksheet');
 

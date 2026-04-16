@@ -65,6 +65,9 @@ class Event
     #[ORM\Column(options: ['default' => false])]
     private bool $registrationStarted = false;
 
+    #[ORM\Column(options: ['default' => 160])]
+    private ?int $maxServers = null;
+
     public function __construct()
     {
         $this->launchPoints = new ArrayCollection();
@@ -170,6 +173,16 @@ class Event
         return $this->getEventParticipants(EventParticipantStatusEnum::DROPPED);
     }
 
+    public function getWaitlist(): Collection
+    {
+        return $this->getEventParticipants(EventParticipantStatusEnum::WAITLISTED);
+    }
+
+    public function getWaitlistTotal(): float
+    {
+        return $this->getWaitlist()->count();
+    }
+
     public function getDropTotal(): float
     {
         return $this->getDrops()->count();
@@ -185,6 +198,22 @@ class Event
         return $this->getEventParticipants()->filter(function (EventParticipant $eventParticipant) {
             return (EventParticipant::TYPE_SERVER === $eventParticipant->getType())
                 && (EventParticipantStatusEnum::ATTENDING->value === $eventParticipant->getStatus());
+        });
+    }
+
+    public function getWaitlistedAttendees(): Collection
+    {
+        return $this->getEventParticipants()->filter(function (EventParticipant $eventParticipant) {
+            return (EventParticipant::TYPE_ATTENDEE === $eventParticipant->getType())
+                && (EventParticipantStatusEnum::WAITLISTED->value === $eventParticipant->getStatus());
+        });
+    }
+
+    public function getWaitlistedServers(): Collection
+    {
+        return $this->getEventParticipants()->filter(function (EventParticipant $eventParticipant) {
+            return (EventParticipant::TYPE_SERVER === $eventParticipant->getType())
+                && (EventParticipantStatusEnum::WAITLISTED->value === $eventParticipant->getStatus());
         });
     }
 
@@ -368,5 +397,26 @@ class Event
         $this->registrationStarted = $registrationStarted;
 
         return $this;
+    }
+
+    public function getMaxServers(): ?int
+    {
+        return $this->maxServers;
+    }
+
+    public function setMaxServers(int $maxServers): static
+    {
+        $this->maxServers = $maxServers;
+
+        return $this;
+    }
+
+    public function isServerRegistrationFull():bool
+    {
+        if ($this->maxServers === null) {
+            return false;
+        }
+
+        return $this->getTotalServers() >= $this->maxServers;
     }
 }

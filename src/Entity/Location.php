@@ -54,6 +54,9 @@ class Location
     #[ORM\OneToMany(mappedBy: 'launchPoint', targetEntity: LaunchPointContacts::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $launchPointContacts;
 
+    #[ORM\Column(options: ['default' => true])]
+    private ?bool $shareLocationContactDetails = null;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
@@ -338,5 +341,17 @@ class Location
             'attendees' => $this->getEventAttendees(),
             'servers' => 15,
         ];
+    }
+
+    public function isShareLocationContactDetails(): ?bool
+    {
+        return $this->shareLocationContactDetails;
+    }
+
+    public function setShareLocationContactDetails(bool $shareLocationContactDetails): static
+    {
+        $this->shareLocationContactDetails = $shareLocationContactDetails;
+
+        return $this;
     }
 }

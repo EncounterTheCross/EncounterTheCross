@@ -157,9 +157,10 @@ class PrayerTeamAssignmentsController extends AbstractController
 
         $servers->map(function (EventParticipant $server) use (&$teams) {
             $assignment = $server->getCurrentEventPrayerTeamServer();
-            $teamId = 'unassigned';
+            $teamIdDefault = $teamId = 'unassigned';
             if (null !== $assignment) {
-                $teamId = $assignment->getPrayerTeam()->getName();
+                $teamId = $assignment->getPrayerTeam()?->getName() ?: $teamIdDefault;
+
                 if (!array_key_exists($teamId, $teams)) {
                     $teams[$teamId] = [];
                 }

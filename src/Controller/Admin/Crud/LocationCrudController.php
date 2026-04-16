@@ -109,6 +109,9 @@ class LocationCrudController extends AbstractCrudController
         yield Field::new('country')
             ->hideOnIndex()
         ;
+        yield BooleanField::new('shareLocationContactDetails', 'Share Contact Details')
+            ->hideOnIndex()
+        ;
         yield BooleanField::new('active');
     }
 
