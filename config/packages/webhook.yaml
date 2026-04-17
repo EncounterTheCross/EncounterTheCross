@@ -2,5 +2,5 @@ framework:
   webhook:
     routing:
       stripe:
-        service: App\Webhook\StripeRequestParser
-        secret: your_secret_here
+        service: App\Webhook\StripeWebhookParser
+        secret: 'unused-secret-stored-in-db-settings'

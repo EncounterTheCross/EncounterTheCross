@@ -208,60 +208,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    #[Route('/register/{event}/payment', name: 'app_registration_payment')]
-    public function payment(Event $event, Request $request)
-    {
-        // Get registration data from session
-        $registrationData = $request->getSession()->get('registration_data');
-        
-        if (!$registrationData || $registrationData['event_id'] !== $event->getId()) {
-            $this->addFlash('error', 'Registration session expired. Please start over.');
-            return $this->redirectToRoute('app_registration_attendee_formentry', ['event' => $event->getId()]);
-        }
 
-        // Create PaymentIntent
-        Stripe::setApiKey($this->getStripeSettings()->getSecretKey());
-        
-        try {
-            $eventAmount = $event->getPrice() * 100; // Convert to cents
-            $paymentIntent = PaymentIntent::create([
-                // TODO: add % of stripe fees as well
-                'amount' => $eventAmount, // Convert to cents
-                'currency' => 'usd',
-                'description' => 'Mens Encounter '.$event->getName() . ' - ' . $registrationData['registration']->getPerson()->getFirstName() . ' ' . $registrationData['registration']->getPerson()->getLastName(),
-                'automatic_payment_methods' => [
-                    'enabled' => true,
-                ],
-                'metadata' => [
-                    'event_id' => $event->getId(),
-                    'event_name' => 'Mens Encounter '.$event->getName(),
-                    'registration_id' => $registrationData['registration']->getId(),
-                    'customer_name' => $registrationData['registration']->getPerson()->getFirstName() . ' ' . $registrationData['registration']->getPerson()->getLastName(),
-                    'customer_email' => $registrationData['registration']->getPerson()->getEmail(),
-                ],
-            ]);
-
-            return $this->render('frontend/events/payment.html.twig', [
-                'event' => $event,
-                'registration' => $registrationData['registration'],
-                'stripe_public_key' => $this->getStripeSettings()->getPublicKey(),
-                'client_secret' => $paymentIntent->client_secret,
-                'event_amount' => $eventAmount, // Convert to cents
-            ], new Response(null, 200));
-        } catch (\Exception $e) {
-            // if we have made it this far we should have samed the registration data.
-            // now we just need to collect payment.
-            $this->addFlash('error', 'Failed to initialize payment: ' . $e->getMessage());
-            return $this->render('frontend/events/payment.html.twig', [
-                'event' => $event,
-                'registration' => $registrationData['registration'],
-                'stripe_public_key' => $this->getStripeSettings()->getPublicKey(),
-                'client_secret' => $paymentIntent->client_secret,
-                'event_amount' => $eventAmount, // Convert to cents
-            ], new Response(null, 402));
-            return $this->redirectToRoute('app_registration_registrationthankyou');
-        }
-    }
 
     protected function sendEmails(EventParticipant $registration, bool $waitlistEnabled = false): void
     {
@@ -352,7 +299,7 @@ class RegistrationController extends AbstractController
         $paymentMethod = $form->get('paymentMethod')->getData();
 
         // If payment method is card, store data in session and redirect to payment page
-        if ($paymentMethod !== 'card') {
+        if ($paymentMethod !== EventParticipant::PAYMENT_METHOD_CARD) {
             return $this->redirectToRoute('app_registration_registrationthankyou');
         }
 

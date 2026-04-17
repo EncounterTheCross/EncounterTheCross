@@ -31,7 +31,7 @@ import FrmValidator from './components/formValidator.js';
 
 window.addEventListener('DOMContentLoaded', event => {
     FrmValidator();
-
+    initTooltips();
 
     // Navbar shrink function
     var navbarShrink = function () {
@@ -75,11 +75,23 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     });
 
-    setTimeout(function() {
-        let icons = document.body.querySelectorAll("svg.fa-bounce");
-        icons.forEach(function (icon) {
-            icon.classList.remove("fa-bounce");
-        });
-    }, 1000);
+    // setTimeout(function() {
+    //     let icons = document.body.querySelectorAll("svg.fa-bounce");
+    //     icons.forEach(function (icon) {
+    //         icon.classList.remove("fa-bounce");
+    //     });
+    // }, 1000);
 
 });
+
+// Re-initialize tooltips after Turbo navigations
+document.addEventListener('turbo:load', initTooltips);
+
+function initTooltips() {
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    [...tooltipTriggerList].forEach(el => {
+        if (!bootstrap.Tooltip.getInstance(el)) {
+            new bootstrap.Tooltip(el);
+        }
+    });
+}

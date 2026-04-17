@@ -1,176 +1,163 @@
 {% extends 'frontend/blank_content_container.html.twig' %}
 
+{% block stylesheets %}
+{{ parent() }}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer">
+{% endblock stylesheets %}
+
 {% block javascripts %}
     {{ parent() }}
-    <script src="https://js.stripe.com/v3/"></script>
-    <script>
-    function loadStripe() {
-        return new Promise((resolve, reject) => {
-            if (typeof Stripe !== 'undefined') {
-            resolve(Stripe);
-            return;
-            }
-            const script = document.createElement('script');
-            script.src = 'https://js.stripe.com/v3/';
-            script.onload = () => resolve(Stripe);
-            script.onerror = () => reject(new Error('Failed to load Stripe.js'));
-            document.head.appendChild(script);
-        });
-    }
-    </script>
     <script type="text/javascript">
-    // Use turbo:load instead of DOMContentLoaded for Turbo compatibility
-    document.addEventListener('turbo:load', async () => {
-      // Check if we're on the payment page
-      const form = document.getElementById('payment-form');
-      if (!form) return; // Exit if not on payment page
-      
-      const submitButton = document.getElementById('submit-button');
-      const errorMessage = document.getElementById('error-message');
-      const spinner = document.getElementById('spinner');
-      const buttonText = document.getElementById('button-text');
-
-      console.log('Initializing Stripe...');
-
-      // Get values from data attributes instead of template variables
-      const stripeKey = form.dataset.stripeKey;
-      const clientSecret = form.dataset.clientSecret;
-
-      console.log('Stripe Key:', stripeKey ? 'Present' : 'Missing');
-      console.log('Client Secret:', clientSecret ? 'Present' : 'Missing');
-
-      // Show error message
-      function showError(message) {
-        console.error('Error:', message);
-        errorMessage.textContent = message;
-        errorMessage.style.display = 'block';
-      }
-
-      if (!stripeKey || !clientSecret) {
-        showError('Payment initialization failed. Please go back and try again.');
-        return;
-      }
-
-      const StripeConstructor = await loadStripe();
-      const stripe = StripeConstructor(stripeKey);
-
-      try {
-        // Create Elements instance
-        const appearance = {
-          theme: 'stripe',
-          variables: {
-            colorPrimary: '#d72323',
-          }
-        };
-        
-        console.log('Creating Elements...');
-        const elements = stripe.elements({
-          clientSecret: clientSecret,
-          appearance: appearance,
-        });
-
-        // Create and mount Payment Element
-        console.log('Creating Payment Element...');
-        const paymentElement = elements.create('payment');
-        
-        console.log('Mounting Payment Element...');
-        paymentElement.mount('#payment-element');
-
-        // Enable submit button after loading
-        paymentElement.on('ready', () => {
-          console.log('Payment Element ready');
-          submitButton.disabled = false;
-        });
-
-        paymentElement.on('loaderstart', () => {
-          console.log('Payment Element loader started');
-        });
-
-        paymentElement.on('loaderror', (event) => {
-          console.error('Payment Element load error:', event);
-          showError('Failed to load payment form. Please refresh the page.');
-        });
-
-        // Handle form submission
-        form.addEventListener('submit', async (event) => {
-          event.preventDefault();
-
-          submitButton.disabled = true;
-          spinner.style.display = 'inline-block';
-          buttonText.textContent = 'Processing...';
-
-          const { error, paymentIntent } = await stripe.confirmPayment({
-            elements,
-            confirmParams: {
-              return_url: window.location.origin + form.dataset.returnUrl,
-            },
-            redirect: 'if_required',
-          });
-
-          if (error) {
-            // Show error to customer (immediate validation errors only)
-            showError(error.message);
-            submitButton.disabled = false;
-            spinner.style.display = 'none';
-            buttonText.textContent = 'Complete Payment';
-          } else if (paymentIntent) {
-            // Payment submitted - save registration immediately
-            // Don't wait for final status, webhooks will handle it
-            try {
-                if (typeof Turbo !== 'undefined') {
-                  Turbo.visit(form.dataset.completeUrl);
-                } else {
-                  window.location.href = form.dataset.completeUrl;
+        function loadStripe() {
+            return new Promise((resolve, reject) => {
+                if (typeof Stripe !== 'undefined') {
+                    resolve(Stripe);
+                    return;
                 }
-            //   const response = await fetch(form.dataset.completeUrl, {
-            //     method: 'POST',
-            //     headers: {
-            //       'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({
-            //       payment_intent_id: paymentIntent.id
-            //     }),
-            //   });
+                const script = document.createElement('script');
+                script.src = 'https://js.stripe.com/v3/';
+                script.onload = () => resolve(Stripe);
+                script.onerror = () => reject(new Error('Failed to load Stripe.js'));
+                document.head.appendChild(script);
+            });
+        }
 
-            //   const result = await response.json();
+        document.addEventListener('turbo:load', async () => {
+            const form = document.getElementById('payment-form');
+            if (!form) return;
 
-            //   if (result.success) {
-            //     // Use Turbo.visit if available, otherwise regular redirect
-            //     if (typeof Turbo !== 'undefined') {
-            //       Turbo.visit(result.redirect_url);
-            //     } else {
-            //       window.location.href = result.redirect_url;
-            //     }
-            //   } else {
-            //     showError(result.error || 'Failed to complete registration');
-            //     submitButton.disabled = false;
-            //     spinner.style.display = 'none';
-            //     buttonText.textContent = 'Complete Payment';
-            //   }
-            } catch (err) {
-              showError('Failed to complete registration: ' + err.message);
-              submitButton.disabled = false;
-              spinner.style.display = 'none';
-              buttonText.textContent = 'Complete Payment';
+            const submitButton = document.getElementById('submit-button');
+            const errorMessage = document.getElementById('error-message');
+            const spinner = document.getElementById('spinner');
+            const buttonText = document.getElementById('button-text');
+
+            function showError(message) {
+                console.error('Error:', message);
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
             }
-          }
+
+            function resetButton() {
+                submitButton.disabled = false;
+                spinner.style.display = 'none';
+                buttonText.textContent = 'Complete Payment';
+            }
+
+            // --- Step 1: Validate stripe key is present ---
+            const stripeKey = form.dataset.stripeKey;
+            if (!stripeKey) {
+                showError('Payment initialization failed. Please go back and try again.');
+                return;
+            }
+
+            // --- Step 2: Fetch client secret from server (never stored in HTML) ---
+            let clientSecret;
+            try {
+                const res = await fetch(form.dataset.intentUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                });
+
+                const data = await res.json();
+
+                if (!res.ok || data.error) {
+                    showError(data.error || 'Failed to initialize payment. Please go back and try again.');
+                    return;
+                }
+
+                clientSecret = data.clientSecret;
+            } catch (e) {
+                showError('Could not reach the payment server. Please refresh and try again.');
+                return;
+            }
+
+            // --- Step 3: Load Stripe and initialize Elements ---
+            let stripe;
+            try {
+                const StripeConstructor = await loadStripe();
+                stripe = StripeConstructor(stripeKey);
+            } catch (e) {
+                showError('Failed to load Stripe. Please refresh the page.');
+                return;
+            }
+
+            const elements = stripe.elements({
+                clientSecret: clientSecret,
+                appearance: {
+                    theme: 'stripe',
+                    variables: {
+                        colorPrimary: '#d72323',
+                    },
+                },
+            });
+
+            // --- Step 4: Mount the Payment Element ---
+            const paymentElement = elements.create('payment');
+
+            paymentElement.on('ready', () => {
+                console.log('Payment Element ready');
+                submitButton.disabled = false;
+            });
+
+            paymentElement.on('loaderstart', () => {
+                console.log('Payment Element loader started');
+            });
+
+            paymentElement.on('loaderror', (event) => {
+                console.error('Payment Element load error:', event);
+                showError('Failed to load payment form. Please refresh the page.');
+            });
+
+            paymentElement.mount('#payment-element');
+
+            // --- Step 5: Handle form submission ---
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                submitButton.disabled = true;
+                spinner.style.display = 'inline-block';
+                buttonText.textContent = 'Processing...';
+                errorMessage.style.display = 'none';
+
+                const { error, paymentIntent } = await stripe.confirmPayment({
+                    elements,
+                    confirmParams: {
+                        return_url: window.location.origin + form.dataset.returnUrl,
+                    },
+                    redirect: 'if_required',
+                });
+
+                if (error) {
+                    // Validation or card errors — show to user and let them retry
+                    showError(error.message);
+                    resetButton();
+                    return;
+                }
+
+                if (paymentIntent) {
+                    // Payment confirmed — redirect to thank you page
+                    try {
+                        if (typeof Turbo !== 'undefined') {
+                            Turbo.visit(form.dataset.completeUrl);
+                        } else {
+                            window.location.href = form.dataset.completeUrl;
+                        }
+                    } catch (e) {
+                        showError('Payment was successful but we could not redirect you. Please contact support.');
+                        resetButton();
+                    }
+                }
+            });
         });
-      } catch (error) {
-        console.error('Stripe initialization error:', error);
-        showError('Failed to initialize payment form: ' + error.message);
-      }
-    });
     </script>
 {% endblock %}
 
 {% block content %}
     <div class="row">
         <div class="col">
-            <div class="row justify-content-center">
-                <div class="col-1">
-                    <i class="fa-solid fa-church fa-2xl mb-2 text-dark text-center"></i>
-                </div>
-            </div>
             <div class="row">
                 <div class="col">
                     <h1 class="text-dark display-1 mb-5 text-center">Payment</h1>
@@ -188,19 +175,44 @@
                     <h5 class="mb-0">Registration Summary</h5>
                 </div>
                 <div class="card-body">
-                    <dl class="row mb-0">
+                    {# Attendee details #}
+                    <dl class="row mb-3">
                         <dt class="col-sm-4">Event:</dt>
-                        <dd class="col-sm-8">{{ event.name }}</dd>
-                        
+                        <dd class="col-sm-8 mb-1">{{ event.name }}</dd>
+
                         <dt class="col-sm-4">Name:</dt>
-                        <dd class="col-sm-8">{{ registration.person.firstName }} {{ registration.person.lastName }}</dd>
-                        
+                        <dd class="col-sm-8 mb-1">{{ registration.person.firstName }} {{ registration.person.lastName }}</dd>
+
                         <dt class="col-sm-4">Email:</dt>
-                        <dd class="col-sm-8">{{ registration.person.email }}</dd>
-                        
-                        <dt class="col-sm-4">Amount:</dt>
-                        <dd class="col-sm-8">${{ (event_amount / 100)|number_format(2) }}</dd>
+                        <dd class="col-sm-8 mb-0">{{ registration.person.email }}</dd>
                     </dl>
+
+                    <hr>
+
+                    {# Line items #}
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Event Registration</span>
+                        <span>${{ (event_amount / 100)|number_format(2) }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>
+                            Platform Fee
+                            <i class="fa-solid fa-circle-question text-muted ms-1"
+                               data-bs-toggle="tooltip"
+                               data-bs-placement="top"
+                               title="Helps keep this registration platform running so we can continue serving men through these encounters."
+                               style="cursor: help;"></i>
+                        </span>
+                        <span>${{ (platform_fee / 100)|number_format(2) }}</span>
+                    </div>
+
+                    <hr>
+
+                    {# Grand total #}
+                    <div class="d-flex justify-content-between fw-bold fs-5">
+                        <span>Total</span>
+                        <span>${{ ((event_amount + platform_fee) / 100)|number_format(2) }}</span>
+                    </div>
                 </div>
             </div>
 
@@ -213,7 +225,7 @@
                     <form id="payment-form" 
                           data-turbo="false"
                           data-stripe-key="{{ stripe_public_key }}"
-                          data-client-secret="{{ client_secret }}"
+                          data-intent-url="{{ path('app_registration_payment_intent', {event: event.id}) }}"
                           data-complete-url="{{ path('app_registration_registrationthankyou', {event: event.id}) }}"
                           data-return-url="{{ path('app_registration_registrationthankyou') }}">
                         <div id="payment-element" class="mb-3">

@@ -521,7 +521,7 @@ class EventParticipantCrudController extends AbstractCrudController implements S
         ;
         yield ChoiceField::new('paymentMethod')
             ->setFormTypeOption(ChoiceField::OPTION_CHOICES, array_combine(
-                ['Pay at the door', 'Apply for Scholarship'],
+                ['Pay at the door', 'Apply for Scholarship', 'Card'],
                 EventParticipant::PAYMENT_METHODS
             ))
             ->onlyOnForms()
