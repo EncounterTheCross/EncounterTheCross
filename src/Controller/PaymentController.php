@@ -62,6 +62,8 @@ class PaymentController extends AbstractController
                     .$registration->getPerson()->getLastName(),
                 'automatic_payment_methods' => ['enabled' => true],
                 'metadata' => [
+                    'site_url' => $request->getSchemeAndHttpHost(),
+                    'payment_type' => 'single',
                     'event_id' => $event->getId(),
                     'event_name' => 'Mens Encounter '.$event->getName(),
                     'registration_id' => $registration->getId(),

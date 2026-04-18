@@ -34,6 +34,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
@@ -515,6 +516,8 @@ class EventParticipantCrudController extends AbstractCrudController implements S
             ->onlyOnForms()
         ;
         yield AssociationField::new('event');
+        yield AssociationField::new('launchPoint');
+        yield FormField::addFieldset('Payment Details');
         yield BooleanField::new('paid');
         yield TextField::new('paymentMethod')
             ->hideOnForm()
@@ -526,7 +529,20 @@ class EventParticipantCrudController extends AbstractCrudController implements S
             ))
             ->onlyOnForms()
         ;
-        yield AssociationField::new('launchPoint');
+        yield Field::new('stripePaymentIntentId')
+            ->hideOnIndex()
+            ->hideOnForm()
+        ;
+        yield Field::new('paidAt')
+            ->hideOnIndex()
+            ->hideOnForm()
+        ;
+        yield MoneyField::new('amountPaidCents')
+            ->setCurrency('USD')
+            ->setLabel('Amount Paid')
+            ->hideOnIndex()
+            ->hideOnForm()
+        ;
 
         // Attendee
         // TODO: Contact Person Lookup when edited...
