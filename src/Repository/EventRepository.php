@@ -116,7 +116,8 @@ class EventRepository extends ServiceEntityRepository
 //            ->select('partial e.{id, name, start, end}, partial lp.{id, name}, partial ep.{id, type}, partial person.{id, firstName, lastName}, l, eppt')
             ->leftJoin('e.location', 'l')  // leftJoin to main event location
             ->leftJoin('e.launchPoints', 'lp')  // leftJoin to launch points
-            ->leftJoin('lp.eventAttendees', 'ep', 'WITH', 'ep.type = :type AND ep.status = :status AND ep.event = e')
+            // ->leftJoin('lp.eventAttendees', 'ep', 'WITH', 'ep.type = :type AND ep.status = :status AND ep.event = e')
+            ->leftJoin('lp.eventAttendees', 'ep', 'WITH', 'ep.type = :type AND (ep.status = :status1 OR ep.status = :status2) AND ep.event = e')
             ->leftJoin('ep.person', 'person')
             ->leftJoin('ep.eventPrayerTeamServers', 'eppt')
             ->leftJoin('lp.launchPointContacts','lpc')
@@ -124,7 +125,9 @@ class EventRepository extends ServiceEntityRepository
             ->andWhere('e.active = :active')
             ->setParameter('token', $token)
             ->setParameter('type', EventParticipant::TYPE_SERVER)
-            ->setParameter('status', \App\Enum\EventParticipantStatusEnum::ATTENDING->value)
+            // ->setParameter('status', \App\Enum\EventParticipantStatusEnum::ATTENDING->value)
+            ->setParameter('status1', \App\Enum\EventParticipantStatusEnum::ATTENDING->value)
+            ->setParameter('status2', \App\Enum\EventParticipantStatusEnum::WAITLISTED->value)
             ->setParameter('active', true)
             ->orderBy('person.lastName', 'ASC')
             ->addOrderBy('person.firstName', 'ASC')

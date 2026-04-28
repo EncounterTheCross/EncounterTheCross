@@ -9,6 +9,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @extends ServiceEntityRepository<Leader>
@@ -62,12 +63,16 @@ class LeaderRepository extends ServiceEntityRepository implements PasswordUpgrad
         $qb = $this->createQueryBuilder('l');
         $qb
             ->leftJoin('l.person', 'p')
-            ->select('l.email as Email', "CONCAT(p.firstName,' ',p.lastName) as Name")
+            // ->select('l.email as Email', "CONCAT(p.firstName,' ',p.lastName) as Name")
         ;
 
-        return $qb
-            ->getQuery()
-            ->getResult();
+        $leaders = $qb->getQuery()->getResult();
+        $leaders = new ArrayCollection($leaders);
+        $toEmails = $leaders
+            ->filter(fn(Leader $leader) => $leader->isLeader())
+            ->map(fn(Leader $leader) => [$leader->getEmail(), $leader->getPerson()->getFullName()])->toArray();
+
+        return $toEmails;
     }
 
     public function findEventLeaders()

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
+use App\Repository\LeaderRepository;
 
 class DevelopmentController extends AbstractController
 {
@@ -35,5 +36,13 @@ class DevelopmentController extends AbstractController
             'status' => 'published',
             'message' => 'Message published from ' . $_SERVER['HTTP_HOST'],
         ]);
+    }
+
+    #[Route('/dev', name: 'app_dev')]
+    public function dev(LeaderRepository $leaderRepository): Response
+    {
+        $toEmails = $leaderRepository->findAllLeadersWithNotificationOnAndActive();
+
+        dd($toEmails);
     }
 }
