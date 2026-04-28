@@ -5,7 +5,6 @@ namespace App\Service\Mailer;
 use App\Exception\Core\LogicException;
 use App\Exception\MissingMailerContextRequiredValuesException;
 use App\Exception\MultipleSendsMailerException;
-use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface as Mailer;
@@ -26,7 +25,7 @@ abstract class AbstractContextAwareMailer implements MailerInterface
     }
 
     /**
-     * This method is specifically so you can setup the Email Subject, template or body, etc. This is after the submited context from the send method has been added but before we add the toEmails. Those will me merged later if you add some now.
+     * This method is specifically so you can set up the Email Subject, template or body, etc. This is after the submited context from the send method has been added but before we add the toEmails. Those will me merged later if you add some now.
      */
     abstract protected function configureEmail(TemplatedEmail|Email $email): TemplatedEmail|Email;
 
@@ -52,6 +51,7 @@ abstract class AbstractContextAwareMailer implements MailerInterface
      */
     protected function createToAddresses(string|array $toEmails): array
     {
+
         if (is_string($toEmails)) {
             return [new Address($toEmails)];
         }
@@ -60,7 +60,7 @@ abstract class AbstractContextAwareMailer implements MailerInterface
             $toEmails = array_map(function (array|Address $toEmail) {
                 return $toEmail instanceof Address
                     ? $toEmail
-                    : new Address($toEmail['Email'] ?? $toEmail['email'], $toEmail['Name'] ?? '');
+                    : new Address($toEmail['Email'] ?? $toEmail['email'] ?? $toEmail[0], $toEmail['Name'] ?? '');
             }, $toEmails);
         }
 
@@ -142,7 +142,7 @@ abstract class AbstractContextAwareMailer implements MailerInterface
         // Make sure emails are in correct format
         try {
             $toEmails = array_merge($this->getEmail()->getTo(), $this->createToAddresses($toEmails ?? []));
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             throw new LogicException(message: 'While converting all to emails to an Address, one was missing a value.', previous: $exception);
         }
 
