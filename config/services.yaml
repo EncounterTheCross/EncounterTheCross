@@ -53,6 +53,10 @@ services:
         arguments:
             $settingsService: '@tzunghaor_settings.settings_service.global'
 
+    App\Webhook\StripeWebhookParser:
+        arguments:
+            $settingsService: '@tzunghaor_settings.settings_service.global'
+
 #    App\Settings\SettingsEnumConverter:
 #        tags:
 #            - 'tzunghaor_settings.setting_converter'

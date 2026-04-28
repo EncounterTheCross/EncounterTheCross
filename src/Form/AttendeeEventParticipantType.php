@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\EventParticipant;
 use App\Entity\Location;
+use App\Settings\Global\RegistrationSettings;
+use App\Settings\Global\StripeSettings;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -13,7 +15,6 @@ use Symfony\Component\Intl\Countries;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Tzunghaor\SettingsBundle\Service\SettingsService;
-use App\Settings\Global\RegistrationSettings;
 
 class AttendeeEventParticipantType extends AbstractType
 {
@@ -154,12 +155,30 @@ class AttendeeEventParticipantType extends AbstractType
         if ($data) {
             $launchPointOptions['choices'] = $data->getEvent()->getLaunchPoints()->toArray();
         }
+
+        /** @var StripeSettings $stripeSettings */
+        $stripeSettings = $this->settingsService->getSection(StripeSettings::class);
+
+        // Build the payment method choices — start with the always-available options
+        $paymentChoices = [
+            'Pay at the door' => EventParticipant::PAYMENT_METHOD_ATDOOR,
+            'Apply for Scholarship' => EventParticipant::PAYMENT_METHOD_SCHOLARSHIP,
+        ];
+
+        // Add card payment only when Stripe is enabled
+        if ($stripeSettings->isEnabled()) {
+            // Using array_merge to place Card first feels more natural in a checkout UX
+            $paymentChoices = [
+                'Card' => EventParticipant::PAYMENT_METHOD_CARD,
+            ] + $paymentChoices;
+        }
+
         $builder
             ->add('launchPoint', null, $launchPointOptions)
             ->add('paymentMethod', ChoiceType::class, [
                 'label' => 'Payment Method',
                 'required' => true,
-                'choices' => array_combine(['Pay at the door', 'Apply for Scholarship'], EventParticipant::PAYMENT_METHODS),
+                'choices' => $paymentChoices,
                 'placeholder' => 'Select Payment Method',
                 'attr' => [
                     'placeholder' => 'Payment Method',

@@ -8,13 +8,13 @@ use App\Entity\Traits\QuestionsAndConcernsTrait;
 use App\Enum\EventParticipantStatusEnum;
 use App\Repository\EventParticipantRepository;
 use App\Service\Exporter\EntityExportableInterface;
+use App\Service\SpamDetection\SpamDetectionService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Service\SpamDetection\SpamDetectionService;
 
 #[ORM\Entity(repositoryClass: EventParticipantRepository::class)]
 class EventParticipant implements EntityExportableInterface
@@ -28,9 +28,12 @@ class EventParticipant implements EntityExportableInterface
 
     public const PAYMENT_METHOD_ATDOOR = 'DOOR';
     public const PAYMENT_METHOD_SCHOLARSHIP = 'SCHOLARSHIP';
+    public const PAYMENT_METHOD_CARD = 'CARD';  // or 'STRIPE'
+
     public const PAYMENT_METHODS = [
         self::PAYMENT_METHOD_ATDOOR,
         self::PAYMENT_METHOD_SCHOLARSHIP,
+        self::PAYMENT_METHOD_CARD,
     ];
 
     private bool $forceNewPerson = false;
@@ -94,6 +97,15 @@ class EventParticipant implements EntityExportableInterface
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $rawSpamDetails = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $stripePaymentIntentId = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $paidAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $amountPaidCents = null;
 
     public function __construct()
     {
@@ -430,4 +442,41 @@ class EventParticipant implements EntityExportableInterface
 
         return $this->rawSpamDetails['total_score'] ?? 0;
     }
+
+    public function getStripePaymentIntentId(): ?string
+    {
+        return $this->stripePaymentIntentId;
+    }
+
+    public function setStripePaymentIntentId(?string $stripePaymentIntentId): self
+    {
+        $this->stripePaymentIntentId = $stripePaymentIntentId;
+
+        return $this;
+    }
+
+    public function getPaidAt(): ?\DateTimeImmutable
+    {
+        return $this->paidAt;
+    }
+
+    public function setPaidAt(?\DateTimeImmutable $paidAt): self
+    {
+        $this->paidAt = $paidAt;
+
+        return $this;
+    }
+
+    public function getAmountPaidCents(): ?int
+    {
+        return $this->amountPaidCents;
+    }
+
+    public function setAmountPaidCents(?int $amountPaidCents): self
+    {
+        $this->amountPaidCents = $amountPaidCents;
+
+        return $this;
+    }
+
 }
