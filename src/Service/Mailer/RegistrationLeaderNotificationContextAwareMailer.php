@@ -65,7 +65,7 @@ final class RegistrationLeaderNotificationContextAwareMailer extends AbstractCon
         }
 
         $toEmails = $this->leaderRepository->findAllLeadersWithNotificationOnAndActive();
-        dd($toEmails);
+
         $email->to(...$this->createToAddresses($toEmails));
 
         return $email;
