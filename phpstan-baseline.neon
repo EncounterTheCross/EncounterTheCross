@@ -191,6 +191,11 @@ parameters:
 			path: src/Service/Mailer/RegistrationLeaderNotificationContextAwareMailer.php
 
 		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: src/Service/Mailer/RegistrationLeaderNotificationContextAwareMailer.php
+
+		-
 			message: "#^Constant App\\\\Service\\\\Mailer\\\\RegistrationThankYouContextAwareMailer\\:\\:CONTEXT_REQUIREMENTS is unused\\.$#"
 			count: 1
 			path: src/Service/Mailer/RegistrationThankYouContextAwareMailer.php
