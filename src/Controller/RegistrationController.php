@@ -26,6 +26,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Form;
+use Stripe\Stripe;
+use Stripe\PaymentIntent;
 use App\Service\SpamDetection\SpamDetectionService;
 use App\Enum\EventParticipantStatusEnum;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -120,7 +123,8 @@ class RegistrationController extends AbstractController
                 return $this->redirectToRoute('app_registration_registrationwaitingthankyou');
             }
 
-            return $this->redirectToRoute('app_registration_registrationthankyou');
+            // return $this->redirectToRoute('app_registration_registrationthankyou');
+            return $this->processPayment($form, $eventRegistration, $request);
         }
 
         return $this->render('frontend/events/attendee.regestration.html.twig', [
@@ -178,7 +182,7 @@ class RegistrationController extends AbstractController
                 return $this->redirectToRoute('app_registration_registrationwaitingthankyou');
             }
 
-            return $this->redirectToRoute('app_registration_registrationthankyou');
+            return $this->processPayment($form, $eventRegistration, $request);
         }
 
         return $this->render('frontend/events/server.regestration.html.twig', [
@@ -203,6 +207,8 @@ class RegistrationController extends AbstractController
             'waitlist_enabled' => true,
         ]);
     }
+
+
 
     protected function sendEmails(EventParticipant $registration, bool $waitlistEnabled = false): void
     {
@@ -286,5 +292,27 @@ class RegistrationController extends AbstractController
             str_contains($message, 'spam')                    => 'spam_block',
             default                                           => 'unknown',
         };
+    }
+
+    private function processPayment(Form $form,EventParticipant $registration, Request $request)
+    {
+        $paymentMethod = $form->get('paymentMethod')->getData();
+
+        // If payment method is card, store data in session and redirect to payment page
+        if ($paymentMethod !== EventParticipant::PAYMENT_METHOD_CARD) {
+            return $this->redirectToRoute('app_registration_registrationthankyou');
+        }
+
+        $event = $registration->getEvent();
+
+        // Store registration data in session
+        $request->getSession()->set('registration_data', [
+            'event_id' => $event->getId(),
+            'registration' => $registration,
+        ]);
+        
+        return $this->redirectToRoute('app_registration_payment', [
+            'event' => $event->getId()
+        ]);
     }
 }

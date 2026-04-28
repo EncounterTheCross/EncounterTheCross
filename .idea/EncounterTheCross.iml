@@ -267,6 +267,12 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/nelmio/cors-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/jean85/pretty-package-versions" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-php84" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/ergebnis/agent-detector" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/omines/antispam-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/stripe/stripe-php" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-php85" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/remote-event" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/webhook" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
