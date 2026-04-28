@@ -51,6 +51,11 @@ parameters:
 			path: src/Controller/MainController.php
 
 		-
+			message: "#^Binary operation \"\\*\" between string\\|null and 100 results in an error\\.$#"
+			count: 2
+			path: src/Controller/PaymentController.php
+
+		-
 			message: "#^Caught class App\\\\Controller\\\\Symfony\\\\Component\\\\Mailer\\\\Exception\\\\UnexpectedResponseException not found\\.$#"
 			count: 2
 			path: src/Controller/RegistrationController.php
