@@ -14,6 +14,10 @@ class CheckInController extends AbstractController
     public function encounterList(string $token, EventRepository $eventRepository): Response
     {
         $event = $eventRepository->findByServerCheckInToken($token);
+        
+        if (!$event) {
+            throw $this->createNotFoundException('Event is not Active or does not exist.');
+        }
 
         return $this->render('tailwind/checkin.html.twig', [
             'launches' => $event->getLaunchPoints(),
