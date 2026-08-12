@@ -33,7 +33,14 @@
         <div class="flex items-center gap-3">
             <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-sm">{{ participant.person.initials }}</div>
             <div>
-                <div class="font-medium">{{ participant.person.fullName }}</div>
+                <div class="font-medium">
+                    {{ participant.person.fullName }}
+                    {% if participant.status == 'waitlisted' %}
+                        - <span class="inline-flex items-center rounded-md bg-yellow-400/10 px-2 py-1 text-xs font-medium text-yellow-500 inset-ring inset-ring-yellow-400/20">
+                            On Waitlist
+                        </span>
+                    {% endif %}
+                </div>
                 <div class="text-sm text-gray-500">{{ participant.person.email }}</div>
             </div>
         </div>
