@@ -95,7 +95,10 @@ class PrayerTeamAssignmentsController extends AbstractController
 
             // Validate the attending status
 
-            if ($participant->getStatus() !== EventParticipantStatusEnum::ATTENDING->value) {
+            if (
+                $participant->getStatus() !== EventParticipantStatusEnum::ATTENDING->value
+                && $participant->getStatus() !== EventParticipantStatusEnum::WAITLISTED->value
+            ) {
                 return false;
             }
 
