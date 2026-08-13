@@ -162,6 +162,19 @@ class Location
         return $this->eventAttendees;
     }
 
+    public function getAttendingAndWaitlistedEventAttendees(): Collection
+    {
+        $criteria = Criteria::create()
+            ->orderBy(['person.firstName' => Order::Ascending]);
+
+        return $this->getEventAttendees()->filter(function (EventParticipant $eventAttendee) {
+            return 
+                $eventAttendee->getStatus() === EventParticipantStatusEnum::ATTENDING->value
+                || $eventAttendee->getStatus() === EventParticipantStatusEnum::WAITLISTED->value
+            ;
+        })->matching($criteria);
+    }
+
     public function getAttendingEventAttendees(): Collection
     {
         $criteria = Criteria::create()

@@ -6,8 +6,13 @@ use App\Entity\EventParticipant;
 use App\Entity\EventPrayerTeamServer;
 use App\Settings\Global\MercureSettings;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -29,6 +34,8 @@ final class CheckInForm
         private HubInterface $hub,
         private Environment $twig,
         private MercureSettings $mercureSettings,
+        private RequestStack $requestStack,
+        private RouterInterface $router,
     ) {
     }
 
@@ -46,6 +53,28 @@ final class CheckInForm
         $this->entityManager->persist($this->participant);
         $this->checkInParticipant();
 
+    }
+
+    #[LiveAction]
+    public function processCard()
+    {
+        $event = $this->participant->getEvent();
+        // Store registration data in session
+        $this->getRequest()->getSession()->set('registration_data', [
+            'event_id' => $event->getId(),
+            'registration' => $this->participant,
+            'server_check_in' => '/checkin/'.$event->getCheckInToken(),
+        ]);
+
+        if ($this->participant->getPaymentMethod() !== 'CARD') {
+            $this->participant->setPaymentMethod('CARD');
+            $this->entityManager->persist($this->participant);
+            $this->entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_registration_payment', [
+            'event' => $event->getId()
+        ]);
     }
 
     #[LiveAction]
@@ -108,5 +137,40 @@ final class CheckInForm
         }
 
         $this->closeModal();
+    }
+
+    private function getRequest(): ?Request
+    {
+        return $this->requestStack->getCurrentRequest();
+    }
+
+    /**
+     * Returns a RedirectResponse to the given URL.
+     *
+     * @param int $status The HTTP status code (302 "Found" by default)
+     */
+    protected function redirect(string $url, int $status = 302): RedirectResponse
+    {
+        return new RedirectResponse($url, $status);
+    }
+
+    /**
+     * Returns a RedirectResponse to the given route with the given parameters.
+     *
+     * @param int $status The HTTP status code (302 "Found" by default)
+     */
+    protected function redirectToRoute(string $route, array $parameters = [], int $status = 302): RedirectResponse
+    {
+        return $this->redirect($this->generateUrl($route, $parameters), $status);
+    }
+
+    /**
+     * Generates a URL from the given parameters.
+     *
+     * @see UrlGeneratorInterface
+     */
+    protected function generateUrl(string $route, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
+    {
+        return $this->router->generate($route, $parameters, $referenceType);
     }
 }

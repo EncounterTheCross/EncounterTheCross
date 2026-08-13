@@ -166,7 +166,7 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
         ;
 
         yield BooleanField::new('active')
-            ->setHelp('Normally you will not need to touch this. Ask Jordan First.')
+            ->setHelp('Check in works only when this is on. (Normally you will not need to touch this. Ask Jordan First.)')
             ->hideOnDetail()
             ->hideOnIndex()
         ;
