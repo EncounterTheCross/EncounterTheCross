@@ -66,6 +66,12 @@ final class CheckInForm
             'server_check_in' => '/checkin/'.$event->getCheckInToken(),
         ]);
 
+        if ($this->participant->getPaymentMethod() !== 'CARD') {
+            $this->participant->setPaymentMethod('CARD');
+            $this->entityManager->persist($this->participant);
+            $this->entityManager->flush();
+        }
+
         return $this->redirectToRoute('app_registration_payment', [
             'event' => $event->getId()
         ]);
