@@ -149,7 +149,14 @@ class PrayerTeamAssignmentsController extends AbstractController
             ]);
 
         /** @var ArrayCollection $servers */
-        $servers = $event->getEventParticipants(EventParticipantStatusEnum::ATTENDING)->filter(function (EventParticipant $participant) {
+        $servers = $event->getEventParticipants()->filter(function (EventParticipant $participant) {
+
+            if( $participant->getStatus() !== EventParticipantStatusEnum::ATTENDING->value
+                && $participant->getStatus() !== EventParticipantStatusEnum::WAITLISTED->value
+            ) {
+                return false;
+            }
+
             return $participant->isServer();
         });
         $servers = $servers->matching($criteria);
