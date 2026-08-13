@@ -43,6 +43,9 @@
                             {% else %}
                                 <td>
                                     {{ ServerName }}
+                                    {% if members[i].status == 'waitlisted' %}
+                                        <span class="badge badge-warning">Waitlisted</span>
+                                    {% endif %}
                                     {% if ServerNameAssignment is not null and ServerNameAssignment.intersessionAssignment is not empty %}
                                         ({{ ServerNameAssignment.intersessionAssignment }})
                                     {% endif %}

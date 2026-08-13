@@ -11,7 +11,12 @@
                     <div class="container text-center">
                         <div class="row">
                             <div class="col">
-                                <p><strong>Name: </strong>{{ server.vars.value.person.FullName }}</p>
+                                <p>
+                                    <strong>Name: </strong>{{ server.vars.value.person.FullName }}
+                                    {% if server.vars.value.status == 'waitlisted' %}
+                                        <span class="badge badge-warning">Waitlisted</span>
+                                    {% endif %}
+                                </p>
 {#                                {{  dump(server) }}#}
                             </div>
                             <div class="col">
