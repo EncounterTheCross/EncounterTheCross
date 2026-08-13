@@ -1,5 +1,9 @@
 {% extends 'frontend/blank_content_container.html.twig' %}
 
+{% set registration_data = app.session.get('registration_data') %}
+{% set server_check_in = registration_data is not empty and registration_data.server_check_in is defined ? registration_data.server_check_in : null %}
+
+
 {% block stylesheets %}
 {{ parent() }}
     <link rel="stylesheet"
@@ -222,12 +226,13 @@
                     <h5 class="mb-0">Payment Details</h5>
                 </div>
                 <div class="card-body">
-                    <form id="payment-form" 
-                          data-turbo="false"
-                          data-stripe-key="{{ stripe_public_key }}"
-                          data-intent-url="{{ path('app_registration_payment_intent', {event: event.id}) }}"
-                          data-complete-url="{{ path('app_registration_registrationthankyou', {event: event.id}) }}"
-                          data-return-url="{{ path('app_registration_registrationthankyou') }}">
+                    <form id="payment-form"
+                        data-turbo="false"
+                        data-stripe-key="{{ stripe_public_key }}"
+                        data-intent-url="{{ path('app_registration_payment_intent', {event: event.id}) }}"
+                        data-complete-url="{{ server_check_in|default(null)|length ? server_check_in : path('app_registration_registrationthankyou', {event: event.id}) }}"
+                        data-return-url="{{ server_check_in|default(null)|length ? server_check_in : path('app_registration_registrationthankyou') }}"
+                    >
                         <div id="payment-element" class="mb-3">
                             <!-- Stripe Payment Element will be inserted here -->
                             <div class="text-center py-4">
@@ -258,7 +263,7 @@
             </div>
             
             <div class="text-center mt-3">
-                <a href="{{ path('app_registration_attendee_formentry', {event: event.id}) }}" class="text-muted">
+                <a href="{{ server_check_in|default(null)|length ? server_check_in : path('app_registration_attendee_formentry', {event: event.id}) }}" class="text-muted">
                     <i class="fa-solid fa-arrow-left me-1"></i> Back to registration
                 </a>
             </div>

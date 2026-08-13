@@ -36,7 +36,7 @@
                 <div class="font-medium">
                     {{ participant.person.fullName }}
                     {% if participant.status == 'waitlisted' %}
-                        - <span class="inline-flex items-center rounded-md bg-yellow-400/10 px-2 py-1 text-xs font-medium text-yellow-500 inset-ring inset-ring-yellow-400/20">
+                        - <span class="inline-flex items-center rounded-md bg-pink-400/10 px-2 py-1 text-xs font-medium text-pink-500 inset-ring inset-ring-pink-400/20">
                             On Waitlist
                         </span>
                     {% endif %}
@@ -91,11 +91,15 @@
                             <span class="w-1.5 h-1.5 bg-green-600 rounded-full mr-1"></span>
                             Paid
                         </div>
-
-                    {% else %}
+                    {% elseif participant.paymentMethod == 'CARD' %}
                         <div class="text-red-600 flex items-center">
                             <span class="w-1.5 h-1.5 bg-red-600 rounded-full mr-1"></span>
-                            Pending
+                                Pending
+                            </div>
+                    {% else %}
+                        <div class="text-yellow-600 flex items-center">
+                            <span class="w-1.5 h-1.5 bg-yellow-600 rounded-full mr-1"></span>
+                            Paying Later
                         </div>
                     {% endif %}
                 </div>
