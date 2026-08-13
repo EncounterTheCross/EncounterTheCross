@@ -16,6 +16,11 @@ parameters:
 			path: src/Command/SpamCheckLatestCommand.php
 
 		-
+			message: "#^Call to an undefined method Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, App\\\\Entity\\\\Location\\>\\:\\:matching\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/Admin/CheckInController.php
+
+		-
 			message: "#^Call to an undefined method EasyCorp\\\\Bundle\\\\EasyAdminBundle\\\\Contracts\\\\Field\\\\FieldInterface\\:\\:hideOnForm\\(\\)\\.$#"
 			count: 2
 			path: src/Controller/Admin/Crud/EventCrudController.php
@@ -82,7 +87,7 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, App\\\\Entity\\\\EventParticipant\\>\\:\\:matching\\(\\)\\.$#"
-			count: 1
+			count: 2
 			path: src/Entity/Location.php
 
 		-
@@ -187,11 +192,6 @@ parameters:
 
 		-
 			message: "#^Constant App\\\\Service\\\\Mailer\\\\RegistrationLeaderNotificationContextAwareMailer\\:\\:CONTEXT_REQUIREMENTS is unused\\.$#"
-			count: 1
-			path: src/Service/Mailer/RegistrationLeaderNotificationContextAwareMailer.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: src/Service/Mailer/RegistrationLeaderNotificationContextAwareMailer.php
 
