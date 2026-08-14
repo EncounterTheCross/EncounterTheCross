@@ -135,6 +135,27 @@ class EventParticipantCrudController extends AbstractCrudController implements S
         return $this->redirect($url->generateUrl());
     }
 
+    public function updateParticipantToWaitlisted(AdminContext $context)
+    {
+        $entityInstance = $context->getEntity()->getInstance();
+        assert($entityInstance instanceof EventParticipant);
+        if ($entityInstance->getStatus() !== EventParticipantStatusEnum::WAITLISTED->value) {
+            $response = $this->updateParticipantStatus($context, EventParticipantStatusEnum::WAITLISTED);
+            if ($response) {
+                return $response;
+            }
+        }
+
+        $url = $this->getAdminUrlGenerator()
+            ->includeReferrer()
+            ->set(ParentCrudControllerInterface::PARENT_ID, $entityInstance->getEvent()->getId())
+            ->setController(EventParticipantCrudController::class)
+            ->setAction(Action::INDEX)
+        ;
+
+        return $this->redirect($url->generateUrl());
+    }
+
     public function updateParticipantToSpam(AdminContext $context)
     {
         $entityInstance = $context->getEntity()->getInstance();
@@ -278,6 +299,23 @@ class EventParticipantCrudController extends AbstractCrudController implements S
             })
         ;
 
+        $participantStatusWaitlisted = Action::new('mark_waitlisted')
+            ->setLabel('Mark Waitlisted')
+            ->linkToUrl(function (EventParticipant $eventParticipant) {
+                return $this->getAdminUrlGenerator()
+                    ->includeReferrer()
+                    ->set('entityId', $eventParticipant->getId())
+                    ->set(ParentCrudControllerInterface::PARENT_ID, $eventParticipant->getEvent()->getId())
+                    ->setController(EventParticipantCrudController::class)
+                    ->setAction('updateParticipantToWaitlisted')
+                    ->generateUrl()
+                ;
+            })
+            ->displayIf(function (EventParticipant $participant) {
+                return $participant->getStatus() !== EventParticipantStatusEnum::WAITLISTED->value;
+            })
+        ;
+
         $participantStatusSpam = Action::new('mark_spam')
             ->setLabel('Mark Spam')
             ->linkToUrl(function (EventParticipant $eventParticipant) {
@@ -384,6 +422,8 @@ class EventParticipantCrudController extends AbstractCrudController implements S
             ->add(Action::DETAIL, $participantStatusDropped)
             ->add(Action::INDEX, $participantStatusSpam)
             ->add(Action::DETAIL, $participantStatusSpam)
+            ->add(Action::INDEX, $participantStatusWaitlisted)
+            ->add(Action::DETAIL, $participantStatusWaitlisted)
         ;
 
         // setup permission to global actions
