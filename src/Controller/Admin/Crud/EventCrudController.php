@@ -144,7 +144,7 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
 
         yield BooleanField::new('registration_open')
             ->setLabel('Attendee Waitlist Disabled')
-            ->setHelp('When unchecked, waitlist will be turned on for attendees. No more servers can register.')
+            ->setHelp('When unchecked, waitlist will be turned on for attendees.')
             ->hideOnDetail()
             ->hideOnIndex()
         ;
@@ -166,7 +166,7 @@ class EventCrudController extends AbstractCrudController implements ParentCrudCo
         ;
 
         yield BooleanField::new('active')
-            ->setHelp('Check in works only when this is on. (Normally you will not need to touch this. Ask Jordan First.)')
+            ->setHelp('Check in works only when this is on. This needs to be on to show in the registration events list. (Confused? Ask Jordan.)')
             ->hideOnDetail()
             ->hideOnIndex()
         ;

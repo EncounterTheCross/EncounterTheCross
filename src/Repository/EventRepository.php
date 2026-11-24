@@ -69,13 +69,15 @@ class EventRepository extends ServiceEntityRepository
 
         $qb
             ->select('e')
+            ->where('e.active = :active')
             ->andWhere(
-                $qb->expr()->gte('e.start', ':today')
-            )
-            ->orWhere(
-                $qb->expr()->gte('e.end', ':today')
+                $qb->expr()->orX(
+                    $qb->expr()->gte('e.start', ':today'),
+                    $qb->expr()->gte('e.end', ':today')
+                )
             )
             ->setParameter('today', date('Y-m-d H:i:s', strtotime('tomorrow') - 1))
+            ->setParameter('active', true)
             ->orderBy('e.start', 'ASC')
         ;
 

@@ -22,6 +22,7 @@ use App\Service\Mailer\RegistrationLeaderNotificationContextAwareMailer;
 use App\Service\Mailer\RegistrationThankYouContextAwareMailer;
 use App\Service\PersonManager;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
@@ -56,17 +57,18 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_registration_list')]
     public function encounterList(EventRepository $eventRepository)
     {
-        $event = $eventRepository->findUpcomingEvent();
-        //        $events = $eventRepository->findAll();
+        // $event = $eventRepository->findUpcomingEvent();
+        $events = $eventRepository->findAllUpcomingEventsInOrder();
+        $event = (new ArrayCollection($events))?->first();
 
         $strictRegistration = $this->getGlobalSettings()->isRegistrationDeadlineInforced();
         $waitlistEnabled = $this->getRegistrationSettings()->isWaitlistEnabled()
-            && !$event?->isRegistrationOpen()
+            && ($event && !$event?->isRegistrationOpen())
         ;
 
         return $this->render('frontend/events/list.html.twig', [
-            'events' => [$event],
-            //            'events' => $events,
+            // 'events' => [$event],
+           'events' => $events,
             'waitlist_enabled' => $waitlistEnabled,
             'strict_registration' => $strictRegistration,
         ]);
