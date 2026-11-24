@@ -41,9 +41,15 @@ class EventRegistrationVoter extends Voter
      */
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
-        $upcomingEvent = $this->eventRepository->findUpcomingEvent();
+        // $upcomingEvent = $this->eventRepository->findUpcomingEvent();
 
-        if ($upcomingEvent->getId() !== $subject->getId() || !$upcomingEvent->isRegistrationStarted()) {
+        // if ($upcomingEvent->getId() !== $subject->getId() ) {
+        //     $this->getFlashBag()->add('error', 'You can only register for the next upcoming event.');
+
+        //     return false;
+        // }
+
+        if ( !$subject->isRegistrationStarted()) {
             $this->getFlashBag()->add('error', 'Registration is not opened for this event.');
 
             return false;
